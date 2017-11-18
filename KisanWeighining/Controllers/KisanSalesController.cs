@@ -49,6 +49,8 @@ namespace KisanWeighining.Controllers
         public readonly Irepository<tbl_SalesOutStanding> _PurchaseOutStanding;
         public readonly Irepository<tbl_CashReceipt> _cashreceipt;
         public readonly Irepository<tbl_CashCreditMaster> _cashcredit;
+        public readonly Irepository<tbl_CashMastered> _cashmastereredd;
+
         public KisanSalesController(Irepository<tbl_RemoteConnection> remote, Irepository<tbl_pool_MachineData_Purchase> machinedata,
             Irepository<tbl_FarmerMaster> farmer, Irepository<tbl_truckMaster> truck, Irepository<tbl_MenuMaster> menuuu, Irepository<tbl_MasterMenuName> Mastermenu,
             Irepository<tbl_PaymentType> paymenttype, Irepository<tbl_SalesEntry_Master> salespayement, Irepository<tbl_SalesEntry_Master_Payment> salesActualPay,
@@ -57,7 +59,7 @@ namespace KisanWeighining.Controllers
             Irepository<tbl_ProductTaxEntry> prodtax, Irepository<tbl_TaxMaster> taxmaster, Irepository<tbl_PurchaseEntry_Master> purchasepayment,
               Irepository<tbl_PurchseStockMaster> purchasestock, Irepository<tbl_SalesSockMaster> salesstock,
              Irepository<tbl_ExpensesMaster> expenses, Irepository<tbl_ExpensesPurposeMaster> expensespur, Irepository<tbl_SalesOutStanding> purchaseoutstanding,
-           Irepository<tbl_CashReceipt> cashreceipt, Irepository<tbl_CashCreditMaster> cashcredit)
+           Irepository<tbl_CashReceipt> cashreceipt, Irepository<tbl_CashCreditMaster> cashcredit, Irepository<tbl_CashMastered> cashmastereredd)
         {
             _remote = remote;
             _machinedata = machinedata;
@@ -84,6 +86,7 @@ namespace KisanWeighining.Controllers
             _PurchaseOutStanding = purchaseoutstanding;
             _cashcredit = cashcredit;
             _cashreceipt = cashreceipt;
+            _cashmastereredd = cashmastereredd;
         }
         // GET: KisanSales
         [HttpGet]
@@ -823,11 +826,11 @@ namespace KisanWeighining.Controllers
                                     Netpayable = a.NetPayableAmount ?? 0,
                                     Insuranceno = a.InsuranceNo ?? "",
                                     truckno = (a.truckid != null ? _truck.Get(a.truckid ?? 0).truckno ?? "" : ""),
-                                    transport = (a.transport_fkid != null ? _transport.Get(a.transport_fkid ?? 0).transportname ?? "" : ""),
-                                    broker = (a.brokerid != null ? _broker.Get(a.brokerid).Brokername ?? "" : ""),
+                                    transport = (a.transport_fkid != null ? _transport.Get(a.transport_fkid ?? 0).transportname ?? "--" : "--"),
+                                    broker = (a.brokerid != null ? _broker.Get(a.brokerid).Brokername ?? "--" : "--"),
                                     saudate = a.saudadate ?? default(DateTime),
                                     invoicedate = a.Date ?? default(DateTime),
-                                    paymentcondition = (a.paycondition != null ? _payementtype.Get(a.paycondition).paymenttypename ?? "" : "")
+                                    paymentcondition = (a.paycondition != null ? _payementtype.Get(a.paycondition).paymenttypename ?? "--" : "--")
                                 }).ToList();
                     // rd.SetDatabaseLogon("sa", "temp123", "itg8", "KisanWeighning");
                     rd.Database.Tables[0].SetDataSource(data);
@@ -864,11 +867,11 @@ namespace KisanWeighining.Controllers
                                     Netpayable = a.NetPayableAmount ?? 0,
                                     Insuranceno = a.InsuranceNo ?? "",
                                     truckno = (a.truckid != 0 ? _truck.Get(a.truckid ?? 0).truckno ?? "" : ""),
-                                    transport = (a.transport_fkid != 0 ? _transport.Get(a.transport_fkid ?? 0).transportname ?? "" : ""),
-                                    broker = (a.brokerid != 0 ? _broker.Get(a.brokerid).Brokername ?? "" : ""),
+                                    transport = (a.transport_fkid != 0 ? _transport.Get(a.transport_fkid ?? 0).transportname ?? "--" : "--"),
+                                    broker = (a.brokerid != 0 ? _broker.Get(a.brokerid).Brokername ?? "--" : "--"),
                                     saudate = a.saudadate ?? default(DateTime),
                                     invoicedate = a.Date ?? default(DateTime),
-                                    paymentcondition = (a.paycondition != null ? _payementtype.Get(a.paycondition).paymenttypename ?? "" : "")
+                                    paymentcondition = (a.paycondition != null ? _payementtype.Get(a.paycondition).paymenttypename ?? "--" : "--")
                                 }).ToList();
                     // rd.SetDatabaseLogon("sa", "temp123", "itg8", "KisanWeighning");
                     rd.Database.Tables[0].SetDataSource(data);
@@ -2289,6 +2292,7 @@ namespace KisanWeighining.Controllers
         [HttpPost]
         public ActionResult CashMaster(tbl_CashReceiptss model)
         {
+          decimal Totalcash = 0;
             if (model.pkid == 0)
             {
                 tbl_CashReceipt abc = new tbl_CashReceipt();
@@ -2298,6 +2302,26 @@ namespace KisanWeighining.Controllers
                 abc.sourcename = model.sourcename;
                 abc.currentdate = DateTime.Now;
                 _cashreceipt.Add(abc);
+                if (_cashmastereredd.GetAll().Count() > 0)
+                {
+                    if (_cashmastereredd.GetAll().FirstOrDefault().CurrentCash > 0)
+                    {
+                        tbl_CashMastered beta = _cashmastereredd.GetAll().FirstOrDefault();
+                        beta.CurrentCash = (beta.CurrentCash + model.cashAmt);
+                        _cashmastereredd.Update(beta);
+                    }
+                    else{
+                        tbl_CashMastered beta = new tbl_CashMastered();
+                        beta.CurrentCash = model.cashAmt;
+                        //_cashmastereredd.Save(beta);
+                    }
+                }
+                else
+                {
+                    //tbl_CashMastered beta = new tbl_Cash
+                    // _cashmastereredd.Update(beta);Mastered();
+                    //beta.CurrentCash = model.cashAmt;
+                }
             }
             else
             {

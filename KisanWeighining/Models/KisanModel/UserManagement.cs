@@ -21,6 +21,13 @@ namespace KisanWeighining.Models.KisanModel
         public Nullable<int> cityid { get; set; }
         public Nullable<int> department { get; set; }
     }
+    public partial class tbl_CashMasteredss
+    {
+        public int pkid { get; set; }
+        public Nullable<System.DateTime> Currentdate { get; set; }
+        public Nullable<decimal> CurrentCash { get; set; }
+        public Nullable<System.DateTime> LastModified { get; set; }
+    }
     public partial class tbl_FarmerMasterss
     {
         public int pkid { get; set; }

@@ -56,5 +56,6 @@ namespace DataLayer.KisanModel
         public virtual DbSet<tbl_truck_Transport_Mapping> tbl_truck_Transport_Mapping { get; set; }
         public virtual DbSet<tbl_truckMaster> tbl_truckMaster { get; set; }
         public virtual DbSet<tbl_UserDetails> tbl_UserDetails { get; set; }
+        public virtual DbSet<tbl_CashMastered> tbl_CashMastered { get; set; }
     }
 }

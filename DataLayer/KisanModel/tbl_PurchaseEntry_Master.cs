@@ -40,5 +40,6 @@ namespace DataLayer.KisanModel
         public Nullable<System.DateTime> paymentdays { get; set; }
         public string VillageName { get; set; }
         public Nullable<int> stockread { get; set; }
+        public string fname { get; set; }
     }
 }

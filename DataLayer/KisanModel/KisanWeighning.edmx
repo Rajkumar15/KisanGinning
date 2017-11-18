@@ -43,6 +43,15 @@
           <Property Name="mdate" Type="datetime" />
           <Property Name="payment_fkid" Type="int" />
         </EntityType>
+        <EntityType Name="tbl_CashMastered">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Currentdate" Type="datetime" />
+          <Property Name="CurrentCash" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LastModified" Type="datetime" />
+        </EntityType>
         <EntityType Name="tbl_CashReceipt">
           <Key>
             <PropertyRef Name="pkid" />
@@ -218,6 +227,7 @@
           <Property Name="paymentdays" Type="datetime" />
           <Property Name="VillageName" Type="varchar(max)" />
           <Property Name="stockread" Type="int" />
+          <Property Name="fname" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="tbl_PurchaseEntry_Master_Payment">
           <Key>
@@ -500,6 +510,7 @@
           <EntitySet Name="tbl_BankDetailsPerPurchase" EntityType="Self.tbl_BankDetailsPerPurchase" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_BrokerMaster" EntityType="Self.tbl_BrokerMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_CashCreditMaster" EntityType="Self.tbl_CashCreditMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_CashMastered" EntityType="Self.tbl_CashMastered" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_CashReceipt" EntityType="Self.tbl_CashReceipt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_categoryMaster" EntityType="Self.tbl_categoryMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_DealerMaster" EntityType="Self.tbl_DealerMaster" Schema="dbo" store:Type="Tables" />
@@ -746,6 +757,7 @@
           <Property Name="paymentdays" Type="DateTime" Precision="3" />
           <Property Name="VillageName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="stockread" Type="Int32" />
+          <Property Name="fname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="tbl_PurchaseEntry_Master_Payment">
           <Key>
@@ -1056,7 +1068,17 @@
           <EntitySet Name="tbl_truck_Transport_Mapping" EntityType="Self.tbl_truck_Transport_Mapping" />
           <EntitySet Name="tbl_truckMaster" EntityType="Self.tbl_truckMaster" />
           <EntitySet Name="tbl_UserDetails" EntityType="Self.tbl_UserDetails" />
+          <EntitySet Name="tbl_CashMastered" EntityType="KisanWeighningModel.tbl_CashMastered" />
         </EntityContainer>
+        <EntityType Name="tbl_CashMastered">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Currentdate" Type="DateTime" Precision="3" />
+          <Property Name="CurrentCash" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LastModified" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1265,6 +1287,7 @@
           <EntitySetMapping Name="tbl_PurchaseEntry_Master">
             <EntityTypeMapping TypeName="KisanWeighningModel.tbl_PurchaseEntry_Master">
               <MappingFragment StoreEntitySet="tbl_PurchaseEntry_Master">
+                <ScalarProperty Name="fname" ColumnName="fname" />
                 <ScalarProperty Name="pkid" ColumnName="pkid" />
                 <ScalarProperty Name="purchasemachine_fkid" ColumnName="purchasemachine_fkid" />
                 <ScalarProperty Name="drivername" ColumnName="drivername" />
@@ -1582,6 +1605,16 @@
                 <ScalarProperty Name="stateid" ColumnName="stateid" />
                 <ScalarProperty Name="cityid" ColumnName="cityid" />
                 <ScalarProperty Name="department" ColumnName="department" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_CashMastered">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_CashMastered">
+              <MappingFragment StoreEntitySet="tbl_CashMastered">
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="CurrentCash" ColumnName="CurrentCash" />
+                <ScalarProperty Name="Currentdate" ColumnName="Currentdate" />
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -75,6 +75,9 @@
     <Compile Include="KisanModel\tbl_CashCreditMaster.cs">
       <DependentUpon>KisanWeighning.tt</DependentUpon>
     </Compile>
+    <Compile Include="KisanModel\tbl_CashMastered.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
     <Compile Include="KisanModel\tbl_CashReceipt.cs">
       <DependentUpon>KisanWeighning.tt</DependentUpon>
     </Compile>

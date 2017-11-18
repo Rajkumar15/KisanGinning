@@ -36,6 +36,7 @@
         <EntityTypeShape EntityType="KisanWeighningModel.tbl_truck_Transport_Mapping" Width="1.5" PointX="12.75" PointY="14.75" IsExpanded="true" />
         <EntityTypeShape EntityType="KisanWeighningModel.tbl_truckMaster" Width="1.5" PointX="14.75" PointY="14.75" IsExpanded="true" />
         <EntityTypeShape EntityType="KisanWeighningModel.tbl_UserDetails" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="KisanWeighningModel.tbl_CashMastered" Width="1.5" PointX="0.75" PointY="17.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
