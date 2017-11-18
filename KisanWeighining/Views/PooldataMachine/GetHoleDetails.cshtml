@@ -1,0 +1,175 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_PurchaseEntry_Masterss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+    }
+
+    .labelmod {
+        width: 28%;
+    }
+
+    .calcultesttext {
+        margin-bottom: 4px;
+    }
+
+    .glophy {
+        font-size: 17px;
+        margin-left: 10px;
+        color: darkgreen;
+        cursor: pointer;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .col-sm-12, .col-sm-4 {
+        margin-bottom: 0 !important;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Invoice Details</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="body">
+                    <div class="row clearfix">
+
+                        @using (Html.BeginForm("PurchaseDetails", "PooldataMachine", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                        {
+                            @Html.HiddenFor(x=>x.pkid)
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <div class="col-sm-12">
+                                <button type="button" onclick="getpopup()" style="background-color: brown;color: #FFF;margin-left: 42%;">Get Invoice</button>
+                            </div>
+                            <div class="col-sm-12" style="border-bottom:1px solid rgba(204, 204, 204, 0.35);">
+                                <div class="col-sm-6">
+                                    <label class="labelmod"> Rate </label>: @Html.TextBoxFor(x => x.rate, new { @class = "form-control groupOfTexbox", placeholder = "Enter Rate per Qtl", @style = "width:50% !important;margin-bottom:4px;" })<br />
+                                    <label class="labelmod"> Farmer Name </label>: @Html.TextBox("farname", null, new { @class = "form-control", @readonly = "readonly", @style = "width:50% !important;" })
+                                </div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">                                  
+                                    <label> Net Weight in quntal :</label> @Html.TextBoxFor(x => x.qunatity, new { @class = "form-control groupOfTexbox",  @readonly = "readonly", @style = "width:38% !important;" })<br />
+                                    <label style=" margin-top: 11px;"> Gross Amount </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  @Html.TextBoxFor(x => x.RTGSCharges, new { @class = "form-control groupOfTexbox", placeholder = "Gross Amount", @readonly = "readonly", @style = "width:38% !important;margin-bottom:2%;" })
+                                </div>
+                                <div class="col-sm-4"></div>
+                            </div>
+                            <div class="col-sm-12" style="margin-top:1%;">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label style="color:brown;">Payment Details :</label>
+                                </div>
+
+                                <div class="col-sm-6" style="">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Payment Method </label>: @Html.TextBox("pty", null, new { @class = "form-control groupOfTexbox calcultesttext", @Value = ViewBag.paytm })<br />
+                                    <label class="labelmod"> Party Name </label>: @Html.TextBox("pname", null, new { @class = "form-control groupOfTexbox calcultesttext", @Value = ViewBag.holdername })<br />
+                                    <label class="labelmod"> Amount </label>: @Html.TextBox("mt", null, new { @class = "form-control groupOfTexbox calcultesttext", @Value = ViewBag.amt })<br />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label style="width:22%;"> Account No </label>: @Html.TextBox("accouno", null, new { @class = "form-control calcultesttext mobileno", @style = "width:38% !important;", @Value = ViewBag.accno })<br />
+                                    <label style="width:22%;"> Cheque No </label>: @Html.TextBox("cheqno", null, new { @class = "form-control calcultesttext", @style = "width:38% !important;", @Value = ViewBag.chek })<br />
+                                    <label style="width:22%;"> Pending Amount </label>: @Html.TextBox("pendamt", null, new { @class = "form-control calcultesttext", @style = "width:38% !important;", @Value = ViewBag.pending })<br />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12" style="margin-top:1%;">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label style="color:brown;">Invoice Details :</label>
+                                </div>
+
+                                <div class="col-sm-6" style="">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Invoice No </label>: @Html.TextBox("inv", null, new { @class = "form-control groupOfTexbox calcultesttext", @Value = ViewBag.invv })<br />
+                                    <label class="labelmod"> Unloading charges </label>: @Html.TextBoxFor(x => x.unloading, new { @class = "form-control groupOfTexbox calcultesttext"})<br />
+                                    <label class="labelmod"> Kata </label>: @Html.TextBoxFor(x => x.kata, new { @class = "form-control groupOfTexbox calcultesttext"})<br />
+                                    <label class="labelmod"> Mapai </label>: @Html.TextBoxFor(x => x.mapai, new { @class = "form-control groupOfTexbox calcultesttext" })<br />
+                                    <label class="labelmod"> Cash Discount </label>: @Html.TextBoxFor(x => x.cd, new { @class = "form-control groupOfTexbox calcultesttext" })<br />
+                                    <label class="labelmod"> Dalali </label>: @Html.TextBoxFor(x => x.CD_dalali, new { @class = "form-control groupOfTexbox calcultesttext" })<br />
+                                    <label class="labelmod"> Bank Charges </label>:  @Html.TextBoxFor(x => x.bankcharges, new { @class = "form-control groupOfTexbox calcultesttext" })<br />
+                                    <label class="labelmod"> Transport Charges </label>:  @Html.TextBoxFor(x => x.bhada, new { @class = "form-control groupOfTexbox calcultesttext"})<br />
+                                    <label class="labelmod"> Loading Charges </label>:   @Html.TextBoxFor(x => x.loadingcharges, new { @class = "form-control groupOfTexbox calcultesttext"})<br />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label style="width:22%;"> Farmer Mobile </label>: @Html.TextBoxFor(x => x.farmermobileno, new { @class = "form-control calcultesttext mobileno", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Driver Name </label>: @Html.TextBoxFor(x => x.drivername, new { @class = "form-control calcultesttext", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Driver Mobile </label>: @Html.TextBoxFor(x => x.drivermobileno, new { @class = "form-control calcultesttext mobileno", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Dealer Name </label>: @Html.DropDownListFor(x => x.Dealer_fkid, (IEnumerable<SelectListItem>)@ViewBag.dealer, "Select Dealer", new { @style = "width: 184% !important;height: 34px;margin-bottom:3px;" })<br />
+                                    <label style="width:22%;"> Payment Days </label>: @Html.TextBoxFor(x => x.paymentdays, new { @class = "form-control calcultesttext mobileno",  @style = "width:38% !important;", @type = "number" })
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6"></div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label style="width:22%;"> Total Deduction </label> :  @Html.TextBoxFor(x => x.totaldeduction, new { @class = "form-control groupOfTexbox", @readonly = "readonly", @style = "width:38% !important;" })
+                                </div>
+
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Net Payable </label>: @Html.TextBoxFor(x => x.netpayable_amt, new { @class = "form-control groupOfTexbox calcultesttext", @readonly = "readonly" })<br />
+                                    <label class="labelmod"> Advance </label>: @Html.TextBoxFor(x => x.advance, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter advance amt" })
+                                </div>
+                                <div class="col-sm-6">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                </div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    @Html.TextAreaFor(x => x.advance_remark, new { @class = "form-control", @style = "margin-top:-10%;max-width: 63% !important;width:90% !important;",@readonly="readonly" })
+                                </div>
+
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <label class="labelmod"> Balance Amount </label>: @Html.TextBoxFor(x => x.netpayable_amt, new { @class = "form-control groupOfTexbox", @readonly = "readonly" })<br />
+                                </div>
+                                <div class="col-sm-6">
+                                  
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type="text"]').prop('readonly', true);
+        $("#farname").val('@ViewBag.farmernm');
+    })
+    function getpopup()
+    {
+        var id = $("#pkid").val();
+        window.location.href = "/PooldataMachine/GetPDF_Purchase?invoiceid=" + id;
+    }
+</script>

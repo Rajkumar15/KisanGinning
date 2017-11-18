@@ -1,0 +1,138 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_PurchaseEntry_Master_Paymentss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+    }
+
+    .labelmod {
+        width: 28%;
+    }
+
+    .checkboxsd {
+        margin: -1% 0% 1% 4% !important;
+    }
+
+    .check {
+        width: 30%;
+        height: 22px !important;
+        margin-top: -64% !important;
+        margin-left: 37% !important;
+    }
+</style>
+<section class="content">
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                       Sales Payment Summary
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>Invoice No</th>
+                                        <th>Party Name</th>
+                                        <th>Invoice Date</th>         
+                                        <th>Total Amount</th>
+                                        <th>Balance Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    var sendarray = [];
+    $(document).ready(function () {
+        $("#pop").hide();
+        $('#returndate').datepicker();
+        $('.groupOfTexbox').keypress(function (event) {
+            return isNumber(event, this)
+        });
+    })
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/KisanSales/CompletedPaymentListSales",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                {
+                    "data": "invoiceno", "name": "invoiceno", "orderable": false, "render": function (data, type, full, meta, name) {
+                        return '<a href="/KisanSales/GetHoleDetailsR?id=' + full.pkid + '">' + data + '</a>';
+                    }
+                },
+                 { "data": "partyname", "name": "partyname", "autoWidth": true },
+                       {
+                           "data": "invoicedt", "render": function (data, type, full, meta) {
+                               return '' + formatJsonDate(data) + '';
+                           }    
+                       },                        
+                           { "data": "totalamt", "name": "totalamt", "autoWidth": true },
+                         { "data": "balanceamt", "name": "balanceamt", "autoWidth": true },
+                       
+                         {
+                             "data": "pkid", "name": "amountpaid", "orderable": false, "render": function (data, type, full, meta, name) {
+                                 return '<a href="/KisanSales/GetHoleDetails?id=' + full.pkid + '">SUMMARY</a> | <a href="/KisanSales/GetsalesPDF?id=' + data + '" title="Get Sales Invoice">Invoice PDF</a>';
+                             }
+                         }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+
+    function formatJsonDate(jsonDate) {
+        if (jsonDate == null) {
+            return "";
+        }
+        else {
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+    };
+
+</script>

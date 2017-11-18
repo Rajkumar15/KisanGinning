@@ -1,0 +1,307 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_PurchaseEntry_Master_Paymentss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+    }
+
+    .labelmod {
+        width: 20%;
+    }
+
+    .calcultesttext {
+        margin-bottom: 4px;
+    }
+
+    .dropdo {
+        height: 35px;
+        width: 227% !important;
+        line-height: 14px;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .checkboxsd {
+        margin: -1% 0% 1% 4% !important;
+    }
+        .glophy {
+        font-size: 17px;
+        margin-left: 10px;
+        color: darkgreen;
+        cursor: pointer;
+    }
+    .divpay {
+        color: brown;
+        font-size: 17px;
+        text-align: center;
+    }
+
+    .all {
+        color: red;
+        font-weight: bold;
+        margin-left: 33%;
+        font-size: 16px;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Reconsiliation Payment</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+
+                <div class="body">
+                    <div class="row clearfix">
+
+                        @using (Html.BeginForm("reconsiliationForm", "PooldataMachine", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data"}))
+                        {
+
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            @Html.HiddenFor(x => x.pkid)
+                            @Html.HiddenFor(x => x.Purchase_fkid, new { @Value = ViewBag.purchasid })
+                            @Html.HiddenFor(x => x.invoice_fkid, new { @Value = ViewBag.invoiseid })
+                            <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <label class="labelmod"> Invoice No </label> : @Html.TextBox("Invoiceno", null, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:50% !important;", @Value = "0000" + ViewBag.purchasid })<br />                                   
+                                </div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Name of farmer </label> : @Html.TextBox("Farmer", null, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:38% !important;", @Value = ViewBag.farmername })<br />                                 
+                                </div>
+                            </div>
+                            <div class="col-sm-12" id="al"><span class="all">You already paid complete amount....</span></div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-8">
+                                    <label class="labelmod"> Gross Amount </label> : @Html.TextBoxFor(x => x.Currentopeningbalance, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:38% !important;", @Value = ViewBag.pendinamt })<br />
+                                    <label class="labelmod"> Payment Method </label> : @Html.DropDownListFor(x => x.PaymentMethod, (IEnumerable<SelectListItem>)@ViewBag.paytype, "Select Payment", new { @style = "width: 229% !important;height: 35px;margin-bottom:2%;", @required = "required" })<br />
+                                    <div id="rtgs">
+                                        <label class="labelmod"> Account Holder </label> : @Html.DropDownListFor(x => x.RtgsDetail_fkid, (IEnumerable<SelectListItem>)@ViewBag.holdername, "Select Holder", new { @style = "width: 257% !important;height: 35px;margin-bottom:2%;" })<i class="glyphicon glyphicon-new-window glophy" style="margin-left:22%;" onclick="GetRtgs()" title="Add RTGS Detail"></i> <br />
+                                        <label class="labelmod"> Cash Paying </label> : @Html.TextBoxFor(x => x.RTGSAmtPaying, new { @class = "form-control calcultesttext groupOfTexbox", @placeholder = "Enter RTGS Amount", @style = "width:38% !important;" })<br />
+                                    </div>
+                                    <div id="cheq">
+                                        <label class="labelmod"> Party Name </label> : @Html.DropDownListFor(x => x.cheqDetail_fkid, (IEnumerable<SelectListItem>)@ViewBag.cheholdername, "Select Holder", new { @style = "width: 257% !important;height: 35px;margin-bottom:2%;" })<i class="glyphicon glyphicon-new-window glophy" style="margin-left:22%;" onclick="GetCheque()" title="Add Cheque partyName"></i> <br />
+                                        <label class="labelmod"> Cheque Number </label> : @Html.TextBoxFor(x => x.chequ_No, new { @class = "form-control calcultesttext", @placeholder = "Enter Cheque No", @style = "width:38% !important;" })<br />
+                                        <label class="labelmod"> Cheque Amount </label> : @Html.TextBoxFor(x => x.ChequeAmtpaying, new { @class = "form-control calcultesttext groupOfTexbox", @placeholder = "Enter Cheque Amount", @style = "width:38% !important;" })<br />
+                                    </div>
+                                    <div id="cash">
+                                        <label class="labelmod"> Cash Amount </label> : @Html.TextBoxFor(x => x.CashAmt, new { @class = "form-control calcultesttext groupOfTexbox", @placeholder = "Enter Cash Amount", @style = "width:38% !important;" })<br />
+                                        <label class="labelmod"> Cash Paid to </label> : @Html.TextBoxFor(x => x.CashPaidTO, new { @class = "form-control calcultesttext", @placeholder = "Enter Paid Person Name", @style = "width:38% !important;" })<br />
+                                    </div>
+                                    <input type="submit" value="Save" style="margin-left:21% !important;" class="btn-primary" />
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="pop">
+    <div class="col-sm-12">
+        <div id="r">
+            <label class="labelmod"> Bank Name </label>: @Html.TextBox("Bank_name", null, new { @class = "form-control vs", placeholder = "Enter Bank Name", @style = "width:90% !important;margin-bottom:1%;" })
+            <label class="labelmod"> Branch Name </label>: @Html.TextBox("Branchname", null, new { @class = "form-control vs", placeholder = "Enter Branch Name", @style = "width:90% !important;margin-bottom:1%;" })
+            <label class="labelmod"> Holder Name </label>: @Html.TextBox("AccountHolder", null, new { @class = "form-control vs", placeholder = "Enter Account Holder Name", @style = "width:90% !important;margin-bottom:1%;" })
+            <label class="labelmod"> Account Number </label>: @Html.TextBox("Accountno", null, new { @class = "form-control vs", placeholder = "Enter Account Number", @style = "width:90% !important;margin-bottom:1%;" })
+            <label class="labelmod"> IFSC Code </label>: @Html.TextBox("Ifsccode", null, new { @class = "form-control vs", placeholder = "Enter IFSC code", @style = "width:90% !important;margin-bottom:1%;", @maxlength = "11", @minlength = "11" })
+        </div>
+        <div id="c">
+            <label class="labelmod"> Cheque Party Name </label>: @Html.TextBox("Cheq_Partyname", null, new { @class = "form-control vs", placeholder = "Enter Cheque Party Name", @style = "width:90% !important;margin-bottom:1%;" })
+        </div>
+        <input type="button" onclick="savertgs()" value="Save" class="btn-primary" style="margin-left:30%;" />
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#al").hide();
+        $("#pop").hide();
+        $("#pkid").val('@ViewBag.pkid');
+        $("#payableamt,#pendingAmt").val($("#Currentopeningbalance").val());
+        $("#rtgs,#cash,#cheq").hide();
+        var ptype = $("#PaymentMethod").val();
+        if (ptype == 1) {
+            $("#RtgsDetail_fkid,#RTGSAmtPaying").prop("required", true);
+            $("#rtgs").show();
+        } else {
+            $("#RtgsDetail_fkid,#RTGSAmtPaying").prop("required", false);
+            $("#rtgs").hide();
+        }
+        if (ptype == 3) {
+            $("#CashPaidTO,#CashAmt").prop("required", true);
+            $("#cash").show();
+        } else {
+            $("#CashPaidTO,#CashAmt").prop("required", false);
+            $("#cash").hide();
+        }
+        if (ptype == 2) {
+            $("#cheqDetail_fkid,#chequ_No,#ChequeAmtpaying").prop("required", true);
+            $("#cheq").show();
+        } else {
+            $("#cheqDetail_fkid,#chequ_No,#ChequeAmtpaying").prop("required", false);
+            $("#cheq").hide();
+        }
+        $("#PaymentMethod").change(function () {
+            var ptype = $("#PaymentMethod").val();
+            if (ptype == 1) {
+                $("#RtgsDetail_fkid,#RTGSAmtPaying").prop("required", true);
+                $("#rtgs").show();
+            } else {
+                $("#RtgsDetail_fkid,#RTGSAmtPaying").prop("required", false);
+                $("#rtgs").hide();
+            }
+            if (ptype == 3) {
+                $("#CashPaidTO,#CashAmt").prop("required", true);
+                $("#cash").show();
+            } else {
+                $("#CashPaidTO,#CashAmt").prop("required", false);
+                $("#cash").hide();
+            }
+            if (ptype == 2) {
+                $("#cheqDetail_fkid,#chequ_No,#ChequeAmtpaying").prop("required", true);
+                $("#cheq").show();
+            } else {
+                $("#cheqDetail_fkid,#chequ_No,#ChequeAmtpaying").prop("required", false);
+                $("#cheq").hide();
+            }
+        })
+        $('.groupOfTexbox').keypress(function (event) {
+            return isNumber(event, this)
+        });
+        $('.groupOfTexbox').keyup(function (event) {
+            debugger;
+            var balanceamt = 0;
+            var pendi = 0;
+            if ($("#pkid").val() == 0) {
+                pendi = parseFloat($("#Currentopeningbalance").val());
+            }
+            else {
+                pendi = '@ViewBag.pendinamt';
+            }
+
+            if ($("#RTGSAmtPaying").val() != "")
+            {
+                if ($("#RTGSAmtPaying").val() > pendi) {
+                    jAlert("Enter amount grater than gross amount...", "System Alert")
+                    $("#RTGSAmtPaying").val('');
+                    $("#pendingAmt,#payableamt").val(pendi);
+                } else {
+                    balanceamt = parseFloat(pendi) - parseFloat($("#RTGSAmtPaying").val());
+                    $("#pendingAmt,#payableamt").val(balanceamt);
+                }
+            }
+            if ($("#ChequeAmtpaying").val() != "") {
+                if ($("#ChequeAmtpaying").val() > pendi) {
+                    jAlert("Enter amount grater than gross amount...", "System Alert")
+                    $("#ChequeAmtpaying").val('');
+                    $("#pendingAmt,#payableamt").val(pendi);
+                } else {
+                    balanceamt = parseFloat(pendi) - parseFloat($("#ChequeAmtpaying").val());
+                    $("#pendingAmt,#payableamt").val(balanceamt);
+                }
+            }
+            if ($("#CashAmt").val() != "") {
+                if ($("#CashAmt").val() > pendi) {
+                    jAlert("Enter amount grater than gross amount...", "System Alert")
+                    $("#CashAmt").val('');
+                    $("#pendingAmt,#payableamt").val(pendi);
+                } else {
+                    balanceamt = parseFloat(pendi) - parseFloat($("#CashAmt").val());
+                    $("#pendingAmt,#payableamt").val(balanceamt);
+                }
+            }
+        });
+        if ($("#Currentopeningbalance").val() == "0.00")
+        {
+            $("#al").show();
+        }
+        if ('@ViewBag.er' == 'true') {
+            jAlert("Enter Gross Amount", "System Alert");
+        }
+    })
+    function GetRtgs() {
+        $("#c").hide();
+        $("#r").show();
+        $('.vs').each(function () {
+            $(this).val('');
+        });
+        $("#pop").dialog({
+            height: 320,
+            width: 500,
+            modal: true,
+            title: "RTGS Details"
+        })
+    }
+    function GetCheque() {
+        $("#r").hide();
+        $("#c").show();
+        $('.vs').each(function () {
+            $(this).val('');
+        });
+        $("#pop").dialog({
+            height: 250,
+            width: 500,
+            modal: true,
+            title: "Cheque Details"
+        })
+    }
+    function savertgs() {
+        debugger;
+     
+        var lines = new Array();
+        lines.push($("#Bank_name").val());
+        lines.push($("#Branchname").val());;
+        lines.push($("#Accountno").val());
+        lines.push($("#AccountHolder").val());
+        lines.push($("#Ifsccode").val());
+        lines.push($("#Purchase_fkid").val());
+        lines.push($("#Cheq_Partyname").val());
+        $.ajax(
+    {
+        url: '/PooldataMachine/SaveRTGSPay/',
+        type: 'POST',
+        data: { 'poopupdatasave': lines },
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            if (data != "") {
+                jAlert("Data Save Successfully", "SystemAlert")
+                if ($("#Cheq_Partyname").val() == "") {
+                    $("#RtgsDetail_fkid").append(data);
+                }
+                else {
+                    $("#cheqDetail_fkid").append(data);
+                }
+                $("#pop").dialog("close");
+            } else {
+                jAlert("Data Save Failed enter required field", "SystemAlert")
+            }
+        }
+    });
+      
+    }
+
+</script>

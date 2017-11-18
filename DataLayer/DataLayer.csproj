@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A952792E-F822-40C0-A5A5-586524F4BEB4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataLayer</RootNamespace>
+    <AssemblyName>DataLayer</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IRepository.cs" />
+    <Compile Include="KisanModel\KisanWeighning.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KisanWeighning.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\KisanWeighning.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\KisanWeighning.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KisanWeighning.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_BankDetailsPerPurchase.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_BrokerMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_CashCreditMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_CashReceipt.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_categoryMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_DealerMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_ExpensesMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_ExpensesPurposeMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_FarmerMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_farmer_dealer_Mapping.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_MasterMenuName.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_MenuMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_PaymentType.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_pool_MachineData_Purchase.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_productMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_ProductTaxEntry.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_PurchaseEntry_Master.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_PurchaseEntry_Master_Payment.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_PurchaseOutStanding.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_PurchseStockMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_RemoteConnection.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_SalesEntry_Master.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_SalesEntry_Master_Payment.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_SalesOutStanding.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_salesPartyRegistartion.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_SalesSockMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_TaxMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_TransportMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_truckMaster.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_truck_Transport_Mapping.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KisanModel\tbl_UserDetails.cs">
+      <DependentUpon>KisanWeighning.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="KisanModel\KisanWeighning.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>KisanWeighning.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="KisanModel\KisanWeighning.edmx.diagram">
+      <DependentUpon>KisanWeighning.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="KisanModel\KisanWeighning.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>KisanWeighning.edmx</DependentUpon>
+      <LastGenOutput>KisanWeighning.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="KisanModel\KisanWeighning.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>KisanWeighning.edmx</DependentUpon>
+      <LastGenOutput>KisanWeighning.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

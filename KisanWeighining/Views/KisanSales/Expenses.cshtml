@@ -1,0 +1,371 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_ExpensesMasterss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+        margin-bottom: 5px;
+    }
+
+    .labelmod {
+        width: 20%;
+    }
+
+    .calcultesttext {
+        margin-bottom: 4px;
+    }
+
+    .glophy {
+        font-size: 17px;
+        margin-left: 10px;
+        color: darkgreen;
+        cursor: pointer;
+    }
+
+    .dropdo {
+        height: 35px;
+        width: 68% !important;
+        line-height: 14px;
+        margin-bottom: 5px;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .checkboxsd {
+        margin: -1% 0% 1% 4% !important;
+    }
+
+    .divpay {
+        color: brown;
+        font-size: 17px;
+        text-align: center;
+    }
+
+    .all {
+        color: red;
+        font-weight: bold;
+        margin-left: 33%;
+        font-size: 16px;
+    }
+
+    .bootstrap-select {
+        border-bottom: none !important;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Expenses</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+
+                <div class="body">
+                    <div class="row clearfix">
+
+                        @using (Html.BeginForm("Expenses", "KisanSales", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                        {
+
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            @Html.HiddenFor(x => x.pkid)
+                            <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <label class="labelmod"> Person Name<span style="color: red">*</span> </label> : @Html.TextBoxFor(x => x.personname, new { @class = "form-control", placeholder = "Enter Person Name", @required = "required" })<br />
+                                    <label class="labelmod"> Purpose/Head<span style="color: red">*</span> </label> : @Html.DropDownListFor(m => m.purposeid, (IEnumerable<SelectListItem>)@ViewBag.pr, "Select Purpose", new { @class = "dropdo", @required = "required" }) <i class="glyphicon glyphicon-new-window glophy" style="margin-left:-22%;" onclick="AddPurpose()" title="Add Purpose"></i><br />
+                                    <label class="labelmod"> Date </label> : @Html.TextBoxFor(x => x.date, new { @class = "form-control", placeholder = "Select Date", @required = "required" })<br />
+
+                                    <input type="submit" value="Save" style="margin-left:21% !important;" class="btn-primary" />
+                                </div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Payment Type </label> : @Html.DropDownListFor(m => m.Payment_type, (IEnumerable<SelectListItem>)@ViewBag.pay, "Select Payment", new { @class = "dropdo", @required = "required" })<br />
+                                    <label class="labelmod" style="width:20.5% !important;"> Holder Name </label>: @Html.DropDownListFor(m => m.Pay_Infofkid, (IEnumerable<SelectListItem>)@ViewBag.holder, "Select Holder", new { @class = "dropdo" })<br />
+                                    <div id="rtgs"><button type="button" style="margin-left: 21%;color: white;background-color: brown;margin-bottom:5px;" onclick="GetRtgs()" title="Add Detail">Add RTGS Detail</button> </div>
+                                    <div id="cheq"><button type="button" style="margin-left: 21%;color: white;background-color: brown;margin-bottom:5px;" onclick="GetCheque()" title="Add Cheque partyName">Add Cheque Detail</button></div>
+
+                                    <label class="labelmod"> Amount </label> : @Html.TextBoxFor(x => x.amt, new { @class = "form-control groupOfTexbox", placeholder = "Enter Amount", @required = "required" })<br />
+                                    <label class="labelmod"> Remark </label> : @Html.TextAreaFor(x => x.remark, new { @class = "form-control", placeholder = "Enter remark", @required = "required" })<br />
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+
+                            </div>
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Expenses List
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <table id="uxCustomerList" class="table table-striped table-bordered" width="100%" style="margin-left: 4px; width: 99%;">
+                                <thead style="text-align: center;">
+                                    <tr>
+                                        <th>Sr.No</th>
+                                        <th>Person Name</th>
+                                        <th>Date</th>
+                                        <th>Purpose</th>
+                                        <th>Payment Type</th>
+                                        <th>Holder Name</th>
+                                        <th>Amount</th>
+                                        <th>Remark</th>
+                                      
+                                    </tr>
+                                </thead>
+                                <tbody id="uxcustomerinfolist"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="pop">
+    <div class="col-sm-12">
+        <div id="r">
+            <label class="labelmod"> Bank Name </label>: @Html.TextBox("Bank_name", null, new { @class = "form-control vs", placeholder = "Enter Bank Name", @style = "width:90% !important;margin-bottom:1%;" })
+            <label class="labelmod"> Branch Name </label>: @Html.TextBox("Branchname", null, new { @class = "form-control vs", placeholder = "Enter Branch Name", @style = "width:90% !important;margin-bottom:1%;" })
+            <label class="labelmod"> Holder Name </label>: @Html.TextBox("AccountHolder", null, new { @class = "form-control vs", placeholder = "Enter Account Holder Name", @style = "width:90% !important;margin-bottom:1%;" })
+            <label class="labelmod"> Account Number </label>: @Html.TextBox("Accountno", null, new { @class = "form-control vs", placeholder = "Enter Account Number", @style = "width:90% !important;margin-bottom:1%;" })
+            <label class="labelmod"> IFSC Code </label>: @Html.TextBox("Ifsccode", null, new { @class = "form-control vs", placeholder = "Enter IFSC code", @style = "width:90% !important;margin-bottom:1%;", @maxlength = "11", @minlength = "11" })
+        </div>
+        <div id="c">
+            <label class="labelmod"> Cheque Party Name </label>: @Html.TextBox("Cheq_Partyname", null, new { @class = "form-control vs", placeholder = "Enter Cheque Party Name", @style = "width:90% !important;margin-bottom:1%;" })
+        </div>
+        <input type="button" onclick="savertgs()" value="Save" class="btn-primary" style="margin-left:30%;" />
+    </div>
+</div>
+
+<div id="dod">
+    <div class="col-sm-12">
+
+        <div id="cd">
+            <label style="width:32%;" class="labelmod"> Enter Purpose Name </label>: @Html.TextBox("Pur", null, new { @class = "form-control vs", placeholder = "Enter Purpose Name", @style = "width:90% !important;margin-bottom:1%;" })
+        </div>
+        <input type="button" onclick="savePurpose()" value="Save" class="btn-primary" style="margin-left:34%;" />
+    </div>
+</div>
+<script type="text/javascript">
+    var asasas = 0;
+    $(document).ready(function () {
+        $("#date").datepicker();
+        $("#pop").hide();
+        $("#dod").hide();
+        $("#rtgs,#cheq").hide();
+        var ptype = $("#Payment_type").val();
+        if (ptype == 1) {
+            $("#rtgs").show();
+        } else {
+            $("#rtgs").hide();
+        }
+        if (ptype == 2) {
+            $("#cheq").show();
+        } else {
+            $("#cheq").hide();
+        }
+        $("#Payment_type").change(function () {
+            var ptype = $("#Payment_type").val();
+            if (ptype == 1) {
+                $("#rtgs").show();
+
+            } else {
+                $("#rtgs").hide();
+            }
+            if (ptype == 2) {
+                $("#cheq").show();
+
+            } else {
+                $("#cheq").hide();
+            }
+        })
+        $('.groupOfTexbox').keypress(function (event) {
+            return isNumber(event, this)
+        });
+        $("#date,#purposeid").change(function () {
+            debugger;
+            var dt = $("#date").val();
+            var purpose = $("#purposeid").val();
+            if (purpose == "" || dt == "") {
+                jAlert("Select Purpose of expense and date both...", "SystemAlert")
+            }
+            else {
+                var url = '/KisanSales/GetExpensesList?dt=' + dt + '&pr=' + purpose;
+                $.getJSON(url, function (val) {
+                    debugger;
+                    if (val.length > 0) {
+                        // dataviewtable.destroy();
+
+                        var str = '';
+                        var srno = 1;
+                        $("#uxcustomerinfolist").html('');
+                        for (var i = 0; i < val.length; i++) {                          
+                            str = str + '<tr>' +
+                                '<td> ' + (srno++) + '</td>' +
+                                '<td> ' + val[i].personname + '</td>' +
+                                '<td>' + val[i].purposename + '</td>' + '<td>' + formatJsonDate(val[i].dta) +
+                                '</td>' + '<td>' + val[i].pay + '</td>' +
+                                '<td>' + val[i].holder + '</td>' +
+                                '<td>' + val[i].amt + '</td>' +
+                                 '<td>' + val[i].remark + '</td>' +
+                               '</tr>';
+
+                        }
+                        $("#uxcustomerinfolist").append(str);
+                        dataviewtable = $("#uxpurchaselist").DataTable();
+                        $("#uxCustomerList").parent().addClass("table-responsive");
+                    }
+                    else {
+                        $("#uxcustomerinfolist").html('');
+                    }
+
+                })
+            
+            }
+        })
+    })
+
+    function AddPurpose() {
+        $('.vs').each(function () {
+            $(this).val('');
+        });
+        $("#dod").dialog({
+            height: 170,
+            width: 500,
+            modal: true,
+            title: "Pupose Details"
+        })
+    }
+    function GetRtgs() {
+        $("#c").hide();
+        $("#r").show();
+        $('.vs').each(function () {
+            $(this).val('');
+        });
+        $("#pop").dialog({
+            height: 320,
+            width: 500,
+            modal: true,
+            title: "RTGS Details"
+        })
+    }
+    function GetCheque() {
+        $("#r").hide();
+        $("#c").show();
+        $('.vs').each(function () {
+            $(this).val('');
+        });
+        $("#pop").dialog({
+            height: 250,
+            width: 500,
+            modal: true,
+            title: "Cheque Details"
+        })
+    }
+    function savertgs() {
+        debugger;
+     
+            var lines = new Array();
+            lines.push($("#Bank_name").val());
+            lines.push($("#Branchname").val());;
+            lines.push($("#Accountno").val());
+            lines.push($("#AccountHolder").val());
+            lines.push($("#Ifsccode").val());
+            lines.push("0");
+            lines.push($("#Cheq_Partyname").val());
+
+            $.ajax(
+        {
+            url: '/PooldataMachine/SaveRTGSPayExpenses/',
+            type: 'POST',
+            data: { 'poopupdatasave': lines },
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if (data != "") {
+                    jAlert("Data Save Successfully", "SystemAlert")
+                    if ($("#Cheq_Partyname").val() == "") {
+                        $("#Pay_Infofkid").append(data);
+                    }
+                    else {
+                        $("#Pay_Infofkid").append(data);
+                    }
+                    $("#pop").dialog("close");
+                } else {
+                    jAlert("Data Save Failed enter required field", "SystemAlert")
+                }
+            }
+        });
+        
+    }
+    function formatJsonDate(jsonDate) {
+        if (jsonDate == null) {
+            return "";
+        }
+        else {
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+    };
+    function savePurpose() {
+        debugger;
+        if ($("#Pur").val() != "") {
+            var lines = new Array();
+            lines.push($("#Pur").val());
+
+            $.ajax(
+    {
+        url: '/KisanSales/SavePurpose/',
+        type: 'POST',
+        data: { 'poopupdatasave': lines },
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            if (data != "") {
+                $("#purposeid").append(data);
+                jAlert("Data Save Successfully", "SystemAlert")
+                $("#dod").dialog("close");
+            } else {
+                jAlert("Data Save Failed enter required field", "SystemAlert")
+            }
+        }
+    });
+        }
+        else {
+            jAlert("Enter Purpose Name", "SystemAlert")
+        }
+    }
+</script>

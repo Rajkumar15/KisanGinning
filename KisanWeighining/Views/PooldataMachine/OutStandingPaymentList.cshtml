@@ -1,0 +1,78 @@
+﻿@model IEnumerable<KisanWeighining.Models.KisanModel.OutStandingPaymentList>
+@{
+    Layout = null;
+}
+
+<div class="col-sm-12">
+    @*<img src="~/assets/img/stats.png" onclick="exportec()" title="Export in Excel" style="width: 36px;float: right;cursor: pointer;" />*@
+
+</div>
+
+<table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>Farmer Name</th>
+            <th>Dealer Name</th>
+            <th>Invoice No</th>
+            <th>Total Amount</th>
+            <th>Total Debit</th>
+            <th>Date</th>    
+            <th>Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int srno = 1;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@srno</td>
+                    <td>@item.farmername</td>
+                    <td>@item.dealername</td>
+                    <td>@item.invoiceno</td>
+                    <td>@item.totalamount</td>
+                    <td>@item.creditedamount</td>
+                    <td>@item.paymentdate</td>              
+                    <td>@item.BalalnceAmount</td>
+                </tr>
+                srno++;
+            }
+        }
+    </tbody>
+</table>
+<div class="col-sm-12">
+    <div class="col-sm-6"></div>
+    <div class="col-sm-6" style="margin-top:1%;text-align:right;">
+        <label class="labelmod" style="width:35% !important;"> Total Balance Amount </label> : @Html.TextBox("total", null, new { @class = "form-control calcultesttext", @style = "width:24% !important;", @readonly = "readonly", @Value = ViewBag.summ })<br />
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".js-basic-example").DataTable();
+    })
+    function exportec() {
+        var frid = $("#farid").val();
+        var drid = $("#drid").val();
+        var frdt = $("#frdt").val();
+        var todt = $("#todt").val();
+        if (frdt != "" && todt == "") {
+            jAlert("Select To date also", "System alert");
+        }
+        else if (frdt == "" && todt != "") {
+            jAlert("Select from date also", "System alert");
+        }
+        else {
+            var url = '/PooldataMachine/getexcel?frid=' + frid + '&drid=' + drid + '&frdt=' + frdt + '&todt=' + todt;
+            $.post(url, "", function (data) {
+
+            });
+        }
+    }
+</script>

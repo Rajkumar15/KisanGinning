@@ -1,0 +1,139 @@
+﻿<style type="text/css">
+    .same {
+        font-weight: normal;
+        font-size: 26px;
+        margin-top: -4px;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>DASHBOARD</h2>
+        </div>
+        <div class="row clearfix">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-pink hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">money</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">Balance Credit Amount</div>
+                        <div class="same cr"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-cyan hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">money</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">Balance Debit Amount</div>
+                        <div class="same dt"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-light-green hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">trending_up</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">Todays Expenses</div>
+                        <div class="same ex"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-orange hover-expand-effect redirectToListOnClick">
+                    <div class="icon">
+                        <i class="material-icons">business</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">Current Cotton</div>
+                        <div class="same co"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="col-sm-6" style="background-color:#fff;border-right:5px solid #E9E9E9;">
+                <div style="margin:2% 2% 2% 2%;"><canvas id="bar-chart-grouped" width="800" height="600"></canvas></div>
+            </div>
+            <div class="col-sm-6" style="background-color:#fff;border-left:5px solid #E9E9E9;">
+                <div style="margin:2% 2% 2% 2%;"><canvas id="doughnut-chart" width="800" height="600"></canvas></div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Content/Theam/plugins/jquery/jquery.js"></script>
+<script src="~/Content/Theam/plugins/jquery-datatable/jquery.dataTables.js"></script>
+<link href="~/Content/Theam/plugins/jsalert/jquery.alerts.css" rel="stylesheet" />
+<script src="~/Content/Theam/plugins/jsalert/jquery.alerts.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.post("/Home/Homedata", function (data) {
+            debugger;
+            $(".cr").html(addCommas(data.credit));
+            $(".dt").html(addCommas(data.debit));
+            $(".ex").html(addCommas(data.totalexpenses));
+            $(".co").html(addCommas(data.cotton));
+        })
+        new Chart(document.getElementById("bar-chart-grouped"), {
+            type: 'bar',
+            data: {
+                labels: ["Year", "Month", "Week", "Daily"],
+                datasets: [
+                  {
+                      label: "Purchase",
+                      backgroundColor: "#3e95cd",
+                      data: [133, 221, 783, 2478]
+                  }, {
+                      label: "Sale",
+                      backgroundColor: "#8e5ea2",
+                      data: [408, 547, 675, 734]
+                  }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Purchase & Sales'
+                }
+            }
+        });
+        new Chart(document.getElementById("doughnut-chart"), {
+            type: 'doughnut',
+            data: {
+                labels: ["Purchase", "Sales", "Expenses"],
+                datasets: [
+                  {
+                      label: "Amount Details",
+                      backgroundColor: ["#3cba9f", "#e8c3b9", "#c45850"],
+                      data: [734, 784, 433]
+                  }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Amount Flow'
+                }
+            }
+        });
+    })
+    function addCommas(nStr) {
+        nStr += '';
+        x = nStr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+    }
+</script>

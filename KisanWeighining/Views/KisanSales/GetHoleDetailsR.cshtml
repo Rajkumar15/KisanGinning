@@ -1,0 +1,316 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_SalesEntry_Masterss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+    }
+
+    .labelmod {
+        width: 28%;
+    }
+
+    .calcultesttext {
+        margin-bottom: 4px;
+    }
+
+    .glophy {
+        font-size: 17px;
+        margin-left: 10px;
+        color: darkgreen;
+        cursor: pointer;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .col-sm-12, .col-sm-4 {
+        margin-bottom: 0 !important;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Sales Details</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="body">
+                    <div class="row clearfix">
+
+                        @using (Html.BeginForm("SalesDetails", "KisanSales", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                        {
+
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            @Html.HiddenFor(x => x.pkid)
+                            @Html.HiddenFor(x => x.Purchase_fkid)
+                            @Html.HiddenFor(x => x.ProductType_fkid)
+    <div class="col-sm-12">
+        <button type="button" onclick="getpopup()" style="background-color: brown;color: #FFF;margin-left: 42%;">Get Invoice</button>
+    </div>
+                            <div class="col-sm-12" style="border-bottom:1px solid rgba(204, 204, 204, 0.35);">
+                                <div class="col-sm-6">
+                                    <label class="labelmod"> Rate in Qtl </label>: @Html.TextBoxFor(x => x.rateperqtl, new { @class = "form-control groupOfTexbox", placeholder = "Enter Rate per Qtl", @style = "width:50% !important;margin-bottom:4px;", @readonly = "readonly" })<br />
+                                    <label class="labelmod"> Rate in Candy </label>: @Html.TextBoxFor(x => x.ratepercandy, new { @class = "form-control groupOfTexbox groupOfTexbox", placeholder = "Enter Rate per Candy", @style = "width:50% !important;margin-bottom:4px;" })<br />
+
+                                </div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label> Net Weight in quntal :</label> @Html.TextBoxFor(x => x.qtl, new { @class = "form-control groupOfTexbox", placeholder = "Enter NetWeight in Qtl", @readonly = "readonly", @style = "width:38% !important;margin-bottom:1%;" })<br />
+                                    <label> Net Weight in KG </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: @Html.TextBoxFor(x => x.kilogram, new { @class = "form-control", placeholder = "Enter NetWeight in KG", @readonly = "readonly", @style = "width:38% !important;" })<br />
+                                    <label style=" margin-top: 11px;"> Gross Amount </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  @Html.TextBoxFor(x => x.amount, new { @class = "form-control", placeholder = "Gross Amount", @readonly = "readonly", @style = "width:38% !important;margin-bottom:2%;" })
+                                </div>
+                                <div class="col-sm-4"></div>
+                            </div>
+                            <div class="col-sm-12" style="margin-top:1%;">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label style="color:brown;">Party Details :</label>
+                                </div>
+                                <div class="col-sm-6" style="">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Party Name </label>: @Html.DropDownListFor(x => x.partyid, (IEnumerable<SelectListItem>)@ViewBag.partyname, "Select Party Name", new { @class = "", @style = "width: 199% !important;height: 34px;margin-bottom:2px;" })<br />
+                                    <div class="bal">
+                                        <label class="labelmod"> P.R. No </label>: @Html.TextBoxFor(x => x.prno, new { @class = "form-control calcultesttext" })<br />
+                                        <label class="labelmod"> P.R. To </label>:  @Html.TextBoxFor(x => x.topr, new { @class = "form-control calcultesttext" })<br />
+                                        <label class="labelmod"> P. Mark </label>:  @Html.TextBoxFor(x => x.pmark, new { @class = "form-control calcultesttext" })<br />
+                                    </div>
+                                    <label class="labelmod"> Dispatched date </label>:  @Html.TextBoxFor(x => x.deliveryfromdate, new { @class = "form-control calcultesttext", placeholder = "Enter dispatched date" })<br />
+                                    <label class="labelmod"> Broker Name </label>: @Html.DropDownListFor(x => x.brokerid, (IEnumerable<SelectListItem>)@ViewBag.broker, "Select Broker Name", new { @class = "", @style = "width: 198% !important;height: 34px;margin-bottom:2px;" })<br />
+                                    <label class="labelmod"> Transport Name </label>: @Html.DropDownListFor(x => x.transport_fkid, (IEnumerable<SelectListItem>)@ViewBag.transport, "Select Transport Name", new { @class = "", @style = "width: 198% !important;height: 34px;margin-bottom:2px;" })<br />
+                                    <label class="labelmod"> Truck No </label>: @Html.TextBox("truckno", null, new { @class = "form-control calcultesttext", placeholder = "Enter Truck No" })<br />
+                                    <label class="labelmod"> Driver Name </label>: @Html.TextBoxFor(x => x.drivername, null, new { @class = "form-control calcultesttext", placeholder = "Enter Driver Name" })<br />
+                                </div>
+                                <div class="col-sm-6">
+
+                                    <label style="width:22%;"> Sauda Date </label>: @Html.TextBoxFor(x => x.saudadate, new { @class = "form-control calcultesttext groupOfTexbox", placeholder = "Enter Sauda date", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Payment Condition </label>: @Html.DropDownListFor(x => x.paycondition, (IEnumerable<SelectListItem>)@ViewBag.paycon, "Select Payment Condition", new { @class = "", @style = "width: 126% !important;height: 34px;margin-bottom:2px;" })<br />
+                                    <label style="width:22%;" id="FPbalesLb"> F.P Cotton Bales </label>: @Html.TextBoxFor(x => x.FPbales, new { @class = "form-control calcultesttext", placeholder = "Enter F.P. Cooton Bales", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Insurance number </label>: @Html.TextBoxFor(x => x.InsuranceNo, new { @class = "form-control calcultesttext", placeholder = "Enter Insurance Number", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Quality </label>: @Html.TextBoxFor(x => x.Quality, new { @class = "form-control calcultesttext", placeholder = "Enter Quality", @style = "width:38% !important;" })<br />
+                                    <div class="bal">
+                                        <label style="width:22%;"> Lot No </label>: @Html.TextBoxFor(x => x.lotno, new { @class = "form-control calcultesttext groupOfTexboxss", placeholder = "Enter lot no", @style = "width:38% !important;" })<br />
+                                        <label style="width:22%;"> No. of Bales </label>: @Html.TextBoxFor(x => x.noofbales, new { @class = "form-control calcultesttext groupOfTexboxss", placeholder = "Enter no bales", @style = "width:38% !important;" })<br />
+                                        <label style="width:22%;"> Weight of Bales </label>: @Html.TextBoxFor(x => x.grossweight, new { @class = "form-control groupOfTexboxss calcultesttext", placeholder = "Enter Gross Weight of bales", @style = "width:38% !important;" })<br />
+                                        <label style="width:22%;"> Tare weight Bales </label>: @Html.TextBoxFor(x => x.tareweight, new { @class = "form-control groupOfTexboxss calcultesttext", placeholder = "Enter Tare Weight of bales", @style = "width:38% !important;" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12" style="margin-top:1%;">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label style="color:brown;">Bill Details :</label>
+                                </div>
+
+                                <div class="col-sm-6" style="">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Other charges </label>: @Html.TextBoxFor(x => x.frightothercharges, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter other charges" })<br />
+                                    <label class="labelmod"> Advance </label>: @Html.TextBoxFor(x => x.advance, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter Advance Amount" })<br />
+                                    <label class="labelmod"> Packaging Charges </label>: @Html.TextBoxFor(x => x.packagingcgaeges, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter Packaging charges" })<br />
+                                    <label class="labelmod"> Total Amt </label>: @Html.TextBoxFor(x => x.totalamt, new { @class = "form-control calcultesttext", @readonly = "readonly" })<br />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label style="width:22%;"> SGST </label>:   @Html.TextBoxFor(x => x.SGST, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> CGST </label>: @Html.TextBoxFor(x => x.CGST, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> IGST </label>: @Html.TextBoxFor(x => x.IGST, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Amount In Word </label>: @Html.TextAreaFor(x => x.amtinword, new { @class = "form-control calcultesttext", @style = "width:38% !important;" })<br />
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-top:-2%;">
+                                    <label class="labelmod"> Balance Amount </label>: @Html.TextBoxFor(x => x.NetPayableAmount, new { @class = "form-control", placeholder = "Net Amt", @readonly = "readonly" })<br />
+
+                                </div>
+                                <div class="col-sm-6">
+
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix" style="display:none;">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Payment List
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>Holder Name</th>
+                                        <th>Date</th>
+                                        <th>Payment Method</th>
+                                        <th>Advance</th>
+                                        <th>Gross Amount</th>
+                                        <th>Payable Amount</th>
+                                        <th>Pending Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#pop").hide();
+        $("#dod").hide();
+        $("#Part").hide();
+        $('#deliveryfromdate').datepicker();
+        $('#saudadate').datepicker();
+        $("#qtl").val('@ViewBag.netweighQtl');
+        $("#kilogram").val('@ViewBag.netweighKG');
+        $("#ProductType_fkid").val('@ViewBag.pro');
+        $("#Purchase_fkid").val('@ViewBag.purchaseid');
+        $("#truckno").val('@ViewBag.trockno');
+        $("#partyid").val('@ViewBag.partyid')
+        var id = $("#ProductType_fkid").val();
+        if (id == 3) {
+            $(".bal").hide();
+        }
+        $('.groupOfTexbox').keypress(function (event) {
+            return isNumber(event, this)
+        });
+        $('.groupOfTexboxss').keypress(function (event) {
+            return isNumber(event, this)
+        });
+
+        $('.mobileno').keydown(function (event) {
+            return isIntNumber(event, this)
+        });
+
+        $('input[type="text"]').prop('readonly', true);
+    })
+    function getname(cname) {
+        var rtgs = cname.holdername;
+        var Cheq = cname.partyname;
+        var cash = cname.casgpaidto;
+        if (rtgs != "") {
+            return rtgs;
+        }
+        else if (cash != "") {
+            return cash;
+        }
+        else if (Cheq != "") {
+            return Cheq;
+        }
+        else { return ""; }
+    }
+    function payamount(cname) {
+        if (cname.rtgs != 0) {
+            return cname.rtgs;
+        }
+        else if (cname.cash != 0) {
+            return cname.cash;
+        }
+        else {
+            return cname.cheq;
+        }
+    }
+    function formatJsonDate(jsonDate) {
+        if (jsonDate == null) {
+            return "";
+        }
+        else {
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = month + "/" + day + "/" + year;
+            return date;
+        }
+    };
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/KisanSales/PaymentBillList?id=" + $("#pkid").val(),
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                 {
+                     "data": "holdername", "name": "partyname", "autoWidth": true, "render": function (data, type, full, meta, name) {
+                         return '' + getname(full) + '';
+                     }
+                 },
+                   {
+                       "data": "datet", "render": function (data, type, full, meta) {
+                           return '' + formatJsonDate(data) + '';
+                       }
+                   },
+                        { "data": "paytype", "name": "paytype", "autoWidth": true },
+                          { "data": "adv", "name": "adv", "autoWidth": true },
+                           { "data": "Netamt", "name": "Netamt", "autoWidth": true },
+                 {
+                     "data": "rtgs", "name": "cheq", "orderable": false, "render": function (data, type, full, meta, name) {
+                         return '' + payamount(full) + '';
+                     }
+                 },
+                 { "data": "pendingamt", "name": "pendingamt", "autoWidth": true },
+                {
+                    "data": "purchasid", "name": "invoiceid", "orderable": false, "render": function (data, type, full, meta, name) {
+                        if (full.pkid == "") { return ""; } else {
+                            return '<a href=/KisanSales/SalesDetails_Payment?id=' + full.purchasid + '&Bill_fkid=' + full.invoiceid + '>EDIT</a> | <a href="/KisanSales/GetPaymentSlip?pkid=' + full.pkid + '" Alt="Get Slip">SLIP</a>';
+                        }
+                    }
+                }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+
+    function DeleteProduct(cname) {
+        jAlert("Dealer not allow to delete...", "Alert")
+    }
+    function getpopup() {
+        var id = $("#pkid").val();
+        window.location.href = "/KisanSales/GetsalesPDF?id=" + id;
+    }
+</script>

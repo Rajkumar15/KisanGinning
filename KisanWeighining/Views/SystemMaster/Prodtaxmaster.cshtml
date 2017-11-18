@@ -1,0 +1,119 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_ProductTaxEntryss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Create New Product Tax</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Create Product Tax
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        @using (Html.BeginForm("Prodtaxmaster", "SystemMaster", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                        {
+
+                            <div class="col-sm-5">
+                                @Html.ValidationSummary("", new { @class = "text-danger" })
+                                @Html.HiddenFor(x => x.pkid)
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Product Name<span style="color: red">*</span></label>
+                                        @Html.DropDownListFor(m => m.Product_fkid, (IEnumerable<SelectListItem>)@ViewBag.pro, new { @class = "mydropdown" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>HSN Number<span style="color: red">*</span></label>
+                                        @Html.TextAreaFor(x => x.HSNno, new { @class = "form-control groupOfTexbox", placeholder = "Enter total tax percenatge", @required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Tax Type</label>
+                                        @Html.DropDownListFor(m => m.tax_fkid, (IEnumerable<SelectListItem>)@ViewBag.tax, new { @class = "mydropdown" })
+                                    </div>
+                                </div>
+                              
+                                <input type="submit" value="Create" id="but" class="btn-primary" />
+                            </div>
+
+                        }
+                        <div class="col-sm-7 table-responsive">
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>Product name</th>
+                                        <th>HSN number</th>
+                                        <th>Tax Type</th>                                  
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#pkid").val() != "")
+        { $("#but").val("Update") }
+    })
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/SystemMaster/prodtaxList",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                { "data": "produname", "name": "produname", "autoWidth": true },
+                  { "data": "HSNCODE", "name": "HSNCODE", "autoWidth": true },
+                    { "data": "taxtype", "name": "taxtype", "autoWidth": true },                  
+                {
+                    "data": "pkid", "orderable": false, "render": function (data, type, full, meta) {
+                        return '<a href=/SystemMaster/Prodtaxmaster?_id=' + data + '>Edit</a>';
+                    }
+                }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+
+    function DeleteProduct(cname) {
+        jAlert("Dealer not allow to delete...", "Alert")
+    }
+ 
+</script>
+

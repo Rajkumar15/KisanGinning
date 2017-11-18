@@ -1,0 +1,78 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Create New User</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Create User
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                <div class="body">
+                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable " style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>Role Name</th>                               
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+        
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+<script type="text/javascript">
+
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/Account/GetRoleList",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "Id", "name": "Id", "orderable": false, "autoWidth": true },
+                { "data": "Name", "Name": "brandname", "autoWidth": true },
+                {
+                    "data": "Id", "orderable": false, "render": function (data, type, full, meta) {
+                        return '<a href="#" onclick="alertfu()">Edit</a> | <a href="#" onclick="alertfun()">Delete</a>';
+                    }
+                }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+
+    function alertfu()
+    {
+        jAlert("System Not Allowed to edit?", "Alert")
+    }
+    function alertfun() {
+        jAlert("System Not Allowed to Delete?", "Alert")
+    }
+</script>

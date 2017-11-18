@@ -1,0 +1,450 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_SalesEntry_Masterss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+    }
+
+    .labelmod {
+        width: 28%;
+    }
+
+    .calcultesttext {
+        margin-bottom: 4px;
+    }
+
+    .glophy {
+        font-size: 17px;
+        margin-left: 10px;
+        color: darkgreen;
+        cursor: pointer;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .col-sm-12, .col-sm-4 {
+        margin-bottom: 0 !important;
+    }
+   
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Purchase Details</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="body">
+                    <div class="row clearfix">
+
+                        @using (Html.BeginForm("SalesDetails", "KisanSales", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                        {
+
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            @Html.HiddenFor(x => x.pkid)
+                            @Html.HiddenFor(x=>x.Purchase_fkid)
+                            @Html.HiddenFor(x=>x.ProductType_fkid)                        
+                            <div class="col-sm-12" style="border-bottom:1px solid rgba(204, 204, 204, 0.35);">
+                                <div class="col-sm-6">
+                                    <label class="labelmod"> Rate in Qtl </label>: @Html.TextBoxFor(x => x.rateperqtl, new { @class = "form-control groupOfTexbox", placeholder = "Enter Rate per Qtl", @style = "width:50% !important;margin-bottom:4px;", @readonly = "readonly" })<br />
+                                    <label class="labelmod"> Rate in Candy </label>: @Html.TextBoxFor(x => x.ratepercandy, new { @class = "form-control groupOfTexbox groupOfTexbox", placeholder = "Enter Rate per Candy", @style = "width:50% !important;margin-bottom:4px;" })<br />
+
+                                </div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label> Net Weight in quntal :</label> @Html.TextBoxFor(x => x.qtl, new { @class = "form-control groupOfTexbox", placeholder = "Enter NetWeight in Qtl", @readonly = "readonly", @style = "width:38% !important;margin-bottom:1%;" })<br />
+                                    <label> Net Weight in KG </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: @Html.TextBoxFor(x => x.kilogram, new { @class = "form-control", placeholder = "Enter NetWeight in KG", @readonly = "readonly", @style = "width:38% !important;" })<br />
+                                    <label style=" margin-top: 11px;"> Gross Amount </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  @Html.TextBoxFor(x => x.amount, new { @class = "form-control", placeholder = "Gross Amount", @readonly = "readonly", @style = "width:38% !important;margin-bottom:2%;" })
+                                </div>
+                                <div class="col-sm-4"></div>
+                            </div>
+                            <div class="col-sm-12" style="margin-top:1%;">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label style="color:brown;">Party Details :</label>
+                                </div>
+                                <div class="col-sm-6" style="">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Party Name </label>: @Html.DropDownListFor(x => x.partyid, (IEnumerable<SelectListItem>)@ViewBag.partyname, "Select Party Name", new { @class = "", @style = "width: 45.25% !important;height: 34px;margin-bottom:2px;" })<i class="glyphicon glyphicon-new-window glophy" onclick="getParty()" title="Add Party"></i> <br />
+                                    <div class="bal">
+                                        <label class="labelmod"> P.R. No </label>: @Html.TextBoxFor(x => x.prno, new { @class = "form-control calcultesttext" })<br />
+                                        <label class="labelmod"> P.R. To </label>:  @Html.TextBoxFor(x => x.topr, new { @class = "form-control calcultesttext" })<br />
+                                        <label class="labelmod"> P. Mark </label>:  @Html.TextBoxFor(x => x.pmark, new { @class = "form-control calcultesttext" })<br />
+                                    </div>
+                                    <label class="labelmod"> Dispatched date </label>:  @Html.TextBoxFor(x => x.deliveryfromdate, new { @class = "form-control calcultesttext", placeholder = "Enter dispatched date" })<br />
+                                    <label class="labelmod"> Broker Name </label>: @Html.DropDownListFor(x => x.brokerid, (IEnumerable<SelectListItem>)@ViewBag.broker, "Select Broker Name", new { @class = "", @style = "width: 45.25% !important;height: 34px;margin-bottom:2px;" })<i class="glyphicon glyphicon-new-window glophy" onclick="getbroker()" title="Add Broker"></i> <br />
+                                    <label class="labelmod"> Transport Name </label>: @Html.DropDownListFor(x => x.transport_fkid, (IEnumerable<SelectListItem>)@ViewBag.transport, "Select Transport Name", new { @class = "", @style = "width: 45.25% !important;height: 34px;margin-bottom:2px;" })<i class="glyphicon glyphicon-new-window glophy" onclick="gettransport()" title="Add Transport"></i> <br />
+                                    <label class="labelmod"> Truck No </label>: @Html.TextBox("truckno", null, new { @class = "form-control calcultesttext", placeholder = "Enter Truck No" })<br />
+                                    <label class="labelmod"> Driver Name </label>: @Html.TextBoxFor(x => x.drivername, null, new { @class = "form-control calcultesttext", placeholder = "Enter Driver Name" })<br />
+                                </div>
+                                <div class="col-sm-6">
+
+                                    <label style="width:22%;"> Sauda Date </label>: @Html.TextBoxFor(x => x.saudadate, new { @class = "form-control calcultesttext groupOfTexbox", placeholder = "Enter Sauda date", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Payment Condition </label>: @Html.DropDownListFor(x => x.paycondition, (IEnumerable<SelectListItem>)@ViewBag.paycon, "Select Payment Condition", new { @class = "special", @style = "width:38% !important;height: 34px;margin-bottom:2px;" })<br />
+                                    <label style="width:22%;" id="FPbalesLb"> F.P Cotton Bales </label>: @Html.TextBoxFor(x => x.FPbales, new { @class = "form-control calcultesttext", placeholder = "Enter F.P. Cooton Bales", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Insurance number </label>: @Html.TextBoxFor(x => x.InsuranceNo, new { @class = "form-control calcultesttext", placeholder = "Enter Insurance Number", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Quality </label>: @Html.TextBoxFor(x => x.Quality, new { @class = "form-control calcultesttext", placeholder = "Enter Quality", @style = "width:38% !important;" })<br />
+                                    <div class="bal">
+                                        <label style="width:22%;"> Lot No </label>: @Html.TextBoxFor(x => x.lotno, new { @class = "form-control calcultesttext groupOfTexboxss", placeholder = "Enter lot no", @style = "width:38% !important;" })<br />
+                                        <label style="width:22%;"> No. of Bales </label>: @Html.TextBoxFor(x => x.noofbales, new { @class = "form-control calcultesttext groupOfTexboxss", placeholder = "Enter no bales", @style = "width:38% !important;" })<br />
+                                        <label style="width:22%;"> Weight of Bales </label>: @Html.TextBoxFor(x => x.grossweight, new { @class = "form-control groupOfTexboxss calcultesttext", placeholder = "Enter Gross Weight of bales", @style = "width:38% !important;" })<br />
+                                        <label style="width:22%;"> Tare weight Bales </label>: @Html.TextBoxFor(x => x.tareweight, new { @class = "form-control groupOfTexboxss calcultesttext", placeholder = "Enter Tare Weight of bales", @style = "width:38% !important;" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12" style="margin-top:1%;">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label style="color:brown;">Bill Details :</label>
+                                </div>
+
+                                <div class="col-sm-6" style="">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Other charges </label>: @Html.TextBoxFor(x => x.frightothercharges, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter other charges" })<br />
+                                    <label class="labelmod"> Advance </label>: @Html.TextBoxFor(x => x.advance, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter Advance Amount" })<br />
+                                    <label class="labelmod"> Packaging Charges </label>: @Html.TextBoxFor(x => x.packagingcgaeges, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter Packaging charges" })<br />
+                                    <label class="labelmod"> Total Amt </label>: @Html.TextBoxFor(x => x.totalamt, new { @class = "form-control calcultesttext", @readonly = "readonly" })<br />                                 
+                                </div>
+                                <div class="col-sm-6">
+                                    <label style="width:22%;"> SGST </label>:   @Html.TextBoxFor(x => x.SGST, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> CGST </label>: @Html.TextBoxFor(x => x.CGST, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> IGST </label>: @Html.TextBoxFor(x => x.IGST, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Amount In Word </label>: @Html.TextAreaFor(x => x.amtinword, new { @class = "form-control calcultesttext", @style = "width:38% !important;" })<br />
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-top:-2%;">
+                                    <label class="labelmod"> Balance Amount </label>: @Html.TextBoxFor(x => x.NetPayableAmount, new { @class = "form-control", placeholder = "Net Amt", @readonly = "readonly" })<br />
+                                    <input type="submit" value="Save" class="btn-primary" />
+                                </div>
+                                <div class="col-sm-6">
+
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="pop">
+    <div class="col-sm-12">
+        @Html.Hidden("purchaseid", null, new { @Value = ViewBag.saleid })
+        <label class="labelmod"> Transport Name </label>: @Html.TextBox("transname", null, new { @class = "form-control vs", placeholder = "Enter Transport Name", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Address </label>: @Html.TextBox("addtr", null, new { @class = "form-control vss", placeholder = "Enter address ", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Email Id </label>: @Html.TextBox("emailtr", null, new { @class = "form-control vss", placeholder = "Enter Email ", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Mobile No </label>: @Html.TextBox("mobiletr", null, new { @class = "form-control vss mobileno", placeholder = "Enter Mobile no", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Owner Name </label>: @Html.TextBox("ownertr", null, new { @class = "form-control vs", placeholder = "Enter Owner Name", @style = "width:90% !important;margin-bottom:1%;" })
+        <input type="button" onclick="SaveTransport()" value="Save" class="btn-primary" style="margin-left:30%;" />
+    </div>
+</div>
+<div id="dod">
+    <div class="col-sm-12">
+
+        <label class="labelmod"> Broker Name </label>: @Html.TextBox("brokername", null, new { @class = "form-control vss", placeholder = "Enter Broker Name", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Address </label>: @Html.TextBox("addBr", null, new { @class = "form-control vss", placeholder = "Enter address ", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Email Id </label>: @Html.TextBox("emailbr", null, new { @class = "form-control vss", placeholder = "Enter Email ", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Mobile No </label>: @Html.TextBox("mobilebr", null, new { @class = "form-control vss mobileno", placeholder = "Enter Mobile no", @style = "width:90% !important;margin-bottom:1%;" })
+        <input type="button" onclick="SaveBroker()" value="Save" class="btn-primary" style="margin-left:30%;" />
+    </div>
+</div>
+<div id="Part">
+    <div class="col-sm-12">
+
+        <label class="labelmod"> Party Name </label>: @Html.TextBox("partyname", null, new { @class = "form-control vsss", placeholder = "Enter Party Name", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> GST No </label>: @Html.TextBox("gstp", null, new { @class = "form-control vsss", placeholder = "Enter GST no", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Address </label>: @Html.TextBox("Addresp", null, new { @class = "form-control vsss", placeholder = "Enter Party Address", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Mobile No </label>: @Html.TextBox("mobilep", null, new { @class = "form-control vsss mobileno", placeholder = "Enter Party Mobileno", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> EMail Id </label>: @Html.TextBox("email", null, new { @class = "form-control vsss", placeholder = "Enter Party Email Address", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> City </label>: @Html.TextBox("cityp", null, new { @class = "form-control vsss", placeholder = "Enter City", @style = "width:90% !important;margin-bottom:1%;" })
+        <input type="button" onclick="SaveParty()" value="Save" class="btn-primary" style="margin-left:30%;" />
+    </div>
+</div>
+<link href="~/assets/css/select2.min.css" rel="stylesheet" />
+<script src="~/assets/js/select2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#pop").hide();
+        $("#dod").hide();
+        $('select').select2();
+        $("#Part").hide();
+        $('#deliveryfromdate').datepicker();
+        $('#saudadate').datepicker();
+        $("#qtl").val('@ViewBag.netweighQtl');
+        $("#kilogram").val('@ViewBag.netweighKG');
+        $("#ProductType_fkid").val('@ViewBag.pro');
+        $("#Purchase_fkid").val('@ViewBag.purchaseid');
+        $("#truckno").val('@ViewBag.trockno');
+        $("#partyid").val('@ViewBag.partyid')
+        var id = $("#ProductType_fkid").val();
+        if (id == 3)
+        {
+            $(".bal").hide();
+        }
+        $('.groupOfTexbox').keypress(function (event) {
+            return isNumber(event, this)
+        });
+        $('.groupOfTexboxss').keypress(function (event) {
+            return isNumber(event, this)
+        });
+        $('.groupOfTexbox').keyup(function (event) {
+            debugger;
+            var can = $("#ratepercandy").val();
+            var otherch = $("#frightothercharges").val();
+            var Adv = $("#advance").val();
+            var Pcharg = $("#packagingcgaeges").val();
+            var taxper = '@ViewBag.tax';
+            if (can == "") {
+                $("#rateperqtl").val(0);
+                $("#amount").val(0);
+            } else {
+                $("#rateperqtl").val(parseFloat(parseFloat(can) * parseFloat(0.2812)).toFixed(2));
+                $("#amount").val(parseFloat(parseFloat($("#rateperqtl").val()) * parseFloat($("#qtl").val())).toFixed(2))
+                $("#totalamt").val($("#amount").val());
+                $("#NetPayableAmount").val($("#amount").val());
+            }
+            if (otherch != "" ) {
+                $("#totalamt").val(parseFloat(parseFloat(otherch) + parseFloat($("#amount").val())).toFixed(2));
+                $("#NetPayableAmount").val($("#totalamt").val());
+            }
+            if (Pcharg != "") {
+                $("#totalamt").val(parseFloat(parseFloat(Pcharg) + parseFloat($("#totalamt").val())).toFixed(2));
+                $("#NetPayableAmount").val($("#totalamt").val());
+            }
+            if (Adv != "") {
+                $("#NetPayableAmount").val(parseFloat(parseFloat($("#NetPayableAmount").val())-parseFloat($("#advance").val())).toFixed(2));
+            }
+            if ($("#totalamt").val() != "")
+            {
+                var amt = $("#totalamt").val();
+                var GST = parseFloat(parseFloat(parseFloat(amt) * parseFloat(taxper)) / 100).toFixed(2);
+                $("#SGST").val(parseFloat(GST).toFixed(2));
+                $("#CGST").val(parseFloat(GST).toFixed(2));
+                // $("#IGST").val(parseFloat(GST).toFixed(2));
+                var finalamt = parseFloat(parseFloat($("#NetPayableAmount").val()) + parseFloat($("#SGST").val()) + parseFloat($("#CGST").val()));
+                $("#NetPayableAmount").val(parseFloat(finalamt).toFixed());
+              //  var wo = inWords(finalamt);
+               // $("#amtinword").val(wo);
+            }
+        })
+        $('.mobileno').keydown(function (event) {
+            return isIntNumber(event, this)
+        });
+    })
+    function getbroker() {
+        $('.vs').each(function () {
+            $(this).val('');
+        });
+        $("#dod").dialog({
+            height: 250,
+            width: 500,
+            modal: true,
+            title: "Broker Details"
+        })
+    }
+    function gettransport() {
+        $('.vss').each(function () {
+            $(this).val('');
+        });
+        $("#pop").dialog({
+            height: 300,
+            width: 500,
+            modal: true,
+            title: "Transport Details"
+        })
+    }
+    function getParty() {
+        $('.vsss').each(function () {
+            $(this).val('');
+        });
+        $("#Part").dialog({
+            height: 330,
+            width: 500,
+            modal: true,
+            title: "Party Details"
+        })
+    }
+    function formatJsonDate(jsonDate) {
+        if (jsonDate == null) {
+            return "";
+        }
+        else {
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = month + "/" + day + "/" + year;
+            return date;
+        }
+    };
+    function SaveParty() {
+        var pat = $("#partyname").val();
+        var gt = $("#gstp").val();
+        var gtadd = $("#Addresp").val();
+        var gtmob = $("#mobilep").val();
+        var gtcity = $("#cityp").val();
+        var gtemail = $("#email").val();
+        if (pat == "") {
+            jAlert("Enter Party Name", "System Alert")
+        }
+        else if (gt == "") {
+            jAlert("Enter GST Number", "System Alert")
+        }
+        else if (gtadd == "") {
+            jAlert("Enter Address", "System Alert")
+        }
+        else if (gtmob == "") {
+            jAlert("Enter Mobile Number", "System Alert")
+        }
+        else if (gtcity == "") {
+            jAlert("Enter City", "System Alert")
+        }
+        else if (gtemail == "") {
+            jAlert("Enter Email address", "System Alert")
+        }
+        else {
+            var lines = new Array();
+            lines.push($("#partyname").val());
+            lines.push($("#gstp").val());;
+            lines.push($("#Addresp").val());
+            lines.push($("#mobilep").val());
+            lines.push($("#cityp").val());
+            lines.push($("#email").val());
+            lines.push($("#purchaseid").val());
+
+            $.ajax(
+       {
+           url: '/KisanSales/SaveParty/',
+           type: 'POST',
+           data: { 'poopupdatasave': lines },
+           dataType: 'json',
+           async: false,
+           success: function (data) {
+               if (data != "") {
+                   $("#partyid").append(data);
+                   jAlert("Party Save Successfully", "SystemAlert")
+                   $("#Part").dialog("close");
+               } else {
+                   jAlert("Party Save Failed", "SystemAlert")
+               }
+           }
+       });
+        }
+    }
+    function SaveBroker() {
+        var pat = $("#brokername").val();
+        var patadd = $("#addBr").val();
+        var patemail = $("#emailbr").val();
+        var patmob = $("#mobilebr").val();
+        if (pat == "") {
+            jAlert("Enter Broker Name", "System Alert");
+        }
+        else if (patadd == "")
+        {
+            jAlert("Enter Address", "System Alert");
+        }
+        else if (patemail == "") {
+            jAlert("Enter Email", "System Alert");
+        }
+        else if (patmob == "") {
+            jAlert("Enter Mobile", "System Alert");
+        }
+        else {
+            var lines = new Array();
+            lines.push($("#brokername").val());
+            lines.push($("#addBr").val());;
+            lines.push($("#emailbr").val());
+            lines.push($("#mobilebr").val());
+
+
+            $.ajax(
+       {
+           url: '/KisanSales/SaveBroker/',
+           type: 'POST',
+           data: { 'poopupdatasave': lines },
+           dataType: 'json',
+           async: false,
+           success: function (data) {
+               if (data != "") {
+                   $("#brokerid").append(data);
+                   jAlert("Broker Save Successfully", "SystemAlert")
+                   $("#dod").dialog("close");
+               } else {
+                   jAlert("Broker Save Failed", "SystemAlert")
+               }
+           }
+       });
+        }
+    }
+    function SaveTransport() {
+        var pat = $("#transname").val();
+        var patadd = $("#addtr").val();
+        var patemail = $("#emailtr").val();
+        var patmob = $("#mobiletr").val();
+        var patowner = $("#ownertr").val();
+        if (pat == "") {
+            jAlert("Enter Transport Name", "System Alert");
+        }
+        else if (patadd == "") {
+            jAlert("Enter Address", "System Alert");
+        }
+        else if (patemail == "") {
+            jAlert("Enter Email Id", "System Alert");
+        }
+        else if (patmob == "") {
+            jAlert("Enter Mobileno", "System Alert");
+        }
+        else {
+            var lines = new Array();
+            lines.push($("#transname").val());
+            lines.push($("#addtr").val());;
+            lines.push($("#emailtr").val());
+            lines.push($("#mobiletr").val());
+            lines.push($("#ownertr").val());
+
+            $.ajax(
+       {
+           url: '/KisanSales/SaveTransport/',
+           type: 'POST',
+           data: { 'poopupdatasave': lines },
+           dataType: 'json',
+           async: false,
+           success: function (data) {
+               if (data != "") {
+                   $("#transport_fkid").append(data);
+                   jAlert("Transport Save Successfully", "SystemAlert")
+                   $("#pop").dialog("close");
+               } else {
+                   jAlert("Transport Save Failed", "SystemAlert")
+               }
+           }
+       });
+        }
+    }
+</script>

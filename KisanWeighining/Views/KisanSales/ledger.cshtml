@@ -1,0 +1,61 @@
+﻿@model IEnumerable<KisanWeighining.Models.KisanModel.listpurchaseledger>
+@{
+    Layout = null;
+}
+<table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>Invoice No</th>
+            <th>Date</th>
+            <th>Sales Party Name</th>
+            <th>Broker Name</th>          
+            <th>Net Weight</th>
+            <th>Rate Per Candy</th>
+            <th>Total Amount</th>
+            <th>Advance</th>    
+            <th>Credited Amount</th>     
+            <th>Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int srno = 1;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@srno</td>
+                    <td>@item.invoiceno</td>
+                    <td>@item.datet</td>
+                    <td>@item.farmername</td>
+                    <td>@item.dealername</td>                  
+                    <td>@item.netweight</td>
+                    <td>@item.Rate</td>
+                    <td>@item.totalamt</td>
+                    <td>@item.advance</td>  
+                    <td>@item.totalpaying</td>                  
+                    <td>@item.balance</td>
+                </tr>
+                srno++;
+            }
+        }
+    </tbody>
+</table>
+
+<div class="col-sm-12">
+    <div class="col-sm-6"></div>
+    <div class="col-sm-6" style="margin-top:1%;text-align:right;">
+        <label class=""> Total Balance Amount </label> : @Html.TextBox("total", null, new { @class = "form-control calcultesttext", @style = "width:24% !important;", @readonly = "readonly", @Value = ViewBag.summ })<br />
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".js-basic-example").DataTable();
+    })
+</script>

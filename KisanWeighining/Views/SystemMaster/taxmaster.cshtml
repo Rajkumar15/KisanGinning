@@ -1,0 +1,149 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_TaxMasterss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Create New Tax</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Create Tax
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        @using (Html.BeginForm("taxmaster", "SystemMaster", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                        {
+
+                            <div class="col-sm-5">
+                                @Html.ValidationSummary("", new { @class = "text-danger" })
+                                @Html.HiddenFor(x => x.pkid)
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Tax Type<span style="color: red">*</span></label>
+                                        @Html.TextBoxFor(x => x.Saletype, new { @class = "form-control", placeholder = "Enter tax type", @required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Tax Percentage<span style="color: red">*</span></label>
+                                        @Html.TextAreaFor(x => x.taxper, new { @class = "form-control groupOfTexbox", placeholder = "Enter total tax percenatge", @required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>SGST</label>
+                                        @Html.TextAreaFor(x => x.SGST, new { @class = "form-control groupOfTexbox", placeholder = "Enter SGST", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>CGST</label>
+                                        @Html.TextBoxFor(x => x.CGST, new { @class = "form-control groupOfTexbox", placeholder = "Enter CGST", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>IGST</label>
+                                        @Html.TextBoxFor(x => x.IGST, new { @class = "form-control groupOfTexbox", placeholder = "Enter IGST", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                               
+                                <input type="submit" value="Create" id="but" class="btn-primary" />
+                            </div>
+
+                        }
+                        <div class="col-sm-7 table-responsive">
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>Tax Type</th>
+                                        <th>Total Percenatge</th>
+                                        <th>SGST</th>
+                                        <th>CGST</th>
+                                        <th>IGST</th>                                      
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#pkid").val() != "")
+        { $("#but").val("Update") }
+    })
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/SystemMaster/taxList",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                { "data": "Saletype", "name": "Saletype", "autoWidth": true },
+                  { "data": "taxper", "name": "taxper", "autoWidth": true },
+                    { "data": "CGST", "name": "CGST", "autoWidth": true },
+                      { "data": "SGST", "name": "SGST", "autoWidth": true },
+                      { "data": "IGST", "name": "IGST", "autoWidth": true },
+                {
+                    "data": "pkid", "orderable": false, "render": function (data, type, full, meta) {
+                        return '<a href=/SystemMaster/taxmaster?_id=' + data + '>Edit</a>';
+                    }
+                }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+
+    function DeleteProduct(cname) {
+        jAlert("Dealer not allow to delete...", "Alert")
+    }
+    $(document).ready(function () {
+        $('.groupOfTexbox').keypress(function (event) {
+            return isNumber(event, this)
+        });
+        $('.groupOfTexbox').keyup(function (event) {
+            debugger;
+            var per = $("#taxper").val();
+            if (per != "")
+            {
+                $("#SGST").val(parseFloat(parseFloat(per) / 2));
+                $("#CGST").val(parseFloat(parseFloat(per) / 2));
+                $("#IGST").val(parseFloat(parseFloat(per)));
+            }
+        });
+    })
+</script>
+

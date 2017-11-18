@@ -1,0 +1,100 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_UserDetailss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+</style>
+<script src="~/Content/Theam/js/jquery-1.12.3.min.js"></script>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Create Information</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        User Information (System required more Information of user please fill below details.)
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        @using (Html.BeginForm("InfoRegister", "SystemMaster", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+
+
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            @Html.HiddenFor(x=>x.User_fkid)
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>First Name<span style="color: red">*</span></label>
+                                        @Html.TextBoxFor(x => x.firstname, new { @class = "form-control Rajstring", placeholder = "Enter First Name", @required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Middle Name<span style="color: red">*</span></label>
+                                        @Html.TextBoxFor(x => x.middlename, new { @class = "form-control Rajstring", placeholder = "Enter Middle Name", @required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Last Name<span style="color: red">*</span></label>
+                                        @Html.TextBoxFor(x => x.lastname, new { @class = "form-control Rajstring", placeholder = "Enter last Name", @required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Address 1</label>
+                                        @Html.TextBoxFor(x => x.Address1, new { @class = "form-control", placeholder = "Enter Address 1" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Address 2</label>
+                                        @Html.TextBoxFor(x => x.Address2, new { @class = "form-control", placeholder = "Enter Address 2" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Mobile No</label>
+                                        @Html.TextBoxFor(x => x.mobileno, new { @class = "form-control Rajnumber", placeholder = "Enter mobile No" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Email Id</label>
+                                        @Html.TextBoxFor(x => x.emailid, new { @class = "form-control", placeholder = "Enter Email Id", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="submit" value="Create" class="btn-primary" />
+
+                        }
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ('@ViewBag.Title' != "") {
+            $("#User_fkid").val('@ViewBag.Title')
+        }
+        if ('@ViewBag.Email' != "") {
+            $("#emailid").val('@ViewBag.Email')
+        }
+    })
+</script>

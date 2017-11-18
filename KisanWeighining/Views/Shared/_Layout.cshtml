@@ -1,0 +1,286 @@
+﻿@{
+    ViewBag.Title = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Welcome</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @Styles.Render("~/Content/css")
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <!-- Waves Effect Css -->
+    <link href="/Content/Theam/plugins/node-waves/waves.css" rel="stylesheet" />
+    <!-- Animation Css -->
+    <link href="/Content/Theam/plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- Morris Chart Css-->
+    <link href="/Content/Theam/plugins/morrisjs/morris.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link href="/Content/Theam/css/style.css" rel="stylesheet">
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="/Content/Theam/css/themes/all-themes.css" rel="stylesheet" />
+    <link href="/Content/jquery.dataTables.css" rel="stylesheet" />
+   
+</head>
+
+<body class="theme-red">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <div class="search-icon">
+            <i class="material-icons">search</i>
+        </div>
+        <input type="text" placeholder="START TYPING...">
+        <div class="close-search">
+            <i class="material-icons">close</i>
+        </div>
+    </div>
+    <!-- #END# Search Bar -->
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars"></a>
+            </div>
+            <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+                <div class="">
+                    <div class="navbar-header">
+                        <span class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+
+                        </span>
+                        <a href="/"><img src="~/Content/Theam/images/kisan.png" /></a>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav" id="toptMenuDynamic" style="margin-bottom:1.1% !important;">
+                            <li class="menu">
+                                <a href="#">
+                                    </i><span>User</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="/Account/Register">Create User</a>
+                                    </li>
+                                    <li style="display:none;">
+                                        <a href="/SystemMaster/UserList">User List</a>
+                                    </li>
+                                    <li>
+                                        <a href="/Account/RoleMaster">Create Role</a>
+                                    </li>
+                                    <li style="display:none;">
+                                        <a href="/Account/roleList">Role List</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu">
+                                <a href="#">
+                                    </i><span>System Master</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/SystemMaster/ProductMaster">Product Master</a></li>
+                                    <li><a href="/SystemMaster/TruckMaster">Truck Matser</a></li>
+                                    <li><a href="/SystemMaster/farmer">Farmer Master</a></li>
+                                    <li><a href="/SystemMaster/Dealer">Dealer Master</a></li>
+                                    <li><a href="/SystemMaster/BrokerMaster">Broker Master</a></li>
+                                    <li><a href="/SystemMaster/TransportMaster">Transport Master</a></li>
+                                    <li><a href="/SystemMaster/taxmaster">TAX Master</a></li>
+                                    <li><a href="/SystemMaster/Prodtaxmaster">Product TAX Master</a></li>                                    
+                                    <li><a href="/SystemMaster/ExpensesPurpose">Expenses Purpose</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu">
+                                <a href="#">
+                                    </i><span>Purchase</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/Home/Mainpage">Purchase Trips</a></li>
+                                    <li><a href="/PooldataMachine/pendingpayment">Pending Payment</a></li>
+                                    <li><a href="/PooldataMachine/PaymentList">Payment List</a></li>
+                                    <li class="dropdown-submenu">
+                                        <a href="#">Bank Module</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/PooldataMachine/BankModule"><span>Current Cases</span></a></li>
+                                            <li><a href="/PooldataMachine/ReturnBankModule"><span>Return Cases</span></a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="/PooldataMachine/ReconciliationList">Reconciliation List</a></li>
+                                    <li><a href="/PooldataMachine/CompletedListR">Payment Summary</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu">
+                                <a href="#">
+                                    </i><span>Sales</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/KisanSales/Salestrips">Sales Trips</a></li>
+                                    <li><a href="/KisanSales/PendingPaymentSales">Pending Sales</a></li>                               
+                                    <li><a href="/KisanSales/CompletedPaymentR">Payment Summary</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu">
+                                <a href="#">
+                                    </i><span>Ledger</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/PooldataMachine/PurchaseLedger">Purchase Ledger</a></li>
+                                    <li><a href="/KisanSales/salesLedger">Sales Ledger</a></li>                                   
+                                </ul>
+                            </li>
+                            <li class="menu">
+                                <a href="#">
+                                    </i><span>Stock</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/KisanSales/StockEntry">Cotton Quantity</a></li>
+                                    <li><a href="/KisanSales/StockProccess">Cotton Amount</a></li>
+                                    <li class="dropdown-submenu">
+                                        <a href="#">Summary</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/KisanSales/Currentsummary"><span>Current Summary</span></a></li>
+                                            <li><a href="/KisanSales/totalsummary"><span>Total Summary</span></a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu">
+                                <a href="#">
+                                    </i><span>Outstanding</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/PooldataMachine/PurchaseOutstanding">Purchase Outstanding</a></li>
+                                    <li><a href="/PooldataMachine/PurchaseOutstandingPayment">Purchase Outstanding Payment</a></li>
+                                    <li><a href="/KisanSales/SalesOutstanding">Sales OutStanding</a></li>
+                                    @*<li><a href="/KisanSales/PurchaseOutstandingPayment">Sales Outstanding Payment</a></li>*@
+                                    <li class="dropdown-submenu">
+                                        <a href="#">Completed List</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/PooldataMachine/PurOuTCompete">Purchase Payment</a></li>
+                                            <li><a href="/KisanSales/PurOuTCompete"><span>Sales Payment</span></a></li>
+                                        </ul>
+                                    </li>
+                                   
+                                </ul>
+                            </li>
+                            <li class="menu">
+                                <a href="#">
+                                    </i><span>Expenses</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/KisanSales/Expenses">Expenses Entry</a></li>
+                                    <li><a href="/KisanSales/Expenseslist">Expenses List</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu">
+                                <a href="#">
+                                    </i><span>Cash Mgt</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/KisanSales/CashMaster">Cash Receipt</a></li>   
+                                    <li><a href="/KisanSales/GetCashreceiptList">Cash List</a></li>                                   
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right" style="margin-right:1%;">
+                            <li class="menu">
+                                <a href="#">
+                                    Welcome,@try
+                                    { @Session["UserFirstName"].ToString().ToUpper()}
+                                    catch
+                                    {<span onclick="document.location.href='/Account/login'" style="cursor:pointer;">Sign In</span> }
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="/Account/LogOff" class=" waves-effect waves-block"> <i class="material-icons">settings_power</i> <span>Log Out</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/Account/resetPassword?Username=@User.Identity.Name" class=" waves-effect waves-block"> <span>Reset Password</span></a>
+                                    </li>
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+    @RenderBody()
+    <!-- Jquery Core Js -->
+    <script src="~/Scripts/jquery/RajCommon.js"></script>
+    @*<script src="/Content/Theam/plugins/jquery/jquery.min.js"></script>*@
+
+    <!-- Bootstrap Core Js -->
+    <script src="/Content/Theam/plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="/Content/Theam/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="/Content/Theam/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="/Content/Theam/plugins/node-waves/waves.js"></script>
+
+    <!-- Jquery CountTo Plugin Js -->
+    <script src="/Content/Theam/plugins/jquery-countto/jquery.countTo.js"></script>
+
+    <!-- Morris Plugin Js -->
+    <script src="/Content/Theam/plugins/raphael/raphael.min.js"></script>
+    <script src="/Content/Theam/plugins/morrisjs/morris.js"></script>
+
+    <!-- ChartJs -->
+    <script src="/Content/Theam/plugins/chartjs/Chart.bundle.js"></script>
+
+    <!-- Flot Charts Plugin Js -->
+    <script src="/Content/Theam/plugins/flot-charts/jquery.flot.js"></script>
+    <script src="/Content/Theam/plugins/flot-charts/jquery.flot.resize.js"></script>
+    <script src="/Content/Theam/plugins/flot-charts/jquery.flot.pie.js"></script>
+    <script src="/Content/Theam/plugins/flot-charts/jquery.flot.categories.js"></script>
+    <script src="/Content/Theam/plugins/flot-charts/jquery.flot.time.js"></script>
+
+    <!-- Sparkline Chart Plugin Js -->
+    <script src="/Content/Theam/plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <script src="/Content/Dashboard/dasboard.js"></script>
+    <!-- Custom Js -->
+    <script src="/Content/Theam/js/admin.js"></script>
+    <script src="/Content/Theam/js/pages/index.js"></script>
+
+    <!-- Demo Js -->
+    <script src="/Content/Theam/js/demo.js"></script>
+    <!--DynamucMenu---->
+    
+    <script src="/Content/Dashboard/CommonDataTables.js"></script>
+    <!---J ALert----->
+    <script src="/Content/Theam/plugins/jsalert/jquery.alerts.js"></script>
+    <link href="/Content/Theam/plugins/jsalert/jquery.alerts.css" rel="stylesheet" />
+
+    <link href="/Content/Theam/css/jquery-ui.css" rel="stylesheet" />
+    <script src="/Content/Theam/js/jquery-ui.js"></script>
+    <script src="/Content/Theam/plugins/jquery-datatable/dataTables.responsive.js"></script>
+    <link href="/Content/Theam/plugins/jquery-datatable/skin/bootstrap/css/responsive.dataTables.css" rel="stylesheet" />
+    
+</body>
+
+</html>

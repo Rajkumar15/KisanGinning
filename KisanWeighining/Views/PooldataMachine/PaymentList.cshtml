@@ -1,0 +1,179 @@
+﻿@model KisanWeighining.Models.KisanModel.sendtoBankreportView
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .checkboxsd {
+        margin: -1% 0% 1% 4% !important;
+    }
+
+    .check {
+        width: 30%;
+        height: 22px !important;
+        margin-top: -64% !important;
+        margin-left: 37% !important;
+    }
+</style>
+<section class="content">
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Payment List
+                    </h2>
+                </div>
+                @using (Html.BeginForm("PaymentList", "PooldataMachine", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                {
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-sm-12" style="text-align:right;">
+                                <select id="mode" style="width: 141px; height: 34px;">
+                                    <option value="">Select</option>
+                                    <option value="RTGS">RTGS</option>
+                                    <option value="Cheque">Cheque</option>
+                                    <option value="all">ALL</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                #
+                                            </th>
+                                            <th>Farmer Name</th>                                        
+                                            <th>Paid To</th>
+                                            <th>Payment Mode</th>
+                                            <th>Dealer Name</th>
+                                            <th>Details</th>
+                                            <th>Payment Date</th>
+                                            <th>Clearing Date</th>
+                                            <th>Amount Paid</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+
+                            @Html.TextBoxFor(x => x.pkids)
+                            <div class="col-sm-12">
+                                <input type="text" id="to" class="form-control" readonly="readonly" style="width:10%;" />
+                                <input type="submit" value="Send To Bank" style="float:right;margin-top:-2%;" class="btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    var sendarray = [];
+    var total = 0;
+    $(document).ready(function () {
+        $("#pkids").hide();
+        $("#mode").val('@ViewBag.sel');
+        $("#mode").change(function () {
+            debugger;
+            var d = $("#mode").val();
+            window.location.href = "/PooldataMachine/PaymentList?va=" + d;
+        })
+    })
+
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/PooldataMachine/PaymentReadyList?m=" + $("#mode").val() + "",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                    { "data": "farmername", "name": "farmername", "autoWidth": true },
+                     {
+                         "data": "paidto", "name": "paidto", "render": function (data, type, full, meta) {
+                             return '' + namecashpaid(full) + '';
+                         }
+                     },
+                       { "data": "paymenttype", "name": "paymenttype", "autoWidth": true },
+                     
+                             { "data": "dealer", "name": "dealer", "autoWidth": true },
+                      { "data": "details", "name": "details", "autoWidth": true },
+                       {
+                           "data": "paymentdate", "render": function (data, type, full, meta) {
+                               return '' + formatJsonDate(data) + '';
+                           }
+                       },
+                        {
+                            "data": "clearingdate", "render": function (data, type, full, meta) {
+                                return '' + formatJsonDate(data) + '';
+                            }
+                        },
+                        { "data": "amountpaid", "name": "amountpaid", "autoWidth": true },
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html("<p>" + parseFloat(iDisplayIndex + 1) + "<input type='checkbox' id=" + aData.amountpaid + " name=" + aData.pkid + " class='check form-control' onchange='saas(this)'/></p>")
+            return nRow;
+        }
+    })
+    function saas(cname) {
+        debugger;
+        if (cname.checked) {
+            sendarray.push(cname.name);
+            total = (parseFloat(total) + parseFloat(cname.id));
+        } else {
+            sendarray = sendarray.filter(function (elem) {
+                return elem != cname.name;
+            })
+            total = (parseFloat(total) - parseFloat(cname.id));
+        }
+        $('#pkids').val(JSON.stringify(sendarray))
+        $("#to").val(total)
+    }
+    function formatJsonDate(jsonDate) {
+        if (jsonDate == null) {
+            return "";
+        }
+        else {
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+    };
+    function namecashpaid(cname) {
+        debugger;
+        if (cname.paidto != null) {
+            return cname.paidto;
+        }
+        if (cname.rtgsid != "") {
+            return cname.rtgsid;
+        }
+        if (cname.cheqid != "") {
+            return cname.cheqid;
+        }
+    }
+</script>

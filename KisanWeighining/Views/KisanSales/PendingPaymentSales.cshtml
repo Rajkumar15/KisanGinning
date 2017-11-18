@@ -1,0 +1,118 @@
+﻿<style type="text/css">
+    .table-striped > tbody > tr:nth-of-type(odd) {
+        background: #FCF8E3;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Pending Sales Payment</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Pending Sales Payment List
+                    </h2>
+                </div>
+
+                <div class="body">
+                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable " style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>Invoice No</th>
+                                <th>Date</th>
+                                <th>Sales Party Name</th>
+                                <th>Net Weight</th>
+                                <th>Total Amount</th>
+                                <th>Taxes Amount</th>
+                                <th>Total Billing Amount</th>                               
+                                <th style="width: 81px;">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Content/Theam/plugins/jquery/jquery.js"></script>
+<script src="~/Content/Theam/plugins/jquery-datatable/jquery.dataTables.js"></script>
+<link href="~/Content/Theam/plugins/jsalert/jquery.alerts.css" rel="stylesheet" />
+<script src="~/Content/Theam/plugins/jsalert/jquery.alerts.js"></script>
+<script type="text/javascript">
+
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/KisanSales/Pendingpaymentlist",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                  { "data": "invoiceno", "Name": "invoiceno", "autoWidth": true },
+                   {
+                       "data": "datet", "orderable": false, "render": function (data, type, full, meta) {
+                           return '' + formatJsonDate(data) + '';
+                       }
+                   },
+                { "data": "PartyName", "Name": "PartyName", "autoWidth": true },
+                { "data": "netweight", "Name": "netweight", "autoWidth": true },
+                  { "data": "payble", "Name": "payble", "autoWidth": true },                  
+                       { "data": "GST", "Name": "GST", "autoWidth": true },
+                         { "data": "balance", "Name": "balance", "autoWidth": true },
+                {
+                    "data": "purchaseid", "orderable": false, "render": function (data, type, full, meta) {
+                        return '<i onclick="EditInvoice(' + data + ')" class="glyphicon glyphicon-edit" style="cursor:pointer;margin:0% 4% 0% 4%;" title="Edit InVoice"></i> |  <img src="/images/price.png" onclick="PaymentPage(this)" alt="' + full.purchaseid + '" name="' + full.pkid + '" style="cursor:pointer;margin:0% 4% 0% 4%;width: 20px !important; height: 20px !important" title="Pay Payement"/> | <span class="glyphicon glyphicon-save" onclick="Getpdf(' + full.pkid + ')" style="cursor:pointer;margin:0% 4% 0% 4%;" title="Generate Bill"></span>';
+
+                    }
+                }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+    function formatJsonDate(jsonDate) {
+        if (jsonDate == null)
+        { return ""; } else {
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+    };
+    function EditInvoice(cname)
+    {
+        window.location.href = "/KisanSales/SalesDetails?id=" + cname;
+    }
+    function PaymentPage(cname)
+    {
+        var pur = cname.alt;
+        var invoiceid = cname.name;
+        window.location.href = "/KisanSales/SalesDetails_Payment?id=" + pur + "&Bill_fkid=" + invoiceid;
+    }
+    function Getpdf(cname) {
+        window.location.href = "/KisanSales/GetPDF_Sales?invoiceid=" + cname;
+    }
+</script>
+
+<style type="text/css">
+    .page-loader-wrapper {
+        opacity: .6;
+        background: black;
+    }
+</style>

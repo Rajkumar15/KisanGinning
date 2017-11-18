@@ -1,0 +1,135 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_PurchaseEntry_Master_Paymentss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+    }
+
+    .labelmod {
+        width: 28%;
+    }
+
+    .checkboxsd {
+        margin: -1% 0% 1% 4% !important;
+    }
+
+    .check {
+        width: 30%;
+        height: 22px !important;
+        margin-top: -64% !important;
+        margin-left: 37% !important;
+    }
+</style>
+<section class="content">
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                       Completed Purchase OutStanding Transaction
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>Payment Mode</th>
+                                        <th>Paid To</th>
+                                        <th>Farmer Name</th>
+                                        <th>Dealer Name</th>
+                                        <th>Details</th>
+                                        <th>Payment Date</th>
+                                        <th>Debited Amount</th>
+                                    
+                                    </tr>
+                                </thead>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#pop").hide();
+    })
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/PooldataMachine/ComPurchaseoutstandingList",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                    { "data": "paymentmode", "name": "paymentmode", "autoWidth": true },
+                        { "data": "paidto", "name": "paidto", "autoWidth": true },
+                    { "data": "farmername", "name": "farmername", "autoWidth": true },
+                     { "data": "dealername", "name": "dealername", "autoWidth": true },
+
+                        { "data": "details", "name": "details", "autoWidth": true },
+                       {
+                           "data": "paydate", "render": function (data, type, full, meta) {
+                               return '' + formatJsonDate(data) + '';
+                           }
+                       },
+                        { "data": "amt", "name": "amt", "autoWidth": true }
+                           //{
+                           //    "data": "pkid", "name": "pkid", "orderable": false, "render": function (data, type, full, meta, name) {
+                           //        return '<a href="/PooldataMachine/DeleteOutstanding?pkid=' + data + '">Delete</a>';
+                           //    }
+                           //}
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+    function formatJsonDate(jsonDate) {
+        if (jsonDate == null) {
+            return "";
+        }
+        else {
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+    };
+  
+</script>

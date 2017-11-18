@@ -1,0 +1,403 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_PurchaseEntry_Masterss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+    }
+
+    .labelmod {
+        width: 28%;
+    }
+
+    .calcultesttext {
+        margin-bottom: 4px;
+    }
+
+    .glophy {
+        font-size: 17px;
+        margin-left: 10px;
+        color: darkgreen;
+        cursor: pointer;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .col-sm-12, .col-sm-4 {
+        margin-bottom: 0 !important;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Purchase Details</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="body">
+                    <div class="row clearfix">
+
+                        @using (Html.BeginForm("PurchaseDetails", "PooldataMachine", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                        {
+
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            @Html.HiddenFor(x => x.pkid)
+                            @Html.HiddenFor(x => x.paymentdays)
+                            <div class="col-sm-12" style="border-bottom:1px solid rgba(204, 204, 204, 0.35);">
+                                <div class="col-sm-6">
+                                    <label class="labelmod"> Rate </label>: @Html.TextBoxFor(x => x.rate, new { @class = "form-control groupOfTexbox", placeholder = "Enter Rate per Qtl", @style = "width:50% !important;margin-bottom:4px;" })<br />
+                                    <label class="labelmod"> Farmer Name </label>: @Html.TextBox("farname", null, new { @class = "form-control", @readonly = "readonly", @style = "width:50% !important;" })
+                                </div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label> Net Weight in quintal :</label> @Html.TextBoxFor(x => x.qunatity, new { @class = "form-control groupOfTexbox", placeholder = "Enter NetWeight in Qtl", @readonly = "readonly", @style = "width:38% !important;" })<br />
+                                    <label style=" margin-top: 11px;"> Gross Amount </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  @Html.TextBoxFor(x => x.RTGSCharges, new { @class = "form-control groupOfTexbox", placeholder = "Gross Amount", @readonly = "readonly", @style = "width:38% !important;margin-bottom:2%;" })
+                                </div>
+                                <div class="col-sm-4"></div>
+                            </div>
+                            <div class="col-sm-12" style="margin-top:1%;">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label style="color:brown;">Deduction Charges :</label>
+                                </div>
+
+                                <div class="col-sm-6" style="">
+
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Unloading charges </label>: @Html.TextBoxFor(x => x.unloading, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter Unloading" })<br />
+                                    <label class="labelmod"> Kata </label>: @Html.TextBoxFor(x => x.kata, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter Kata" })<br />
+                                    <label class="labelmod"> Mapai </label>: @Html.TextBoxFor(x => x.mapai, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter Mapai Charges" })<br />
+                                    <label class="labelmod"> Cash Discount </label>: @Html.TextBoxFor(x => x.cd, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter Cash Discount " })<br />
+                                    <label class="labelmod"> Dalali </label>: @Html.TextBoxFor(x => x.CD_dalali, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter Dalali" })<br />
+                                    <label class="labelmod"> Bank Charges </label>:  @Html.TextBoxFor(x => x.bankcharges, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter Bank Charges" })<br />
+                                    <label class="labelmod"> Transport Charges </label>:  @Html.TextBoxFor(x => x.bhada, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter Transport Charges" })<br />
+                                    <label class="labelmod"> Loading Charges </label>:   @Html.TextBoxFor(x => x.loadingcharges, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter Loading charges" })<br />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label style="width:22%;"> Farmer Name </label>: @Html.TextBox("fname", null, new { @class = "form-control calcultesttext", placeholder = "Enter Farmer Name", @style = "width:38% !important;" })<i class="glyphicon glyphicon-saved glophy" onclick="ChangeFname()" title="Change Farmer Name"></i> <br />
+                                    <label style="width:22%;"> Farmer Mobile </label>: @Html.TextBoxFor(x => x.farmermobileno, new { @class = "form-control calcultesttext mobileno", placeholder = "Enter Farmer Mobile number", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Village Name </label>: @Html.TextBoxFor(x => x.VillageName, new { @class = "form-control calcultesttext", placeholder = "Enter Farmer village name", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Driver Name </label>: @Html.TextBoxFor(x => x.drivername, new { @class = "form-control calcultesttext", placeholder = "Enter Driver Name", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Driver Mobile </label>: @Html.TextBoxFor(x => x.drivermobileno, new { @class = "form-control calcultesttext mobileno", placeholder = "Enter Driver mobile no", @style = "width:38% !important;" })<br />
+                                    <label style="width:22%;"> Dealer Name </label>: @Html.DropDownListFor(x => x.Dealer_fkid, (IEnumerable<SelectListItem>)@ViewBag.dealer, "Select Dealer", new { @style = "width: 150% !important;height: 34px;margin-bottom:3px;" })<i class="glyphicon glyphicon-new-window glophy" style="margin-left:19%;" onclick="getdealer()" title="Add Dealer"></i> <br />
+                                    <label style="width:22%;"> Payment Days </label>: @Html.TextBox("Payd", null, new { @class = "form-control calcultesttext mobileno", placeholder = "Enter Payment days", @style = "width:38% !important;", @type = "number" })
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6"></div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label style="width:22%;"> Total Deduction </label> :  @Html.TextBoxFor(x => x.totaldeduction, new { @class = "form-control groupOfTexbox", placeholder = "Total Deduction", @readonly = "readonly", @style = "width:38% !important;" })
+                                </div>
+
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Net Payable </label>: @Html.TextBox("amt", null, new { @class = "form-control groupOfTexbox calcultesttext", @readonly = "readonly" })<br />
+                                    <label class="labelmod"> Advance </label>: @Html.TextBoxFor(x => x.advance, new { @class = "form-control groupOfTexbox calcultesttext", placeholder = "Enter advance amt" })
+                                </div>
+                                <div class="col-sm-6">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                </div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    @Html.TextAreaFor(x => x.advance_remark, new { @class = "form-control", @placeholder = "Enter remark", @style = "margin-top:-10%;max-width: 63% !important;width:90% !important;" })
+                                </div>
+
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <label class="labelmod"> Balance Amount </label>: @Html.TextBoxFor(x => x.netpayable_amt, new { @class = "form-control groupOfTexbox", placeholder = "Net Amt", @readonly = "readonly" })<br />
+                                    <input type="submit" value="Save" id="but" class="btn-primary" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <button type="button" onclick="getpopup()" style="background-color: brown;color: #FFF;">Add RTGS Details</button>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="pop">
+    <div class="col-sm-12">
+        @Html.Hidden("purchaseid", null, new { })
+        <label class="labelmod"> Bank Name </label>: @Html.TextBox("Bank_name", null, new { @class = "form-control vs", placeholder = "Enter Bank Name", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Branch Name </label>: @Html.TextBox("Branchname", null, new { @class = "form-control vs", placeholder = "Enter Branch Name", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Holder Name </label>: @Html.TextBox("AccountHolder", null, new { @class = "form-control vs", placeholder = "Enter Account Holder Name", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Account Number </label>: @Html.TextBox("Accountno", null, new { @class = "form-control vs", placeholder = "Enter Account Number", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> IFSC Code </label>: @Html.TextBox("Ifsccode", null, new { @class = "form-control vs", placeholder = "Enter IFSC code", @style = "width:90% !important;margin-bottom:1%;", @maxlength = "11", @minlength = "11" })
+        <label class="labelmod"> Cheque Party Name </label>: @Html.TextBox("Cheq_Partyname", null, new { @class = "form-control vs", placeholder = "Enter Cheque Party Name", @style = "width:90% !important;margin-bottom:1%;" })
+        <input type="button" onclick="savertgs()" value="Save" class="btn-primary" style="margin-left:30%;" />
+    </div>
+</div>
+
+<div id="de">
+    <label class="labelmod"> Dealer Name </label>: @Html.TextBox("dealer_name", null, new { @class = "form-control dds", placeholder = "Enter Dealer Name", @style = "width:90% !important;margin-bottom:1%;" })
+    <input type="button" onclick="AddDealer()" value="Save"  class="btn-primary" style="margin-left:30%;" />
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#pkid").val() != "")
+        { $("#but").val("Update") }
+        $("#pop").hide();
+        $("#de").hide();
+        $("#purchaseid").val('@ViewBag.purchaseid');
+        $("#qunatity").val(@ViewBag.netweight);
+        $("#farname").val('@ViewBag.farmernm');
+        $('.groupOfTexbox').keypress(function (event) {
+            return isNumber(event, this)
+        });
+        $('.mobileno').keydown(function (event) {
+            return isIntNumber(event, this)
+        });
+        if ($("#rate").val() != "") {
+            $("#amt").val($("#netpayable_amt").val());
+        }
+        $('.groupOfTexbox').keyup(function (event) {
+            debugger;
+            var amt = 0;
+            var detuction = 0;
+            if ($("#rate,#qunatity").val() != "") {
+                amt = parseFloat(parseFloat($("#rate").val()) * parseFloat($("#qunatity").val())).toFixed(2);
+            }
+
+            if ($("#kata").val() != "") {
+
+                detuction = parseFloat(parseFloat(detuction) + parseFloat($("#kata").val()));
+            }
+            if ($("#unloading").val() != "") {
+
+                detuction = parseFloat(parseFloat(detuction) + parseFloat($("#unloading").val()));
+            }
+            if ($("#mapai").val() != "") {
+
+                detuction = parseFloat(parseFloat(detuction) + parseFloat($("#mapai").val()));
+            }
+            if ($("#bankcharges").val() != "") {
+
+                detuction = parseFloat(parseFloat(detuction) + parseFloat($("#bankcharges").val()));
+            }
+            if ($("#CD_dalali").val() != "") {
+
+                detuction = parseFloat(parseFloat(detuction) + parseFloat($("#CD_dalali").val()));
+            }
+            if ($("#cd").val() != "") {
+
+                detuction = parseFloat(parseFloat(detuction) + parseFloat($("#cd").val()));
+            }
+            if ($("#bhada").val() != "") {
+
+                detuction = parseFloat(parseFloat(detuction) + parseFloat($("#bhada").val()));
+            }
+            if ($("#loadingcharges").val() != "") {
+
+                detuction = parseFloat(parseFloat(detuction) + parseFloat($("#loadingcharges").val()));
+            }
+            if ($("#advance").val() != "") {
+                detuction = parseFloat(parseFloat(detuction) + parseFloat($("#advance").val()));
+            }
+            detuction = parseFloat(detuction).toFixed(2);
+            $("#totaldeduction").val(detuction);
+            $('#RTGSCharges').val(amt);
+            if ($("#totaldeduction").val() != "") {
+                amt = parseFloat(parseFloat(amt) - parseFloat($("#totaldeduction").val())).toFixed(2);
+            }
+            $('#netpayable_amt').val(amt);
+            if ($("#rate").val() != "") {
+                $("#amt").val($("#netpayable_amt").val());
+            }
+            if ($("#rate").val() != "" && $("#advance").val() != "") {
+                $("#amt").val(parseFloat($("#netpayable_amt").val()) + parseFloat($("#advance").val())).toFixed(2);
+            }
+            if (detuction <= parseFloat($("#RTGSCharges").val())) {
+
+            }
+            else {
+                $('#netpayable_amt').val($("#RTGSCharges").val());
+                $("#amt").val($("#RTGSCharges").val());
+                $("#totaldeduction").val($("#RTGSCharges").val());
+                jAlert("Amount Greater than Gross Amount....", "SystemAlert")
+            }
+        });
+        $("#Payd").change(function () {
+            debugger;
+            var dy = $("#Payd").val();
+            if (dy == "") {
+                jAlert("Enter Payment days", "System Alert")
+            }
+            else {
+                $.post('/PooldataMachine/getdateondays', { days: dy },
+         function (data) {
+             if (data == "") {
+                 jAlert("enter valid days..", "System Alert");
+             }
+             else {
+                 $("#paymentdays").val(formatJsonDate(data));
+             }
+         });
+            }
+        })
+    })
+    function getpopup() {
+        $('.vs').each(function () {
+            $(this).val('');
+        });
+        $("#pop").dialog({
+            height: 350,
+            width: 500,
+            modal: true,
+            title: "RTGS Details"
+        })
+    }
+    function getdealer() {
+        $('.dds').each(function () {
+            $(this).val('');
+        });
+        $("#de").dialog({
+            height: 140,
+            width: 500,
+            modal: true,
+            title: "Add New Dealer"
+        })
+    }
+    function savertgs() {
+        debugger;
+        if ($("#Ifsccode").val() != "") {
+            if ($("#Ifsccode").val().length != 11) {
+                jAlert("Enter IFSC Code 11 Digit", "SystemAlert")
+            } else {
+                var lines = new Array();
+                lines.push($("#Bank_name").val());
+                lines.push($("#Branchname").val());;
+                lines.push($("#Accountno").val());
+                lines.push($("#AccountHolder").val());
+                lines.push($("#Ifsccode").val());
+                lines.push($("#purchaseid").val());
+                lines.push($("#Cheq_Partyname").val());
+                $.ajax(
+            {
+                url: '/PooldataMachine/SaveRTGS/',
+                type: 'POST',
+                data: { 'poopupdatasave': lines },
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    if (data == "success") {
+                        jAlert("Data Save Successfully", "SystemAlert")
+                        $("#pop").dialog("close");
+                    } else {
+                        jAlert("Data Save Failed enter required field", "SystemAlert")
+                    }
+                }
+            });
+            }
+        }
+        else {
+
+            var lines = new Array();
+            lines.push($("#Bank_name").val());
+            lines.push($("#Branchname").val());;
+            lines.push($("#Accountno").val());
+            lines.push($("#AccountHolder").val());
+            lines.push($("#Ifsccode").val());
+            lines.push($("#purchaseid").val());
+            lines.push($("#Cheq_Partyname").val());
+            $.ajax(
+        {
+            url: '/PooldataMachine/SaveRTGS/',
+            type: 'POST',
+            data: { 'poopupdatasave': lines },
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if (data == "success") {
+                    jAlert("Data Save Successfully", "SystemAlert")
+                    $("#pop").dialog("close");
+                } else {
+                    jAlert("Data Save Failed enter required field", "SystemAlert")
+                }
+            }
+        });
+        }
+    }
+    function ChangeFname() {
+        var pid = $("#purchaseid").val();
+        var name = $("#fname").val();
+        if (name == "") {
+            jAlert("Enter Farmer Name", "System Alert")
+        }
+        else {
+            $.post('/PooldataMachine/changefarmername', { pid: pid, fname: name },
+    function (data) {
+        if (data != "") {
+            $("#farname").val(data);
+            jAlert("Change Farmer name successfully", "System Alert");
+        }
+        else {
+            jAlert("Change Farmer name Failed", "System Alert");
+        }
+    });
+        }
+    }
+    function AddDealer() {
+        var dealer = $("#dealer_name").val();
+        if (dealer == "") {
+            jAlert("Enter Dealer Name", "System Alert")
+        }
+        else {
+            $.post('/PooldataMachine/AddDealer', { dname: dealer },
+       function (data) {
+           if (data == "true") {
+               jAlert("Dealer already Available..", "System Alert");
+           }
+           else if (data != "" && data != "true") {
+               $("#Dealer_fkid").append(data);
+               $("#de").dialog("close");
+               jAlert("Dealer add successfully", "System Alert");
+           }
+           else {
+               jAlert("Dealer add Failed", "System Alert");
+           }
+       });
+        }
+    }
+    function formatJsonDate(jsonDate) {
+        if (jsonDate == null) {
+            return "";
+        }
+        else {
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = month + "/" + day + "/" + year;
+            return date;
+        }
+    };
+</script>

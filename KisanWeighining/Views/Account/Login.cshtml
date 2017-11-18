@@ -1,0 +1,106 @@
+﻿@using KisanWeighining.Models
+@model LoginViewModel
+@{
+    Layout = null;
+}
+<!-- Bootstrap -->
+<link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.css">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.css">
+
+<!-- Metis core stylesheet -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!-- metisMenu stylesheet -->
+<link rel="stylesheet" href="/assets/lib/metismenu/metisMenu.css">
+
+<!-- onoffcanvas stylesheet -->
+<link rel="stylesheet" href="/assets/lib/onoffcanvas/onoffcanvas.css">
+
+<!-- animate.css stylesheet -->
+<link rel="stylesheet" href="/assets/lib/animate.css/animate.css">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+<body class="">
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal login", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-signin">
+            <div class="text-center">
+                <img src="~/assets/img/kisancolor.png" alt="Metis Logo" style="height:7%;">
+            </div>
+            <hr>
+            <div class="tab-content">
+                <div id="login" class="tab-pane active">
+                    <form action="index.html">
+                        <p class="text-muted text-center">
+                            Enter your username and password
+                        </p>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control top", @placeholder = "Username" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control bottom", @placeholder = "Password", @style = "margin-top:3%;" })
+
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"> Remember Me
+                            </label>
+                        </div>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                    </form>
+                </div>
+                <div id="forgot" class="tab-pane">
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal login", role = "form" }))
+                    {
+                        <p class="text-muted text-center">Enter your valid e-mail</p>
+                        <input type="email" placeholder="mail@domain.com" class="form-control">
+                        <br>
+                        <button class="btn btn-lg btn-danger btn-block" type="submit">Recover Password</button>
+                    }
+                </div>
+                <div id="signup" class="tab-pane">
+                    @using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal login", role = "form" }))
+                    {                        
+                        <input type="email" placeholder="mail@domain.com" class="form-control middle">
+                        <input type="password" placeholder="password" class="form-control middle">
+                        <input type="password" placeholder="re-password" class="form-control bottom">
+                        <button class="btn btn-lg btn-success btn-block" type="submit">Register</button>
+                    }
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <ul class="list-inline">
+                    <li><a class="text-muted" href="#login" data-toggle="tab">Login</a></li>
+                    <li><a class="text-muted" href="#forgot" data-toggle="tab">Forgot Password</a></li>
+                    <li><a href="#" >Signup</a></li>
+                </ul>
+            </div>
+        </div>
+
+    }
+</body>
+<script src="/assets/lib/jquery/jquery.js"></script>
+<!--Bootstrap -->
+<script src="/assets/lib/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript">
+    (function ($) {
+        $(document).ready(function () {
+            $('.list-inline li > a').click(function () {
+                var activeForm = $(this).attr('href') + ' > form';
+                //console.log(activeForm);
+                $(activeForm).addClass('animated fadeIn');
+                //set timer to 1 seconds, after that, unload the animate animation
+                setTimeout(function () {
+                    $(activeForm).removeClass('animated fadeIn');
+                }, 1000);
+            });
+        });
+    })(jQuery);
+</script>

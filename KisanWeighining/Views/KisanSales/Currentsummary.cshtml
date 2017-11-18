@@ -1,0 +1,103 @@
+﻿@model IEnumerable<KisanWeighining.Models.KisanModel.Currentstocklist>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+    }
+
+    .labelmod {
+        width: 28%;
+    }
+
+    .calcultesttext {
+        margin-bottom: 4px;
+    }
+
+    .glophy {
+        font-size: 17px;
+        margin-left: 10px;
+        color: darkgreen;
+        cursor: pointer;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .col-sm-12, .col-sm-4 {
+        margin-bottom: 0 !important;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Purchase Stock Details</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Current Stock List
+                    </h2>
+                </div>             
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                #
+                                            </th>
+                                            <th>Product Name</th>
+                                            <th>Date</th>
+                                            <th>Opening stock</th>                                           
+                                            <th>Proccess Stock(Bales)</th>
+                                            <th>Proccess Stock(Seed)</th>
+                                            <th>Closing Stock</th>                                          
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            int srno = 1;
+                                            foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@srno</td>
+                                                    <td>@item.productname</td>
+                                                    <td>@item.date</td>
+                                                    <td>@item.openningstock</td>                                                
+                                                    <td>@item.proocessBales</td>
+                                                    <td>@item.proccessseed</td>
+                                                    <td>@item.closingstock</td>                                                 
+                                                </tr>
+                                                srno++;
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>                          
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+

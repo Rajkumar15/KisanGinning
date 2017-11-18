@@ -1,0 +1,205 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_SalesOutStandingss
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+<link href="~/assets/css/select2.min.css" rel="stylesheet" />
+<script src="~/assets/js/select2.min.js"></script>
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+    }
+
+    .labelmod {
+        width: 20%;
+    }
+
+    .calcultesttext {
+        margin-bottom: 4px;
+    }
+
+    .glophy {
+        font-size: 17px;
+        margin-left: 10px;
+        color: darkgreen;
+        cursor: pointer;
+    }
+
+    .dropdo {
+        height: 35px;
+        width: 227% !important;
+        line-height: 14px;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .checkboxsd {
+        margin: -1% 0% 1% 4% !important;
+    }
+
+    .divpay {
+        color: brown;
+        font-size: 17px;
+        text-align: center;
+    }
+
+    .bootstrap-select {
+        border-bottom: 0 !important;
+    }
+
+    .all {
+        color: red;
+        font-weight: bold;
+        margin-left: 33%;
+        font-size: 16px;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+
+                <div class="body">
+                    <div class="row clearfix">
+
+                        @using (Html.BeginForm("SalesOutstanding", "KisanSales", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                        {
+                            @Html.HiddenFor(x => x.pkid)
+                            @Html.HiddenFor(x => x.statusa)
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <div class="col-sm-12" style="margin-bottom: 0px !important;">
+                                <label style="color: chocolate;font-size: 18px;">Sales Outstanding</label>
+                            </div>
+                            <div class="col-sm-12" style="margin-bottom: 0px !important;">
+                                <label style="margin-left: 14px;color: red;">Search by</label>
+                            </div>
+                            <div class="col-sm-12" style="margin-bottom:0px;">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Party Name </label> : @Html.DropDownListFor(x => x.partyid, (IEnumerable<SelectListItem>)@ViewBag.farmer, "Select Party", new { @style = "width: 280px !important;height: 35px;margin-bottom:2%;" })<label style="margin-left: 17%;color: chocolate;font-size: 18px;">OR</label><br />
+                                    <label class="labelmod"> OutStanding Amount </label> : @Html.TextBoxFor(x => x.outAmt, new { @class = "form-control calcultesttext numbers", @style = "width:50% !important;", @readonly = "readonly", @required = "required" })<br />
+                                    <button type="button" onclick="FindOutstanding()" style="display:none;" class="btn-primary">Get Amount</button><br />
+                                </div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Broker Name </label> : @Html.DropDownListFor(x => x.brokerid, (IEnumerable<SelectListItem>)@ViewBag.dealer, "Select Broker", new { @style = "width: 280px !important;height: 35px;margin-bottom:2%;" })<br />
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label style="color: chocolate;font-size: 18px;">Payment Receipt</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-8">
+                                    <label class="labelmod"> Receipt Amt </label> : @Html.TextBoxFor(x => x.payingamt, new { @class = "form-control calcultesttext numbers", @style = "width:50% !important;", @readonly = "readonly", @required = "required" })<br />
+                                    <label class="labelmod"> Date </label> : @Html.TextBoxFor(x => x.SystDate, new { @class = "form-control calcultesttext", @style = "width:50% !important;", @required = "required" })<br />
+                                    <input type="submit" value="Save" style="margin-left:21% !important;" class="btn-primary">
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <label style="color: chocolate;font-size: 18px;">Payment List</label>
+                            </div>
+                            <div class="col-sm-12" id="payList">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("select").select2();
+        $("#SystDate").datepicker();
+        if ($("#statusa").val() == 1) {
+            jConfirm("You are not allow to edit please change Status and edit..", "SystemAlert", function (r) {
+                if (r) {
+                    window.location.href = "/PooldataMachine/PurchaseOutstandingPayment";
+                }
+                else { window.location.href = "/PooldataMachine/PurchaseOutstandingPayment"; }
+            })
+        }
+        if ('@ViewBag.problem' != '') {
+            jAlert("Outstanding Amount Required...", "SystemAlert")
+        }
+        $("#partyid").change(function () {
+            FindOutstanding();
+        })
+        $("#brokerid").change(function () {
+            FindOutstanding();
+        })
+       
+    });
+    $('.groupOfTexbox').keypress(function (event) {
+        return isNumber(event, this)
+    });
+    function DeleteProduct(cname) {
+        jAlert("Dealer not allow to delete...", "Alert")
+    }
+
+    function formatJsonDate(jsonDate) {
+        if (jsonDate == null) {
+            return "";
+        }
+        else {
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+    };
+    function FindOutstanding() {
+        debugger;
+        var Fid = $("#partyid").val();
+        var Did = $("#brokerid").val();
+        if (Fid == "" && Did == "") {
+            jAlert("Please select Party name or broker name.", "SystemAlert");
+        }
+        else {
+            $.post("/KisanSales/GetOutStanding?Farid=" + Fid + "&deal=" + Did, function (data) {
+                $("#outAmt").val(data);
+                $("#payingamt").val(data);
+                var url = '@Url.Action("Ou8ststandingpaymentList", "KisanSales")' + '?frid=' + Fid + '&drid=' + Did;
+                $.post(url, "", function (data) {
+                    $("#payList").html('');
+                    if (data != "") {
+                        $("#payList").append(data);
+                    } else {
+                        jAlert('Error has occurred', 'System Alert');
+                    }
+                });
+
+            })
+        }
+    }
+
+</script>

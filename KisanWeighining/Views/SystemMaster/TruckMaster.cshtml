@@ -1,0 +1,126 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_truckMasterss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Create New Truck</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Create Truck
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        @using (Html.BeginForm("TruckMaster", "SystemMaster", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                        {
+                            <div class="col-sm-5">
+                                @Html.ValidationSummary("", new { @class = "text-danger" })
+                                @Html.HiddenFor(x => x.pkid)
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Truck No<span style="color: red">*</span></label>
+                                        @Html.TextBoxFor(x => x.truckno, new { @class = "form-control", placeholder = "Enter Truck No", @required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Tair Weight</label>
+                                        @Html.TextBoxFor(x => x.tairweight, new { @class = "form-control", placeholder = "Enter Tair Weight"})
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Capacity</label>
+                                        @Html.TextBoxFor(x => x.capcity, new { @class = "form-control", placeholder = "Enter Capacity" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Truck type(Tare)</label>
+                                        @Html.TextBoxFor(x => x.trucktype, new { @class = "form-control", placeholder = "Enter Truck Type" })
+                                    </div>
+                                </div>
+                                <input type="submit" value="Create" id="but" class="btn-primary" />
+                            </div>
+                        }
+                        <div class="col-sm-7">
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>Truck No</th>
+                                        <th>RFID No</th>
+                                        <th>Tair Weight</th>
+                                        <th>Capacity</th>
+                                        <th>Truck Type</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#pkid").val() != "")
+        { $("#but").val("Update") }
+    })
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/SystemMaster/truckList",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                { "data": "truckno", "name": "truckno", "autoWidth": true },
+                 { "data": "RFIDnumber", "name": "RFIDnumber", "autoWidth": true },
+                  { "data": "tairweight", "name": "tairweight", "autoWidth": true },
+                   { "data": "capcity", "name": "capcity", "autoWidth": true },
+                    { "data": "trucktype", "name": "trucktype", "autoWidth": true },
+                {
+                    "data": "pkid", "orderable": false, "render": function (data, type, full, meta) {
+                        return '<a href=/SystemMaster/TruckMaster?_id=' + data + '>Edit</a>';
+                    }
+                }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+
+    function DeleteProduct(cname) {
+        jAlert("Truck not allow to delete...", "Alert")
+    }
+
+</script>

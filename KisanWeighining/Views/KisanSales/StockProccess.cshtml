@@ -1,0 +1,265 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_SalesSockMasterss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+    }
+
+    .labelmod {
+        width: 28%;
+    }
+
+    .calcultesttext {
+        margin-bottom: 4px;
+    }
+
+    .glophy {
+        font-size: 17px;
+        margin-left: 10px;
+        color: darkgreen;
+        cursor: pointer;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .col-sm-12, .col-sm-4 {
+        margin-bottom: 0 !important;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Sales Details</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="body">
+                    <div class="row clearfix">
+
+                        @using (Html.BeginForm("StockProccess", "KisanSales", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                        {
+
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            @Html.HiddenFor(x => x.pkid)
+                            <div class="col-sm-12">
+                                <span style="color:red;margin-left:36%;font-weight:bold;">Please select Stock date first.</span>
+                            </div>
+                            <div class="col-sm-12" style="border-bottom:1px solid rgba(204, 204, 204, 0.35);">
+                                <div class="col-sm-6">
+                                    <label class="labelmod"> Total Purchase Stock </label>: @Html.TextBoxFor(x => x.totalStock, new { @class = "form-control groupOfTexbox", placeholder = "Enter Total stock", @readonly = "readonly", @style = "width:50% !important;margin-bottom:4px;"})<br />
+                                    <label class="labelmod"> Stock Date <span style="color:red;">*</span> </label>: @Html.TextBoxFor(x => x.lastmodifieddate, new { @class = "form-control", placeholder = "Select proccess Date", @style = "width:50% !important;margin-bottom:4px;",@required="required"})<br />
+                                </div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label> Total Proccess Stock </label> : @Html.TextBoxFor(x => x.produceTotalStock, new { @class = "form-control groupOfTexbox", placeholder = "Enter total proccess stock", @readonly = "readonly", @style = "width:38% !important;margin-bottom:1%;" })<br />
+                                    <label> Total Balance Stock </label>&nbsp;&nbsp; : @Html.TextBoxFor(x => x.balancestock, new { @class = "form-control groupOfTexbox", placeholder = "Enter Balance stock", @readonly = "readonly", @style = "width:38% !important;margin-bottom:1%;" })<br />
+
+                                </div>
+                                <div class="col-sm-4"></div>
+                            </div>
+                            <div class="col-sm-12" style="margin-top:1%;">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label style="color:brown;">Proccess Details :</label>
+
+                                </div>
+                                <div class="col-sm-6" style="">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Cotton Bales Amt </label>: @Html.TextBoxFor(x => x.produceCottonbells, new { @class = "form-control calcultesttext groupOfTexbox", placeholder = "Enter Bales stock amount in Qtl" })<br />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label style="width:22%;"> Cotton Seed Amt </label>: @Html.TextBoxFor(x => x.produceCottonSeed, new { @class = "form-control calcultesttext groupOfTexbox", placeholder = "Enter Seed stock amount in Qtl", @style = "width:38% !important;" })<br />
+
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-6" style="margin-top:-17px;">
+                                    <label class="labelmod"> Total Used Amount </label>: @Html.TextBox("totalused", null, new { @class = "form-control", placeholder = "Total Used Stock", @readonly = "readonly" })<br />
+                                    <input type="submit" value="Save" style="margin-left:29% !important;margin-top:2%;" class="btn-primary" />
+                                </div>
+                                <div class="col-sm-6">
+
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Stock List
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>Date</th>
+                                        <th>Openning Stock</th>
+                                        <th>Proccess Bales stock</th>
+                                        <th>Proccess Seed stock</th>
+                                        <th>Closing Stock</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $("#lastmodifieddate").datepicker();
+        if ($("#pkid").val() == "") {
+            var dt = '@ViewBag.d';
+            if (dt != '') {               
+                $("#lastmodifieddate").val(dt);
+            }
+            else {
+               
+            }
+        }
+
+        var am = '@ViewBag.totalstock';
+        if (am != '') {
+            $("#totalStock").val(am);
+        }
+        else {
+            if ($("#pkid").val() == "") {
+                jAlert("Purchase entry not available to this date please select another date.", "System Alert")
+                $("#lastmodifieddate").val('');
+            }
+        }
+        $("#totalused").val($("#balancestock").val());
+        $('.groupOfTexbox').keypress(function (event) {
+            return isNumber(event, this)
+        });
+        $('.mobileno').keydown(function (event) {
+            return isIntNumber(event, this)
+        });
+        $('.groupOfTexbox').keyup(function (event) {
+            var grossST = $("#totalStock").val();
+            var proccessST = $("#produceTotalStock").val();
+            var balanceST = $("#balancestock").val();
+            var BalesST = $("#produceCottonbells").val();
+            var SeedST = $("#produceCottonSeed").val();
+            if (proccessST == "") {
+                $("#produceTotalStock").val(0);
+            }
+            if (balanceST == "") {
+                $("#balancestock").val(0);
+            } else {
+                if (BalesST == "") { BalesST = 0; }
+                if (SeedST == "") { SeedST = 0; }
+                var toto = parseFloat(parseFloat(BalesST) + parseFloat(SeedST)).toFixed(2);
+                if (parseFloat(toto) > parseFloat(grossST)) {
+                    jAlert("Stock Is Empty", "System Alert");
+                    $("#" + event.currentTarget.id + "").val('');
+                    BalesST = $("#produceCottonbells").val();
+                    SeedST = $("#produceCottonSeed").val();
+                    if (BalesST == "") { BalesST = 0; }
+                    if (SeedST == "") { SeedST = 0; }
+                    toto = parseFloat(parseFloat(BalesST) + parseFloat(SeedST)).toFixed(2);
+                    $("#produceTotalStock").val(parseFloat(toto).toFixed(2))
+                    $("#balancestock").val(parseFloat(parseFloat(grossST) - parseFloat($("#produceTotalStock").val())).toFixed(2));
+                }
+                else {
+                    $("#produceTotalStock").val(parseFloat(toto).toFixed(2))
+                    $("#balancestock").val(parseFloat(parseFloat(grossST) - parseFloat($("#produceTotalStock").val())).toFixed(2));
+                }
+            }
+            $("#totalused").val($("#produceTotalStock").val());
+        })
+        $("#lastmodifieddate").change(function () {
+            debugger;
+            var date = $("#lastmodifieddate").val();
+            window.location.href = "/KisanSales/StockProccess?date=" + date
+        })
+    })
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/KisanSales/SalesStockList",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                 {
+                     "data": "date", "name": "date", "render": function (data, type, full, meta) {
+                         return '' + formatJsonDate(data) + '';
+                     }
+                 },
+                  { "data": "total", "name": "total", "autoWidth": true },
+                   { "data": "balles", "name": "balles", "autoWidth": true },
+                     { "data": "seed", "name": "seed", "autoWidth": true },
+                       { "data": "balance", "name": "balance", "autoWidth": true },
+                //{
+                //    "data": "purchasid", "name": "invoiceid", "orderable": false, "render": function (data, type, full, meta, name) {
+                //        if (full.pkid == "") { return ""; } else {
+                //            return '<a href="/KisanSales/proccessstock">PROCCESS</a>';
+                //        }
+                //    }
+                //}
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+    function formatJsonDate(jsonDate) {
+        if (jsonDate == null) {
+            return "";
+        }
+        else {
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = month + "/" + day + "/" + year;
+            return date;
+        }
+    };
+
+</script>

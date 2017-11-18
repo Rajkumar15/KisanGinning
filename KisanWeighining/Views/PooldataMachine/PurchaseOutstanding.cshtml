@@ -1,0 +1,324 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_PurchaseOutStandingss
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+    }
+
+    .labelmod {
+        width: 20%;
+    }
+
+    .calcultesttext {
+        margin-bottom: 4px;
+    }
+
+    .glophy {
+        font-size: 17px;
+        margin-left: 10px;
+        color: darkgreen;
+        cursor: pointer;
+    }
+
+    .dropdo {
+        height: 35px;
+        width: 227% !important;
+        line-height: 14px;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .checkboxsd {
+        margin: -1% 0% 1% 4% !important;
+    }
+
+    .divpay {
+        color: brown;
+        font-size: 17px;
+        text-align: center;
+    }
+
+    .bootstrap-select {
+        border-bottom: 0 !important;
+    }
+
+    .all {
+        color: red;
+        font-weight: bold;
+        margin-left: 33%;
+        font-size: 16px;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+
+                <div class="body">
+                    <div class="row clearfix">
+
+                        @using (Html.BeginForm("PurchaseOutstanding", "PooldataMachine", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                        {
+                            @Html.HiddenFor(x => x.pkid)
+                            @Html.HiddenFor(x => x.statusa)
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <div class="col-sm-12" style="margin-bottom: 0px !important;">
+                                <label style="color: chocolate;font-size: 18px;">Purchase Outstanding</label>
+                            </div>
+                            <div class="col-sm-12" style="margin-bottom: 0px !important;">
+                                <label style="margin-left: 14px;color: red;">Search by</label>
+                            </div>
+                            <div class="col-sm-12" style="margin-bottom:0px;">
+                                <div class="col-sm-6" style="margin-bottom:0px !important;">
+                                    <label class="labelmod"> Farmer Name </label> : @Html.DropDownListFor(x => x.farid, (IEnumerable<SelectListItem>)@ViewBag.farmer, "Select Farmer", new { @style = "width: 45% !important;height: 35px;margin-bottom:2%;" }) <label style="margin-left: 8%;color: chocolate;font-size: 18px;">OR</label><br />
+                                    <label class="labelmod"> OutStanding Amount </label> : @Html.TextBoxFor(x => x.outAmt, new { @class = "form-control calcultesttext", @style = "width:50% !important;", @readonly = "readonly", @required = "required" })<br />
+                                    <button type="button" onclick="FindOutstanding()" class="btn-primary" style="display:none;">Get Amount</button><br />
+                                </div>
+                                <div class="col-sm-6" style="margin-bottom:0px !important;margin-left:-10%;">
+                                    <label class="labelmod"> Dealer Name </label> : @Html.DropDownListFor(x => x.drid, (IEnumerable<SelectListItem>)@ViewBag.dealer, "Select Dealer", new { @style = "width: 45% !important;height: 35px;margin-bottom:2%;" })<br />
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label style="color: chocolate;font-size: 18px;">Payment Credited</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-8">
+                                    <label class="labelmod"> Invoice Date </label> : @Html.TextBox("invoicedate", null, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:38% !important;", @Value = ViewBag.dt })<br />
+                                    <label class="labelmod"> Payment Method </label> : @Html.DropDownListFor(x => x.Payment_Method, (IEnumerable<SelectListItem>)@ViewBag.paytype, "Select Payment", new { @style = "width: 280px !important;height: 35px;margin-bottom:2%;", @required = "required" })<br />
+                                    <div id="rtgs">
+                                        <label class="labelmod"> Acc. Holder Name </label> : @Html.TextBoxFor(x => x.Accoun_holder, new { @class = "form-control calcultesttext", @placeholder = "Enter Holder Name", @style = "width:38% !important;" })<br />
+                                        <label class="labelmod"> Bank Name </label> : @Html.TextBoxFor(x => x.BankName, new { @class = "form-control calcultesttext", @placeholder = "Enter Bank Name", @style = "width:38% !important;" })<br />
+                                        <label class="labelmod"> Branch Name </label> : @Html.TextBoxFor(x => x.BranchName, new { @class = "form-control calcultesttext", @placeholder = "Enter Branch Name", @style = "width:38% !important;" })<br />
+                                        <label class="labelmod"> Account No </label> : @Html.TextBoxFor(x => x.Accountno, new { @class = "form-control calcultesttext", @placeholder = "Enter Account No", @style = "width:38% !important;" })<br />
+                                        <label class="labelmod"> IFSC Code </label> : @Html.TextBoxFor(x => x.IFSC, new { @class = "form-control calcultesttext", @placeholder = "Enter IFSC Code", @style = "width:38% !important;", @minlength = "11", @maxlength = "11" })<br />
+                                        <label class="labelmod"> Amount </label> : @Html.TextBoxFor(x => x.RTGSAMT, new { @class = "form-control calcultesttext groupOfTexbox", @placeholder = "Enter RTGS Amount", @style = "width:38% !important;", @readonly = "readonly" })<br />
+                                    </div>
+                                    <div id="cheq">
+                                        <label class="labelmod"> Party Name </label> : @Html.TextBoxFor(x => x.CheqPartyname, new { @class = "form-control calcultesttext", @placeholder = "Enter Cheque Party Name", @style = "width:38% !important;" })<br />
+                                        <label class="labelmod"> Cheque Number </label> : @Html.TextBoxFor(x => x.CHequeno, new { @class = "form-control calcultesttext", @placeholder = "Enter Cheque No", @style = "width:38% !important;" })<br />
+                                        <label class="labelmod"> Amount </label> : @Html.TextBoxFor(x => x.CheqAmt, new { @class = "form-control calcultesttext groupOfTexbox", @placeholder = "Enter Cheque Amount", @style = "width:38% !important;", @readonly = "readonly" })<br />
+                                    </div>
+                                    <div id="cash">
+                                        <label class="labelmod"> Cash Paid to </label> : @Html.TextBoxFor(x => x.CashPartyName, new { @class = "form-control calcultesttext", @placeholder = "Enter Paid Person Name", @style = "width:38% !important;" })<br />
+                                        <label class="labelmod"> Amount </label> : @Html.TextBoxFor(x => x.CashAmt, new { @class = "form-control calcultesttext groupOfTexbox", @placeholder = "Enter Cash Amount", @style = "width:38% !important;", @readonly = "readonly" })<br />
+                                    </div>
+                                    <input type="submit" value="Save" style="margin-left:21% !important;" class="btn-primary" />
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">                           
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <label style="color: chocolate;font-size: 18px;">Payment List</label>
+                        </div>  
+                        <div class="col-sm-12" id="payList">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<link href="~/assets/css/select2.min.css" rel="stylesheet" />
+<script src="~/assets/js/select2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("select").select2();
+        if ($("#statusa").val() == 1) {
+            jConfirm("You are not allow to edit please change Status and edit..", "SystemAlert", function (r) {
+                if (r) {
+                    window.location.href = "/PooldataMachine/PurchaseOutstandingPayment";
+                }
+                else { window.location.href = "/PooldataMachine/PurchaseOutstandingPayment"; }
+            })
+        }
+        $("#rtgs,#cash,#cheq").hide();
+        var ptype = $("#Payment_Method").val();
+        if (ptype == 1) {
+            $("#Accountno,#IFSC,#RTGSAMT").prop("required", true);
+            $("#rtgs").show();
+            asasas = $("#RTGSAmtPaying").val();
+        } else {
+            $("#Accountno,#IFSC,#RTGSAMT").prop("required", false);
+            $("#rtgs").hide();
+        }
+        if (ptype == 3) {
+            $("#CashPartyName,#CashAmt").prop("required", true);
+            $("#cash").show();
+            asasas = $("#CashAmt").val();
+        } else {
+            $("#CashPartyName,#CashAmt").prop("required", false);
+            $("#cash").hide();
+        }
+        if (ptype == 2) {
+            $("#CHequeno,#CheqAmt,#CheqPartyname").prop("required", true);
+            $("#cheq").show();
+            asasas = $("#ChequeAmtpaying").val();
+        } else {
+            $("#CHequeno,#CheqAmt,#CheqPartyname").prop("required", false);
+            $("#cheq").hide();
+        }
+        $("#Payment_Method").change(function () {
+            var ptype = $("#Payment_Method").val();
+            if (ptype == 1) {
+                $("#Accountno,#IFSC,#RTGSAMT").prop("required", true);
+                $("#rtgs").show();
+                asasas = $("#RTGSAmtPaying").val();
+            } else {
+                $("#Accountno,#IFSC,#RTGSAMT").prop("required", false);
+                $("#rtgs").hide();
+            }
+            if (ptype == 3) {
+                $("#CashPartyName,#CashAmt").prop("required", true);
+                $("#cash").show();
+                asasas = $("#CashAmt").val();
+            } else {
+                $("#CashPartyName,#CashAmt").prop("required", false);
+                $("#cash").hide();
+            }
+            if (ptype == 2) {
+                $("#CHequeno,#CheqAmt,#CheqPartyname").prop("required", true);
+                $("#cheq").show();
+                asasas = $("#ChequeAmtpaying").val();
+            } else {
+                $("#CHequeno,#CheqAmt,#CheqPartyname").prop("required", false);
+                $("#cheq").hide();
+            }
+        })
+        if ('@ViewBag.problem' != '') {
+            jAlert("Outstanding Amount Required...", "SystemAlert")
+        }
+        //$("#RTGSAMT").keyup(function () {
+        //    debugger;
+        //    $("#CashAmt").val('');
+        //    $("#CheqAmt").val('');
+        //    var amt = $("#RTGSAMT").val();
+        //    var totalpay = $("#outAmt").val();
+        //    if (totalpay != "") {
+        //        if (parseFloat(amt) > parseFloat(totalpay)) {
+        //            jAlert("Enter Valid Amount..", "SystemAlert");
+        //            $("#RTGSAMT").val('');
+        //        }
+        //    }
+        //    else {
+        //        $("#outAmt").val(0);
+        //        jAlert("OutStanding Amount Zero..", "SystemAlert");
+        //    }
+        //})
+        //$("#CashAmt").keyup(function () {
+        //    debugger;
+        //    var amt = $("#CashAmt").val();
+        //    var totalpay = $("#outAmt").val();
+        //    $("#RTGSAMT").val('');
+        //    $("#CheqAmt").val('');
+        //    if (totalpay != "") {
+        //        if (parseFloat(amt) > parseFloat(totalpay)) {
+        //            jAlert("Enter Valid Amount..", "SystemAlert");
+        //            $("#CashAmt").val('');
+        //        }
+        //    }
+        //    else {
+        //        $("#outAmt").val(0);
+        //        jAlert("OutStanding Amount Zero..", "SystemAlert");
+        //    }
+        //})
+        //$("#CheqAmt").keyup(function () {
+        //    debugger;
+        //    var amt = $("#CheqAmt").val();
+        //    var totalpay = $("#outAmt").val();
+        //    $("#RTGSAMT").val('');
+        //    $("#CashAmt").val('');
+        //    if (totalpay != "") {
+        //        if (parseFloat(amt) > parseFloat(totalpay)) {
+        //            jAlert("Enter Valid Amount..", "SystemAlert");
+        //            $("#CheqAmt").val('');
+        //        }
+        //    }
+        //    else {
+        //        $("#outAmt").val(0);
+        //        jAlert("OutStanding Amount Zero..", "SystemAlert");
+        //    }
+        //})
+
+        $("#farid").change(function () {
+            FindOutstanding();
+        })
+        $("#drid").change(function () {
+            FindOutstanding();
+        })
+    });
+    $('.groupOfTexbox').keypress(function (event) {
+        return isNumber(event, this)
+    });
+    function DeleteProduct(cname) {
+        jAlert("Dealer not allow to delete...", "Alert")
+    }
+
+    function formatJsonDate(jsonDate) {
+        if (jsonDate == null) {
+            return "";
+        }
+        else {
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+    };
+    function FindOutstanding() {
+        debugger;
+        var Fid = $("#farid").val();
+        var Did = $("#drid").val();
+        if (Fid == "" && Did == "") {
+            jAlert("Please select Farmer name or dealer name.", "SystemAlert");
+        }
+        else {
+            $.post("/PooldataMachine/GetOutStanding?Farid=" + Fid + "&deal=" + Did, function (data) {
+                $("#outAmt").val(data);
+                $("#CashAmt,#CheqAmt,#RTGSAMT").val(data);
+                var url = '@Url.Action("OutStandingPaymentList", "PooldataMachine")' + '?frid=' + Fid + '&drid=' + Did;
+                $.post(url, "", function (data) {
+                    $("#payList").html('');
+                    if (data != "") {
+                        $("#payList").append(data);                     
+                    } else {
+                        jAlert('Error has occurred', 'System Alert');
+                    }
+                });
+            })
+        }
+    }
+</script>

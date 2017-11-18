@@ -1,0 +1,103 @@
+﻿@model Microsoft.AspNet.Identity.EntityFramework.IdentityRole
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Create Role</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Create Role
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">                      
+                                @using (Html.BeginForm("RoleMaster", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                                {
+                                    <div class="col-sm-5">                                      
+                                        <div class="body">
+                                            @Html.AntiForgeryToken()
+                                            @Html.ValidationSummary("", new { @class = "text-danger" })                                           
+                                                @Html.HiddenFor(m => m.Id)
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <label>Role Name <span style="color: red">*</span></label>
+                                                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Enter Role", @required = "required" })
+                                                </div>
+                                            </div>
+                                          
+                                            <input type="submit" value="Create" class="btn-primary" />
+                                        </div>
+                                    </div>
+                                }   
+                        <div class="col-sm-7">
+
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable " style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>Role Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                            </table>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<script src="~/Content/Theam/plugins/jquery/jquery.js"></script>
+<script src="~/Content/Theam/js/admin.js"></script>
+<script src="~/Content/Theam/plugins/jquery-datatable/jquery.dataTables.js"></script>
+<script type="text/javascript">
+
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/Account/GetRoleList",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "Id", "name": "Id", "orderable": false, "autoWidth": true },
+                { "data": "Name", "Name": "Name", "autoWidth": true },
+                {
+                    "data": "Id", "orderable": false, "render": function (data, type, full, meta) {
+                        return '<a href="#" onclick="alertfu()">Edit</a> | <a href="#" onclick="alertfun()">Delete</a>';
+                    }
+                }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+
+    function alertfu()
+    {
+        jAlert("System Not Allowed to edit?", "Alert")
+    }
+    function alertfun() {
+        jAlert("System Not Allowed to Delete?", "Alert")
+    }
+</script>

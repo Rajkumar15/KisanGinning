@@ -1,0 +1,105 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>User List</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                       User List
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-lg-12">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-8">
+                                <div class="box">                                    
+                                    <div class="body">
+                                        <table class="table table-bordered table-striped table-hover js-basic-example dataTable " style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        #
+                                                    </th>
+                                                    <th>Full Name</th>
+                                                    <th>Address</th>
+                                                    <th>Mobile No</th>
+                                                    <th>Email Id</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#pkid").val() != "")
+        { $("#but").val("Update") }
+    })
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/SystemMaster/GetUserList",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                { "data": "fullname", "Name": "fullname", "autoWidth": true },
+                { "data": "add", "Name": "add", "autoWidth": true },
+                { "data": "mob", "Name": "mob", "autoWidth": true },
+                  { "data": "emailid", "Name": "emailid", "autoWidth": true },
+                {
+                    "data": "Id", "orderable": false, "render": function (data, type, full, meta) {
+                        return '<a href=/SystemMaster/InfoRegister?_id=' + data + '>Edit</a> ';
+                    }
+                }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+
+    function DeleteCategory(cname) {
+        debugger;
+        jConfirm("Are you sure?", 'Confirmation', function (r) {
+            if (r) {
+                var id = $(cname).attr("data-Id");
+                $.get("/SystemMaster/Deleteuser?_id=" + id + "", function (data) {
+                    jAlert("Data Removed....")
+                }).done(function () {
+                    location.reload();
+                })
+
+            }
+        })
+
+    }
+</script>

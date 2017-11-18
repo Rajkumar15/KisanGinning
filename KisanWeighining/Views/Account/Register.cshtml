@@ -1,0 +1,136 @@
+﻿@model KisanWeighining.Models.RegisterViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .form-horizontal .form-group {
+          margin-right: 0px;
+    margin-left: 0px;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Create New User</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Create User
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary()                    
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Email Id <span style="color: red">*</span></label>
+                                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", placeholder = "Enter Email", @required = "required" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Password <span style="color: red">*</span></label>
+                                    @Html.PasswordFor(x => x.Password, new { @class = "form-control", placeholder = "Password", @required = "required"})
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>Confirm Password <span style="color: red">*</span></label>
+                                    @Html.PasswordFor(x => x.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password", @required = "required"})
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <label>User Role <span style="color: red">*</span></label>
+                                    @Html.DropDownListFor(m => m.UserRoles, (IEnumerable<SelectListItem>)@ViewBag.rolelist, new { @class = "mydropdown" })
+                                </div>
+                            </div>
+                            <hr />
+                            <input type="submit" value="Create" class="btn-primary" />
+                        </div>
+                        }
+                        <div class="col-sm-7">
+
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable " style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>Full Name</th>
+                                        <th>Address</th>
+                                        <th>Mobile No</th>
+                                        <th>Email Id</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/Content/Theam/plugins/jquery/jquery.js"></script>
+<script src="~/Content/Theam/js/admin.js"></script>
+<script src="~/Content/Theam/plugins/jquery-datatable/jquery.dataTables.js"></script>
+<script type="text/javascript">
+
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/SystemMaster/GetUserList",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                { "data": "fullname", "Name": "fullname", "autoWidth": true },
+                { "data": "add", "Name": "add", "autoWidth": true },
+                { "data": "mob", "Name": "mob", "autoWidth": true },
+                  { "data": "emailid", "Name": "emailid", "autoWidth": true },
+                {
+                    "data": "pkid", "orderable": false, "render": function (data, type, full, meta) {
+                        return '<a href=/SystemMaster/InfoRegister?userid=' + data + '>Edit</a> | <a href="#" data-Id=' + data + ' onclick="DeleteCategory(this)"  ">Delete</a>';
+                    }
+                }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+
+    function DeleteCategory(cname) {
+        debugger;
+        //jConfirm("Are you sure?", 'Confirmation', function (r) {
+        //    if (r) {
+        //        var id = $(cname).attr("data-Id");
+        //        $.get("/SystemMaster/Deleteuser?_id=" + id + "", function (data) {
+        //            jAlert("Data Removed....")
+        //        }).done(function () {
+        //            location.reload();
+        //        })
+
+        //    }
+        //})
+        jAlert("User Delete Are Not Allowed.....")
+    }
+</script>

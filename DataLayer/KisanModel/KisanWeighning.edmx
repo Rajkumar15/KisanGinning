@@ -1,0 +1,1611 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="KisanWeighningModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_BankDetailsPerPurchase">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="purchase_fkid" Type="int" />
+          <Property Name="Bank_name" Type="varchar(max)" />
+          <Property Name="Branchname" Type="varchar(max)" />
+          <Property Name="AccountHolder" Type="varchar(max)" />
+          <Property Name="Accountno" Type="varchar(max)" />
+          <Property Name="Ifsccode" Type="varchar(max)" />
+          <Property Name="Cheq_Partyname" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_BrokerMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Brokername" Type="varchar(max)" />
+          <Property Name="address1" Type="varchar(max)" />
+          <Property Name="address2" Type="varchar(max)" />
+          <Property Name="mobile" Type="varchar" MaxLength="50" />
+          <Property Name="emailid" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_CashCreditMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="datetime" />
+          <Property Name="purchaseorsale" Type="int" />
+          <Property Name="amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="invoiceidorexpensid" Type="int" />
+          <Property Name="currentdatetime" Type="datetime" />
+          <Property Name="mid" Type="int" />
+          <Property Name="mdate" Type="datetime" />
+          <Property Name="payment_fkid" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_CashReceipt">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="personname" Type="varchar(max)" />
+          <Property Name="date" Type="datetime" />
+          <Property Name="cashAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="sourcename" Type="varchar(max)" />
+          <Property Name="currentdate" Type="datetime" />
+          <Property Name="mid" Type="int" />
+          <Property Name="payment_fkid" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_categoryMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="categoryname" Type="nvarchar" MaxLength="50" />
+          <Property Name="categ_description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_DealerMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fullname" Type="varchar(max)" />
+          <Property Name="address1" Type="varchar(max)" />
+          <Property Name="address2" Type="varchar(max)" />
+          <Property Name="mobileno" Type="varchar" MaxLength="50" />
+          <Property Name="emailid" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_ExpensesMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="datetime" />
+          <Property Name="purposeid" Type="int" />
+          <Property Name="personname" Type="varchar(max)" />
+          <Property Name="Payment_type" Type="int" />
+          <Property Name="amt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Pay_Infofkid" Type="int" />
+          <Property Name="remark" Type="varchar(max)" />
+          <Property Name="mid" Type="int" />
+          <Property Name="mdate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tbl_ExpensesPurposeMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="purposename" Type="varchar(max)" />
+          <Property Name="mid" Type="int" />
+          <Property Name="mdate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tbl_farmer_dealer_Mapping">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="farmerid" Type="int" />
+          <Property Name="dealerid" Type="int" />
+          <Property Name="dealername" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_FarmerMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fullname" Type="nvarchar(max)" />
+          <Property Name="address1" Type="nvarchar(max)" />
+          <Property Name="address2" Type="nvarchar(max)" />
+          <Property Name="mobileno" Type="nvarchar" MaxLength="20" />
+          <Property Name="villagename" Type="nchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="tbl_MasterMenuName">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="550" />
+        </EntityType>
+        <EntityType Name="tbl_MenuMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="master_id" Type="int" />
+          <Property Name="MenuName" Type="varchar" MaxLength="550" />
+          <Property Name="manulink" Type="varchar(max)" />
+          <Property Name="allowrole" Type="int" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_PaymentType">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="paymenttypename" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_pool_MachineData_Purchase">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TicketNo" Type="varchar(max)" />
+          <Property Name="ticketdate" Type="datetime" />
+          <Property Name="farmerid" Type="int" />
+          <Property Name="truckRFID" Type="varchar(max)" />
+          <Property Name="Intime" Type="datetime" />
+          <Property Name="outtime" Type="datetime" />
+          <Property Name="producttypeid" Type="int" />
+          <Property Name="Grossweight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TairWeight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="NetWeight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="machine_fkid" Type="bigint" />
+          <Property Name="transportname" Type="varchar(max)" />
+          <Property Name="challanno" Type="varchar(max)" />
+          <Property Name="challanweight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="field1" Type="varchar(max)" />
+          <Property Name="field2" Type="varchar(max)" />
+          <Property Name="field3" Type="varchar(max)" />
+          <Property Name="unit" Type="varchar" MaxLength="550" />
+          <Property Name="weighningcharges" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="invoicestatus" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_productMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="productname" Type="nvarchar(max)" />
+          <Property Name="productdescription" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="producttype" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_ProductTaxEntry">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Product_fkid" Type="int" />
+          <Property Name="HSNno" Type="varchar(max)" />
+          <Property Name="tax_fkid" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_PurchaseEntry_Master">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="purchasemachine_fkid" Type="int" />
+          <Property Name="drivername" Type="varchar(max)" />
+          <Property Name="farmermobileno" Type="varchar" MaxLength="50" />
+          <Property Name="drivermobileno" Type="varchar" MaxLength="50" />
+          <Property Name="rate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="qunatity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="RTGSCharges" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="kata" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="unloading" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="bankcharges" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CD_dalali" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="totaldeduction" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="advance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="bhada" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="loadingcharges" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="netpayable_amt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="cd" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="mapai" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="advance_remark" Type="varchar(max)" />
+          <Property Name="Dealer_fkid" Type="int" />
+          <Property Name="currentdatetime" Type="datetime" />
+          <Property Name="PaymentStatus" Type="int" />
+          <Property Name="paymentdays" Type="datetime" />
+          <Property Name="VillageName" Type="varchar(max)" />
+          <Property Name="stockread" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_PurchaseEntry_Master_Payment">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Purchase_fkid" Type="int" />
+          <Property Name="invoice_fkid" Type="int" />
+          <Property Name="PaymentMethod" Type="int" />
+          <Property Name="RtgsDetail_fkid" Type="int" />
+          <Property Name="RTGSAmtPaying" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ChequeAmtpaying" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="chequ_No" Type="varchar(max)" />
+          <Property Name="cheqDetail_fkid" Type="int" />
+          <Property Name="CashPaidTO" Type="varchar(max)" />
+          <Property Name="CashAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="pendingAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="datetime" Type="datetime" />
+          <Property Name="returnFlag" Type="int" />
+          <Property Name="returnAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="returndate" Type="datetime" />
+          <Property Name="Currentopeningbalance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ClearingDate" Type="datetime" />
+          <Property Name="Status" Type="int" />
+          <Property Name="sendtobank" Type="int" />
+          <Property Name="DetailsTransaction" Type="varchar(max)" />
+          <Property Name="OutstandingStatus" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_PurchaseOutStanding">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="farid" Type="int" />
+          <Property Name="drid" Type="int" />
+          <Property Name="outAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="payingamt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CheqPartyname" Type="varchar(max)" />
+          <Property Name="CheqAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CashAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="RTGSAMT" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CashPartyName" Type="varchar(max)" />
+          <Property Name="BankName" Type="varchar(max)" />
+          <Property Name="BranchName" Type="varchar(max)" />
+          <Property Name="Accountno" Type="varchar(max)" />
+          <Property Name="IFSC" Type="varchar(max)" />
+          <Property Name="SystDate" Type="datetime" />
+          <Property Name="Payment_Method" Type="int" />
+          <Property Name="CHequeno" Type="varchar" MaxLength="1000" />
+          <Property Name="Accoun_holder" Type="varchar(max)" />
+          <Property Name="Details" Type="varchar(max)" />
+          <Property Name="statusa" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_PurchseStockMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="purchase_fkid" Type="int" />
+          <Property Name="product_fkid" Type="int" />
+          <Property Name="previousStock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ReceivedStock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TotalStock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Inpudate" Type="datetime" />
+          <Property Name="Machineentrydate" Type="datetime" />
+          <Property Name="Lastmodifieddate" Type="datetime" />
+          <Property Name="Balancestock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="int" />
+          <Property Name="mid" Type="int" />
+          <Property Name="cid" Type="int" />
+          <Property Name="mdata" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_RemoteConnection">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="serverName" Type="varchar(max)" />
+          <Property Name="dataBaseName" Type="varchar(max)" />
+          <Property Name="userName" Type="varchar" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+          <Property Name="comments" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_SalesEntry_Master">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Purchase_fkid" Type="int" />
+          <Property Name="ProductType_fkid" Type="int" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="partyid" Type="int" />
+          <Property Name="prno" Type="varchar(max)" />
+          <Property Name="topr" Type="varchar(max)" />
+          <Property Name="pmark" Type="varchar(max)" />
+          <Property Name="deliveryfromdate" Type="datetime" />
+          <Property Name="FPbales" Type="varchar" MaxLength="1000" />
+          <Property Name="Quality" Type="varchar" MaxLength="1000" />
+          <Property Name="lotno" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="noofbales" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="grossweight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="tareweight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="qtl" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="kilogram" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="netweight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ratepercandy" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="rateperqtl" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="deliveryspotmill" Type="varchar(max)" />
+          <Property Name="amtinword" Type="varchar(max)" />
+          <Property Name="frightothercharges" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="totalamt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="totalamount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SGST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CGST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IGST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="advance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="against" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="NetPayableAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="brokerid" Type="int" />
+          <Property Name="saudadate" Type="datetime" />
+          <Property Name="paycondition" Type="int" />
+          <Property Name="truckid" Type="int" />
+          <Property Name="transport_fkid" Type="int" />
+          <Property Name="drivername" Type="varchar(max)" />
+          <Property Name="diversighn" Type="varchar(max)" />
+          <Property Name="packagingcgaeges" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CashDiscount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="cashDiscountAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="InsuranceNo" Type="varchar(max)" />
+          <Property Name="PaymentStatus" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_SalesEntry_Master_Payment">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Purchase_fkid" Type="int" />
+          <Property Name="invoice_fkid" Type="int" />
+          <Property Name="PaymentMethod" Type="int" />
+          <Property Name="RtgsDetail_fkid" Type="int" />
+          <Property Name="RTGSAmtPaying" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ChequeAmtpaying" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="chequ_No" Type="varchar(max)" />
+          <Property Name="cheqDetail_fkid" Type="int" />
+          <Property Name="CashPaidTO" Type="varchar(max)" />
+          <Property Name="CashAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="pendingAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="datetime" Type="datetime" />
+          <Property Name="returnFlag" Type="int" />
+          <Property Name="returnAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="returndate" Type="datetime" />
+          <Property Name="Currentopeningbalance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ClearingDate" Type="datetime" />
+          <Property Name="Status" Type="int" />
+          <Property Name="sendtobank" Type="int" />
+          <Property Name="DetailsTransaction" Type="varchar(max)" />
+          <Property Name="OutstandingStatus" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_SalesOutStanding">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="partyid" Type="int" />
+          <Property Name="brokerid" Type="int" />
+          <Property Name="outAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="payingamt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CheqPartyname" Type="varchar(max)" />
+          <Property Name="CheqAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CashAmt" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="RTGSAMT" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CashPartyName" Type="varchar(max)" />
+          <Property Name="BankName" Type="varchar(max)" />
+          <Property Name="BranchName" Type="varchar(max)" />
+          <Property Name="Accountno" Type="varchar(max)" />
+          <Property Name="IFSC" Type="varchar(max)" />
+          <Property Name="SystDate" Type="datetime" />
+          <Property Name="Payment_Method" Type="int" />
+          <Property Name="CHequeno" Type="varchar" MaxLength="1000" />
+          <Property Name="Accoun_holder" Type="varchar(max)" />
+          <Property Name="Details" Type="varchar(max)" />
+          <Property Name="statusa" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_salesPartyRegistartion">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sale_fkid" Type="int" />
+          <Property Name="partyname" Type="varchar(max)" />
+          <Property Name="address1" Type="varchar(max)" />
+          <Property Name="address2" Type="varchar(max)" />
+          <Property Name="mobileno" Type="varchar" MaxLength="50" />
+          <Property Name="emailid" Type="varchar" MaxLength="50" />
+          <Property Name="GSTNo" Type="varchar(max)" />
+          <Property Name="Partyregdate" Type="datetime" />
+          <Property Name="city" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_SalesSockMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="stock_fkid" Type="int" />
+          <Property Name="produceCottonbells" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="produceCottonSeed" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="totalStock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="produceTotalStock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="balancestock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="lastmodifieddate" Type="datetime" />
+          <Property Name="mid" Type="int" />
+          <Property Name="cid" Type="int" />
+          <Property Name="mdata" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_TaxMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Saletype" Type="varchar(max)" />
+          <Property Name="taxper" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="datetime" Type="datetime" />
+          <Property Name="CGST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SGST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IGST" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="tbl_TransportMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="transportname" Type="varchar(max)" />
+          <Property Name="address1" Type="varchar(max)" />
+          <Property Name="address2" Type="varchar(max)" />
+          <Property Name="mobileno" Type="varchar" MaxLength="50" />
+          <Property Name="emailid" Type="varchar" MaxLength="50" />
+          <Property Name="ownername" Type="varchar(max)" />
+          <Property Name="ownermobileno" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_truck_Transport_Mapping">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="truckid" Type="int" />
+          <Property Name="transportid" Type="int" />
+          <Property Name="mappingRFID" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_truckMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RFIDnumber" Type="varchar(max)" />
+          <Property Name="truckno" Type="varchar(max)" />
+          <Property Name="tairweight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="capcity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="trucktype" Type="varchar(max)" />
+          <Property Name="salespurchase" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_UserDetails">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User_fkid" Type="varchar" MaxLength="1000" />
+          <Property Name="firstname" Type="varchar" MaxLength="1000" />
+          <Property Name="middlename" Type="varchar" MaxLength="500" />
+          <Property Name="lastname" Type="varchar" MaxLength="500" />
+          <Property Name="Address1" Type="varchar(max)" />
+          <Property Name="Address2" Type="nvarchar(max)" />
+          <Property Name="mobileno" Type="nvarchar" MaxLength="50" />
+          <Property Name="emailid" Type="varchar" MaxLength="500" />
+          <Property Name="stateid" Type="int" />
+          <Property Name="cityid" Type="int" />
+          <Property Name="department" Type="int" />
+        </EntityType>
+        <EntityContainer Name="KisanWeighningModelStoreContainer">
+          <EntitySet Name="tbl_BankDetailsPerPurchase" EntityType="Self.tbl_BankDetailsPerPurchase" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_BrokerMaster" EntityType="Self.tbl_BrokerMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_CashCreditMaster" EntityType="Self.tbl_CashCreditMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_CashReceipt" EntityType="Self.tbl_CashReceipt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_categoryMaster" EntityType="Self.tbl_categoryMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_DealerMaster" EntityType="Self.tbl_DealerMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_ExpensesMaster" EntityType="Self.tbl_ExpensesMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_ExpensesPurposeMaster" EntityType="Self.tbl_ExpensesPurposeMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_farmer_dealer_Mapping" EntityType="Self.tbl_farmer_dealer_Mapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_FarmerMaster" EntityType="Self.tbl_FarmerMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_MasterMenuName" EntityType="Self.tbl_MasterMenuName" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_MenuMaster" EntityType="Self.tbl_MenuMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_PaymentType" EntityType="Self.tbl_PaymentType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_pool_MachineData_Purchase" EntityType="Self.tbl_pool_MachineData_Purchase" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_productMaster" EntityType="Self.tbl_productMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_ProductTaxEntry" EntityType="Self.tbl_ProductTaxEntry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_PurchaseEntry_Master" EntityType="Self.tbl_PurchaseEntry_Master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_PurchaseEntry_Master_Payment" EntityType="Self.tbl_PurchaseEntry_Master_Payment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_PurchaseOutStanding" EntityType="Self.tbl_PurchaseOutStanding" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_PurchseStockMaster" EntityType="Self.tbl_PurchseStockMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_RemoteConnection" EntityType="Self.tbl_RemoteConnection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_SalesEntry_Master" EntityType="Self.tbl_SalesEntry_Master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_SalesEntry_Master_Payment" EntityType="Self.tbl_SalesEntry_Master_Payment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_SalesOutStanding" EntityType="Self.tbl_SalesOutStanding" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_salesPartyRegistartion" EntityType="Self.tbl_salesPartyRegistartion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_SalesSockMaster" EntityType="Self.tbl_SalesSockMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_TaxMaster" EntityType="Self.tbl_TaxMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_TransportMaster" EntityType="Self.tbl_TransportMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_truck_Transport_Mapping" EntityType="Self.tbl_truck_Transport_Mapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_truckMaster" EntityType="Self.tbl_truckMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_UserDetails" EntityType="Self.tbl_UserDetails" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KisanWeighningModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_BankDetailsPerPurchase">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="purchase_fkid" Type="Int32" />
+          <Property Name="Bank_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Branchname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AccountHolder" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Accountno" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Ifsccode" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Cheq_Partyname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_BrokerMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Brokername" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emailid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_CashCreditMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <Property Name="purchaseorsale" Type="Int32" />
+          <Property Name="amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="invoiceidorexpensid" Type="Int32" />
+          <Property Name="currentdatetime" Type="DateTime" Precision="3" />
+          <Property Name="mid" Type="Int32" />
+          <Property Name="mdate" Type="DateTime" Precision="3" />
+          <Property Name="payment_fkid" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_CashReceipt">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="personname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <Property Name="cashAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="sourcename" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="currentdate" Type="DateTime" Precision="3" />
+          <Property Name="mid" Type="Int32" />
+          <Property Name="payment_fkid" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_categoryMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="categoryname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="categ_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbl_DealerMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fullname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="mobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emailid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_ExpensesMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <Property Name="purposeid" Type="Int32" />
+          <Property Name="personname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Payment_type" Type="Int32" />
+          <Property Name="amt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Pay_Infofkid" Type="Int32" />
+          <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="mid" Type="Int32" />
+          <Property Name="mdate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_ExpensesPurposeMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="purposename" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="mid" Type="Int32" />
+          <Property Name="mdate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_farmer_dealer_Mapping">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="farmerid" Type="Int32" />
+          <Property Name="dealerid" Type="Int32" />
+          <Property Name="dealername" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_FarmerMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fullname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="mobileno" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="villagename" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbl_MasterMenuName">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="550" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_MenuMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="master_id" Type="Int32" />
+          <Property Name="MenuName" Type="String" MaxLength="550" FixedLength="false" Unicode="false" />
+          <Property Name="manulink" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="allowrole" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_PaymentType">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="paymenttypename" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_pool_MachineData_Purchase">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TicketNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ticketdate" Type="DateTime" Precision="3" />
+          <Property Name="farmerid" Type="Int32" />
+          <Property Name="truckRFID" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Intime" Type="DateTime" Precision="3" />
+          <Property Name="outtime" Type="DateTime" Precision="3" />
+          <Property Name="producttypeid" Type="Int32" />
+          <Property Name="Grossweight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TairWeight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NetWeight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="machine_fkid" Type="Int64" />
+          <Property Name="transportname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="challanno" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="challanweight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="field1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="field2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="field3" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="unit" Type="String" MaxLength="550" FixedLength="false" Unicode="false" />
+          <Property Name="weighningcharges" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="invoicestatus" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_productMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="productname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="productdescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="producttype" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbl_ProductTaxEntry">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Product_fkid" Type="Int32" />
+          <Property Name="HSNno" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="tax_fkid" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_PurchaseEntry_Master">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="purchasemachine_fkid" Type="Int32" />
+          <Property Name="drivername" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="farmermobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="drivermobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="rate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="qunatity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="RTGSCharges" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="kata" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="unloading" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="bankcharges" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CD_dalali" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="totaldeduction" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="advance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="bhada" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="loadingcharges" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="netpayable_amt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cd" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="mapai" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="advance_remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Dealer_fkid" Type="Int32" />
+          <Property Name="currentdatetime" Type="DateTime" Precision="3" />
+          <Property Name="PaymentStatus" Type="Int32" />
+          <Property Name="paymentdays" Type="DateTime" Precision="3" />
+          <Property Name="VillageName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="stockread" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_PurchaseEntry_Master_Payment">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Purchase_fkid" Type="Int32" />
+          <Property Name="invoice_fkid" Type="Int32" />
+          <Property Name="PaymentMethod" Type="Int32" />
+          <Property Name="RtgsDetail_fkid" Type="Int32" />
+          <Property Name="RTGSAmtPaying" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ChequeAmtpaying" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="chequ_No" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="cheqDetail_fkid" Type="Int32" />
+          <Property Name="CashPaidTO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CashAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="pendingAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="datetime" Type="DateTime" Precision="3" />
+          <Property Name="returnFlag" Type="Int32" />
+          <Property Name="returnAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="returndate" Type="DateTime" Precision="3" />
+          <Property Name="Currentopeningbalance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ClearingDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="sendtobank" Type="Int32" />
+          <Property Name="DetailsTransaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="OutstandingStatus" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_PurchaseOutStanding">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="farid" Type="Int32" />
+          <Property Name="drid" Type="Int32" />
+          <Property Name="outAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="payingamt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CheqPartyname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CheqAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CashAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="RTGSAMT" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CashPartyName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BankName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BranchName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Accountno" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IFSC" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SystDate" Type="DateTime" Precision="3" />
+          <Property Name="Payment_Method" Type="Int32" />
+          <Property Name="CHequeno" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Accoun_holder" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="statusa" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_PurchseStockMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="purchase_fkid" Type="Int32" />
+          <Property Name="product_fkid" Type="Int32" />
+          <Property Name="previousStock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ReceivedStock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalStock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Inpudate" Type="DateTime" Precision="3" />
+          <Property Name="Machineentrydate" Type="DateTime" Precision="3" />
+          <Property Name="Lastmodifieddate" Type="DateTime" Precision="3" />
+          <Property Name="Balancestock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="mid" Type="Int32" />
+          <Property Name="cid" Type="Int32" />
+          <Property Name="mdata" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_RemoteConnection">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="serverName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="dataBaseName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_SalesEntry_Master">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Purchase_fkid" Type="Int32" />
+          <Property Name="ProductType_fkid" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="partyid" Type="Int32" />
+          <Property Name="prno" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="topr" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="pmark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="deliveryfromdate" Type="DateTime" Precision="3" />
+          <Property Name="FPbales" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Quality" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="lotno" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="noofbales" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="grossweight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="tareweight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="qtl" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="kilogram" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="netweight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ratepercandy" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="rateperqtl" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="deliveryspotmill" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="amtinword" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="frightothercharges" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="totalamt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="totalamount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SGST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CGST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IGST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="advance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="against" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NetPayableAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="brokerid" Type="Int32" />
+          <Property Name="saudadate" Type="DateTime" Precision="3" />
+          <Property Name="paycondition" Type="Int32" />
+          <Property Name="truckid" Type="Int32" />
+          <Property Name="transport_fkid" Type="Int32" />
+          <Property Name="drivername" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="diversighn" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="packagingcgaeges" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CashDiscount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="cashDiscountAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="InsuranceNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentStatus" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_SalesEntry_Master_Payment">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Purchase_fkid" Type="Int32" />
+          <Property Name="invoice_fkid" Type="Int32" />
+          <Property Name="PaymentMethod" Type="Int32" />
+          <Property Name="RtgsDetail_fkid" Type="Int32" />
+          <Property Name="RTGSAmtPaying" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ChequeAmtpaying" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="chequ_No" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="cheqDetail_fkid" Type="Int32" />
+          <Property Name="CashPaidTO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CashAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="pendingAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="datetime" Type="DateTime" Precision="3" />
+          <Property Name="returnFlag" Type="Int32" />
+          <Property Name="returnAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="returndate" Type="DateTime" Precision="3" />
+          <Property Name="Currentopeningbalance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ClearingDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="sendtobank" Type="Int32" />
+          <Property Name="DetailsTransaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="OutstandingStatus" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_SalesOutStanding">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="partyid" Type="Int32" />
+          <Property Name="brokerid" Type="Int32" />
+          <Property Name="outAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="payingamt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CheqPartyname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CheqAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CashAmt" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="RTGSAMT" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CashPartyName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BankName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BranchName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Accountno" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IFSC" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SystDate" Type="DateTime" Precision="3" />
+          <Property Name="Payment_Method" Type="Int32" />
+          <Property Name="CHequeno" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Accoun_holder" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="statusa" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_salesPartyRegistartion">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sale_fkid" Type="Int32" />
+          <Property Name="partyname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="mobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emailid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GSTNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Partyregdate" Type="DateTime" Precision="3" />
+          <Property Name="city" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_SalesSockMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="stock_fkid" Type="Int32" />
+          <Property Name="produceCottonbells" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="produceCottonSeed" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="totalStock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="produceTotalStock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="balancestock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="lastmodifieddate" Type="DateTime" Precision="3" />
+          <Property Name="mid" Type="Int32" />
+          <Property Name="cid" Type="Int32" />
+          <Property Name="mdata" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_TaxMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Saletype" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="taxper" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="datetime" Type="DateTime" Precision="3" />
+          <Property Name="CGST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SGST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IGST" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="tbl_TransportMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="transportname" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="mobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emailid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ownername" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ownermobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_truck_Transport_Mapping">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="truckid" Type="Int32" />
+          <Property Name="transportid" Type="Int32" />
+          <Property Name="mappingRFID" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_truckMaster">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RFIDnumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="truckno" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="tairweight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="capcity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="trucktype" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="salespurchase" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbl_UserDetails">
+          <Key>
+            <PropertyRef Name="pkid" />
+          </Key>
+          <Property Name="pkid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_fkid" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="firstname" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="middlename" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="lastname" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="mobileno" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="emailid" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="stateid" Type="Int32" />
+          <Property Name="cityid" Type="Int32" />
+          <Property Name="department" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="KisanWeighningEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_BankDetailsPerPurchase" EntityType="Self.tbl_BankDetailsPerPurchase" />
+          <EntitySet Name="tbl_BrokerMaster" EntityType="Self.tbl_BrokerMaster" />
+          <EntitySet Name="tbl_CashCreditMaster" EntityType="Self.tbl_CashCreditMaster" />
+          <EntitySet Name="tbl_CashReceipt" EntityType="Self.tbl_CashReceipt" />
+          <EntitySet Name="tbl_categoryMaster" EntityType="Self.tbl_categoryMaster" />
+          <EntitySet Name="tbl_DealerMaster" EntityType="Self.tbl_DealerMaster" />
+          <EntitySet Name="tbl_ExpensesMaster" EntityType="Self.tbl_ExpensesMaster" />
+          <EntitySet Name="tbl_ExpensesPurposeMaster" EntityType="Self.tbl_ExpensesPurposeMaster" />
+          <EntitySet Name="tbl_farmer_dealer_Mapping" EntityType="Self.tbl_farmer_dealer_Mapping" />
+          <EntitySet Name="tbl_FarmerMaster" EntityType="Self.tbl_FarmerMaster" />
+          <EntitySet Name="tbl_MasterMenuName" EntityType="Self.tbl_MasterMenuName" />
+          <EntitySet Name="tbl_MenuMaster" EntityType="Self.tbl_MenuMaster" />
+          <EntitySet Name="tbl_PaymentType" EntityType="Self.tbl_PaymentType" />
+          <EntitySet Name="tbl_pool_MachineData_Purchase" EntityType="Self.tbl_pool_MachineData_Purchase" />
+          <EntitySet Name="tbl_productMaster" EntityType="Self.tbl_productMaster" />
+          <EntitySet Name="tbl_ProductTaxEntry" EntityType="Self.tbl_ProductTaxEntry" />
+          <EntitySet Name="tbl_PurchaseEntry_Master" EntityType="Self.tbl_PurchaseEntry_Master" />
+          <EntitySet Name="tbl_PurchaseEntry_Master_Payment" EntityType="Self.tbl_PurchaseEntry_Master_Payment" />
+          <EntitySet Name="tbl_PurchaseOutStanding" EntityType="Self.tbl_PurchaseOutStanding" />
+          <EntitySet Name="tbl_PurchseStockMaster" EntityType="Self.tbl_PurchseStockMaster" />
+          <EntitySet Name="tbl_RemoteConnection" EntityType="Self.tbl_RemoteConnection" />
+          <EntitySet Name="tbl_SalesEntry_Master" EntityType="Self.tbl_SalesEntry_Master" />
+          <EntitySet Name="tbl_SalesEntry_Master_Payment" EntityType="Self.tbl_SalesEntry_Master_Payment" />
+          <EntitySet Name="tbl_SalesOutStanding" EntityType="Self.tbl_SalesOutStanding" />
+          <EntitySet Name="tbl_salesPartyRegistartion" EntityType="Self.tbl_salesPartyRegistartion" />
+          <EntitySet Name="tbl_SalesSockMaster" EntityType="Self.tbl_SalesSockMaster" />
+          <EntitySet Name="tbl_TaxMaster" EntityType="Self.tbl_TaxMaster" />
+          <EntitySet Name="tbl_TransportMaster" EntityType="Self.tbl_TransportMaster" />
+          <EntitySet Name="tbl_truck_Transport_Mapping" EntityType="Self.tbl_truck_Transport_Mapping" />
+          <EntitySet Name="tbl_truckMaster" EntityType="Self.tbl_truckMaster" />
+          <EntitySet Name="tbl_UserDetails" EntityType="Self.tbl_UserDetails" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="KisanWeighningModelStoreContainer" CdmEntityContainer="KisanWeighningEntities">
+          <EntitySetMapping Name="tbl_BankDetailsPerPurchase">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_BankDetailsPerPurchase">
+              <MappingFragment StoreEntitySet="tbl_BankDetailsPerPurchase">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="purchase_fkid" ColumnName="purchase_fkid" />
+                <ScalarProperty Name="Bank_name" ColumnName="Bank_name" />
+                <ScalarProperty Name="Branchname" ColumnName="Branchname" />
+                <ScalarProperty Name="AccountHolder" ColumnName="AccountHolder" />
+                <ScalarProperty Name="Accountno" ColumnName="Accountno" />
+                <ScalarProperty Name="Ifsccode" ColumnName="Ifsccode" />
+                <ScalarProperty Name="Cheq_Partyname" ColumnName="Cheq_Partyname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_BrokerMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_BrokerMaster">
+              <MappingFragment StoreEntitySet="tbl_BrokerMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="Brokername" ColumnName="Brokername" />
+                <ScalarProperty Name="address1" ColumnName="address1" />
+                <ScalarProperty Name="address2" ColumnName="address2" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="emailid" ColumnName="emailid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_CashCreditMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_CashCreditMaster">
+              <MappingFragment StoreEntitySet="tbl_CashCreditMaster">
+                <ScalarProperty Name="payment_fkid" ColumnName="payment_fkid" />
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="purchaseorsale" ColumnName="purchaseorsale" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="invoiceidorexpensid" ColumnName="invoiceidorexpensid" />
+                <ScalarProperty Name="currentdatetime" ColumnName="currentdatetime" />
+                <ScalarProperty Name="mid" ColumnName="mid" />
+                <ScalarProperty Name="mdate" ColumnName="mdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_CashReceipt">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_CashReceipt">
+              <MappingFragment StoreEntitySet="tbl_CashReceipt">
+                <ScalarProperty Name="payment_fkid" ColumnName="payment_fkid" />
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="personname" ColumnName="personname" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="cashAmt" ColumnName="cashAmt" />
+                <ScalarProperty Name="sourcename" ColumnName="sourcename" />
+                <ScalarProperty Name="currentdate" ColumnName="currentdate" />
+                <ScalarProperty Name="mid" ColumnName="mid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_categoryMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_categoryMaster">
+              <MappingFragment StoreEntitySet="tbl_categoryMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="categoryname" ColumnName="categoryname" />
+                <ScalarProperty Name="categ_description" ColumnName="categ_description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_DealerMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_DealerMaster">
+              <MappingFragment StoreEntitySet="tbl_DealerMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="address1" ColumnName="address1" />
+                <ScalarProperty Name="address2" ColumnName="address2" />
+                <ScalarProperty Name="mobileno" ColumnName="mobileno" />
+                <ScalarProperty Name="emailid" ColumnName="emailid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_ExpensesMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_ExpensesMaster">
+              <MappingFragment StoreEntitySet="tbl_ExpensesMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="purposeid" ColumnName="purposeid" />
+                <ScalarProperty Name="personname" ColumnName="personname" />
+                <ScalarProperty Name="Payment_type" ColumnName="Payment_type" />
+                <ScalarProperty Name="amt" ColumnName="amt" />
+                <ScalarProperty Name="Pay_Infofkid" ColumnName="Pay_Infofkid" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="mid" ColumnName="mid" />
+                <ScalarProperty Name="mdate" ColumnName="mdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_ExpensesPurposeMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_ExpensesPurposeMaster">
+              <MappingFragment StoreEntitySet="tbl_ExpensesPurposeMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="purposename" ColumnName="purposename" />
+                <ScalarProperty Name="mid" ColumnName="mid" />
+                <ScalarProperty Name="mdate" ColumnName="mdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_farmer_dealer_Mapping">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_farmer_dealer_Mapping">
+              <MappingFragment StoreEntitySet="tbl_farmer_dealer_Mapping">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="farmerid" ColumnName="farmerid" />
+                <ScalarProperty Name="dealerid" ColumnName="dealerid" />
+                <ScalarProperty Name="dealername" ColumnName="dealername" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_FarmerMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_FarmerMaster">
+              <MappingFragment StoreEntitySet="tbl_FarmerMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="address1" ColumnName="address1" />
+                <ScalarProperty Name="address2" ColumnName="address2" />
+                <ScalarProperty Name="mobileno" ColumnName="mobileno" />
+                <ScalarProperty Name="villagename" ColumnName="villagename" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_MasterMenuName">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_MasterMenuName">
+              <MappingFragment StoreEntitySet="tbl_MasterMenuName">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_MenuMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_MenuMaster">
+              <MappingFragment StoreEntitySet="tbl_MenuMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="master_id" ColumnName="master_id" />
+                <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+                <ScalarProperty Name="manulink" ColumnName="manulink" />
+                <ScalarProperty Name="allowrole" ColumnName="allowrole" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_PaymentType">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_PaymentType">
+              <MappingFragment StoreEntitySet="tbl_PaymentType">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="paymenttypename" ColumnName="paymenttypename" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_pool_MachineData_Purchase">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_pool_MachineData_Purchase">
+              <MappingFragment StoreEntitySet="tbl_pool_MachineData_Purchase">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="TicketNo" ColumnName="TicketNo" />
+                <ScalarProperty Name="ticketdate" ColumnName="ticketdate" />
+                <ScalarProperty Name="farmerid" ColumnName="farmerid" />
+                <ScalarProperty Name="truckRFID" ColumnName="truckRFID" />
+                <ScalarProperty Name="Intime" ColumnName="Intime" />
+                <ScalarProperty Name="outtime" ColumnName="outtime" />
+                <ScalarProperty Name="producttypeid" ColumnName="producttypeid" />
+                <ScalarProperty Name="Grossweight" ColumnName="Grossweight" />
+                <ScalarProperty Name="TairWeight" ColumnName="TairWeight" />
+                <ScalarProperty Name="NetWeight" ColumnName="NetWeight" />
+                <ScalarProperty Name="machine_fkid" ColumnName="machine_fkid" />
+                <ScalarProperty Name="transportname" ColumnName="transportname" />
+                <ScalarProperty Name="challanno" ColumnName="challanno" />
+                <ScalarProperty Name="challanweight" ColumnName="challanweight" />
+                <ScalarProperty Name="field1" ColumnName="field1" />
+                <ScalarProperty Name="field2" ColumnName="field2" />
+                <ScalarProperty Name="field3" ColumnName="field3" />
+                <ScalarProperty Name="unit" ColumnName="unit" />
+                <ScalarProperty Name="weighningcharges" ColumnName="weighningcharges" />
+                <ScalarProperty Name="invoicestatus" ColumnName="invoicestatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_productMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_productMaster">
+              <MappingFragment StoreEntitySet="tbl_productMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="productname" ColumnName="productname" />
+                <ScalarProperty Name="productdescription" ColumnName="productdescription" />
+                <ScalarProperty Name="producttype" ColumnName="producttype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_ProductTaxEntry">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_ProductTaxEntry">
+              <MappingFragment StoreEntitySet="tbl_ProductTaxEntry">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="Product_fkid" ColumnName="Product_fkid" />
+                <ScalarProperty Name="HSNno" ColumnName="HSNno" />
+                <ScalarProperty Name="tax_fkid" ColumnName="tax_fkid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_PurchaseEntry_Master">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_PurchaseEntry_Master">
+              <MappingFragment StoreEntitySet="tbl_PurchaseEntry_Master">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="purchasemachine_fkid" ColumnName="purchasemachine_fkid" />
+                <ScalarProperty Name="drivername" ColumnName="drivername" />
+                <ScalarProperty Name="farmermobileno" ColumnName="farmermobileno" />
+                <ScalarProperty Name="drivermobileno" ColumnName="drivermobileno" />
+                <ScalarProperty Name="rate" ColumnName="rate" />
+                <ScalarProperty Name="qunatity" ColumnName="qunatity" />
+                <ScalarProperty Name="RTGSCharges" ColumnName="RTGSCharges" />
+                <ScalarProperty Name="kata" ColumnName="kata" />
+                <ScalarProperty Name="unloading" ColumnName="unloading" />
+                <ScalarProperty Name="bankcharges" ColumnName="bankcharges" />
+                <ScalarProperty Name="CD_dalali" ColumnName="CD_dalali" />
+                <ScalarProperty Name="totaldeduction" ColumnName="totaldeduction" />
+                <ScalarProperty Name="advance" ColumnName="advance" />
+                <ScalarProperty Name="bhada" ColumnName="bhada" />
+                <ScalarProperty Name="loadingcharges" ColumnName="loadingcharges" />
+                <ScalarProperty Name="netpayable_amt" ColumnName="netpayable_amt" />
+                <ScalarProperty Name="cd" ColumnName="cd" />
+                <ScalarProperty Name="mapai" ColumnName="mapai" />
+                <ScalarProperty Name="advance_remark" ColumnName="advance_remark" />
+                <ScalarProperty Name="Dealer_fkid" ColumnName="Dealer_fkid" />
+                <ScalarProperty Name="currentdatetime" ColumnName="currentdatetime" />
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="paymentdays" ColumnName="paymentdays" />
+                <ScalarProperty Name="VillageName" ColumnName="VillageName" />
+                <ScalarProperty Name="stockread" ColumnName="stockread" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_PurchaseEntry_Master_Payment">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_PurchaseEntry_Master_Payment">
+              <MappingFragment StoreEntitySet="tbl_PurchaseEntry_Master_Payment">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="Purchase_fkid" ColumnName="Purchase_fkid" />
+                <ScalarProperty Name="invoice_fkid" ColumnName="invoice_fkid" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="RtgsDetail_fkid" ColumnName="RtgsDetail_fkid" />
+                <ScalarProperty Name="RTGSAmtPaying" ColumnName="RTGSAmtPaying" />
+                <ScalarProperty Name="ChequeAmtpaying" ColumnName="ChequeAmtpaying" />
+                <ScalarProperty Name="chequ_No" ColumnName="chequ_No" />
+                <ScalarProperty Name="cheqDetail_fkid" ColumnName="cheqDetail_fkid" />
+                <ScalarProperty Name="CashPaidTO" ColumnName="CashPaidTO" />
+                <ScalarProperty Name="CashAmt" ColumnName="CashAmt" />
+                <ScalarProperty Name="pendingAmt" ColumnName="pendingAmt" />
+                <ScalarProperty Name="datetime" ColumnName="datetime" />
+                <ScalarProperty Name="returnFlag" ColumnName="returnFlag" />
+                <ScalarProperty Name="returnAmt" ColumnName="returnAmt" />
+                <ScalarProperty Name="returndate" ColumnName="returndate" />
+                <ScalarProperty Name="Currentopeningbalance" ColumnName="Currentopeningbalance" />
+                <ScalarProperty Name="ClearingDate" ColumnName="ClearingDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="sendtobank" ColumnName="sendtobank" />
+                <ScalarProperty Name="DetailsTransaction" ColumnName="DetailsTransaction" />
+                <ScalarProperty Name="OutstandingStatus" ColumnName="OutstandingStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_PurchaseOutStanding">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_PurchaseOutStanding">
+              <MappingFragment StoreEntitySet="tbl_PurchaseOutStanding">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="farid" ColumnName="farid" />
+                <ScalarProperty Name="drid" ColumnName="drid" />
+                <ScalarProperty Name="outAmt" ColumnName="outAmt" />
+                <ScalarProperty Name="payingamt" ColumnName="payingamt" />
+                <ScalarProperty Name="CheqPartyname" ColumnName="CheqPartyname" />
+                <ScalarProperty Name="CheqAmt" ColumnName="CheqAmt" />
+                <ScalarProperty Name="CashAmt" ColumnName="CashAmt" />
+                <ScalarProperty Name="RTGSAMT" ColumnName="RTGSAMT" />
+                <ScalarProperty Name="CashPartyName" ColumnName="CashPartyName" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="Accountno" ColumnName="Accountno" />
+                <ScalarProperty Name="IFSC" ColumnName="IFSC" />
+                <ScalarProperty Name="SystDate" ColumnName="SystDate" />
+                <ScalarProperty Name="Payment_Method" ColumnName="Payment_Method" />
+                <ScalarProperty Name="CHequeno" ColumnName="CHequeno" />
+                <ScalarProperty Name="Accoun_holder" ColumnName="Accoun_holder" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="statusa" ColumnName="statusa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_PurchseStockMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_PurchseStockMaster">
+              <MappingFragment StoreEntitySet="tbl_PurchseStockMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="purchase_fkid" ColumnName="purchase_fkid" />
+                <ScalarProperty Name="product_fkid" ColumnName="product_fkid" />
+                <ScalarProperty Name="previousStock" ColumnName="previousStock" />
+                <ScalarProperty Name="ReceivedStock" ColumnName="ReceivedStock" />
+                <ScalarProperty Name="TotalStock" ColumnName="TotalStock" />
+                <ScalarProperty Name="Inpudate" ColumnName="Inpudate" />
+                <ScalarProperty Name="Machineentrydate" ColumnName="Machineentrydate" />
+                <ScalarProperty Name="Lastmodifieddate" ColumnName="Lastmodifieddate" />
+                <ScalarProperty Name="Balancestock" ColumnName="Balancestock" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="mid" ColumnName="mid" />
+                <ScalarProperty Name="cid" ColumnName="cid" />
+                <ScalarProperty Name="mdata" ColumnName="mdata" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_RemoteConnection">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_RemoteConnection">
+              <MappingFragment StoreEntitySet="tbl_RemoteConnection">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="serverName" ColumnName="serverName" />
+                <ScalarProperty Name="dataBaseName" ColumnName="dataBaseName" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_SalesEntry_Master">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_SalesEntry_Master">
+              <MappingFragment StoreEntitySet="tbl_SalesEntry_Master">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="Purchase_fkid" ColumnName="Purchase_fkid" />
+                <ScalarProperty Name="ProductType_fkid" ColumnName="ProductType_fkid" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="partyid" ColumnName="partyid" />
+                <ScalarProperty Name="prno" ColumnName="prno" />
+                <ScalarProperty Name="topr" ColumnName="topr" />
+                <ScalarProperty Name="pmark" ColumnName="pmark" />
+                <ScalarProperty Name="deliveryfromdate" ColumnName="deliveryfromdate" />
+                <ScalarProperty Name="FPbales" ColumnName="FPbales" />
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
+                <ScalarProperty Name="lotno" ColumnName="lotno" />
+                <ScalarProperty Name="noofbales" ColumnName="noofbales" />
+                <ScalarProperty Name="grossweight" ColumnName="grossweight" />
+                <ScalarProperty Name="tareweight" ColumnName="tareweight" />
+                <ScalarProperty Name="qtl" ColumnName="qtl" />
+                <ScalarProperty Name="kilogram" ColumnName="kilogram" />
+                <ScalarProperty Name="netweight" ColumnName="netweight" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="ratepercandy" ColumnName="ratepercandy" />
+                <ScalarProperty Name="rateperqtl" ColumnName="rateperqtl" />
+                <ScalarProperty Name="deliveryspotmill" ColumnName="deliveryspotmill" />
+                <ScalarProperty Name="amtinword" ColumnName="amtinword" />
+                <ScalarProperty Name="frightothercharges" ColumnName="frightothercharges" />
+                <ScalarProperty Name="totalamt" ColumnName="totalamt" />
+                <ScalarProperty Name="totalamount" ColumnName="totalamount" />
+                <ScalarProperty Name="SGST" ColumnName="SGST" />
+                <ScalarProperty Name="CGST" ColumnName="CGST" />
+                <ScalarProperty Name="IGST" ColumnName="IGST" />
+                <ScalarProperty Name="advance" ColumnName="advance" />
+                <ScalarProperty Name="against" ColumnName="against" />
+                <ScalarProperty Name="NetPayableAmount" ColumnName="NetPayableAmount" />
+                <ScalarProperty Name="brokerid" ColumnName="brokerid" />
+                <ScalarProperty Name="saudadate" ColumnName="saudadate" />
+                <ScalarProperty Name="paycondition" ColumnName="paycondition" />
+                <ScalarProperty Name="truckid" ColumnName="truckid" />
+                <ScalarProperty Name="transport_fkid" ColumnName="transport_fkid" />
+                <ScalarProperty Name="drivername" ColumnName="drivername" />
+                <ScalarProperty Name="diversighn" ColumnName="diversighn" />
+                <ScalarProperty Name="packagingcgaeges" ColumnName="packagingcgaeges" />
+                <ScalarProperty Name="CashDiscount" ColumnName="CashDiscount" />
+                <ScalarProperty Name="cashDiscountAmt" ColumnName="cashDiscountAmt" />
+                <ScalarProperty Name="InsuranceNo" ColumnName="InsuranceNo" />
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_SalesEntry_Master_Payment">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_SalesEntry_Master_Payment">
+              <MappingFragment StoreEntitySet="tbl_SalesEntry_Master_Payment">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="Purchase_fkid" ColumnName="Purchase_fkid" />
+                <ScalarProperty Name="invoice_fkid" ColumnName="invoice_fkid" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="RtgsDetail_fkid" ColumnName="RtgsDetail_fkid" />
+                <ScalarProperty Name="RTGSAmtPaying" ColumnName="RTGSAmtPaying" />
+                <ScalarProperty Name="ChequeAmtpaying" ColumnName="ChequeAmtpaying" />
+                <ScalarProperty Name="chequ_No" ColumnName="chequ_No" />
+                <ScalarProperty Name="cheqDetail_fkid" ColumnName="cheqDetail_fkid" />
+                <ScalarProperty Name="CashPaidTO" ColumnName="CashPaidTO" />
+                <ScalarProperty Name="CashAmt" ColumnName="CashAmt" />
+                <ScalarProperty Name="pendingAmt" ColumnName="pendingAmt" />
+                <ScalarProperty Name="datetime" ColumnName="datetime" />
+                <ScalarProperty Name="returnFlag" ColumnName="returnFlag" />
+                <ScalarProperty Name="returnAmt" ColumnName="returnAmt" />
+                <ScalarProperty Name="returndate" ColumnName="returndate" />
+                <ScalarProperty Name="Currentopeningbalance" ColumnName="Currentopeningbalance" />
+                <ScalarProperty Name="ClearingDate" ColumnName="ClearingDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="sendtobank" ColumnName="sendtobank" />
+                <ScalarProperty Name="DetailsTransaction" ColumnName="DetailsTransaction" />
+                <ScalarProperty Name="OutstandingStatus" ColumnName="OutstandingStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_SalesOutStanding">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_SalesOutStanding">
+              <MappingFragment StoreEntitySet="tbl_SalesOutStanding">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="partyid" ColumnName="partyid" />
+                <ScalarProperty Name="brokerid" ColumnName="brokerid" />
+                <ScalarProperty Name="outAmt" ColumnName="outAmt" />
+                <ScalarProperty Name="payingamt" ColumnName="payingamt" />
+                <ScalarProperty Name="CheqPartyname" ColumnName="CheqPartyname" />
+                <ScalarProperty Name="CheqAmt" ColumnName="CheqAmt" />
+                <ScalarProperty Name="CashAmt" ColumnName="CashAmt" />
+                <ScalarProperty Name="RTGSAMT" ColumnName="RTGSAMT" />
+                <ScalarProperty Name="CashPartyName" ColumnName="CashPartyName" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="Accountno" ColumnName="Accountno" />
+                <ScalarProperty Name="IFSC" ColumnName="IFSC" />
+                <ScalarProperty Name="SystDate" ColumnName="SystDate" />
+                <ScalarProperty Name="Payment_Method" ColumnName="Payment_Method" />
+                <ScalarProperty Name="CHequeno" ColumnName="CHequeno" />
+                <ScalarProperty Name="Accoun_holder" ColumnName="Accoun_holder" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="statusa" ColumnName="statusa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_salesPartyRegistartion">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_salesPartyRegistartion">
+              <MappingFragment StoreEntitySet="tbl_salesPartyRegistartion">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="Sale_fkid" ColumnName="Sale_fkid" />
+                <ScalarProperty Name="partyname" ColumnName="partyname" />
+                <ScalarProperty Name="address1" ColumnName="address1" />
+                <ScalarProperty Name="address2" ColumnName="address2" />
+                <ScalarProperty Name="mobileno" ColumnName="mobileno" />
+                <ScalarProperty Name="emailid" ColumnName="emailid" />
+                <ScalarProperty Name="GSTNo" ColumnName="GSTNo" />
+                <ScalarProperty Name="Partyregdate" ColumnName="Partyregdate" />
+                <ScalarProperty Name="city" ColumnName="city" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_SalesSockMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_SalesSockMaster">
+              <MappingFragment StoreEntitySet="tbl_SalesSockMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="stock_fkid" ColumnName="stock_fkid" />
+                <ScalarProperty Name="produceCottonbells" ColumnName="produceCottonbells" />
+                <ScalarProperty Name="produceCottonSeed" ColumnName="produceCottonSeed" />
+                <ScalarProperty Name="totalStock" ColumnName="totalStock" />
+                <ScalarProperty Name="produceTotalStock" ColumnName="produceTotalStock" />
+                <ScalarProperty Name="balancestock" ColumnName="balancestock" />
+                <ScalarProperty Name="lastmodifieddate" ColumnName="lastmodifieddate" />
+                <ScalarProperty Name="mid" ColumnName="mid" />
+                <ScalarProperty Name="cid" ColumnName="cid" />
+                <ScalarProperty Name="mdata" ColumnName="mdata" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_TaxMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_TaxMaster">
+              <MappingFragment StoreEntitySet="tbl_TaxMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="Saletype" ColumnName="Saletype" />
+                <ScalarProperty Name="taxper" ColumnName="taxper" />
+                <ScalarProperty Name="datetime" ColumnName="datetime" />
+                <ScalarProperty Name="CGST" ColumnName="CGST" />
+                <ScalarProperty Name="SGST" ColumnName="SGST" />
+                <ScalarProperty Name="IGST" ColumnName="IGST" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_TransportMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_TransportMaster">
+              <MappingFragment StoreEntitySet="tbl_TransportMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="transportname" ColumnName="transportname" />
+                <ScalarProperty Name="address1" ColumnName="address1" />
+                <ScalarProperty Name="address2" ColumnName="address2" />
+                <ScalarProperty Name="mobileno" ColumnName="mobileno" />
+                <ScalarProperty Name="emailid" ColumnName="emailid" />
+                <ScalarProperty Name="ownername" ColumnName="ownername" />
+                <ScalarProperty Name="ownermobileno" ColumnName="ownermobileno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_truck_Transport_Mapping">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_truck_Transport_Mapping">
+              <MappingFragment StoreEntitySet="tbl_truck_Transport_Mapping">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="truckid" ColumnName="truckid" />
+                <ScalarProperty Name="transportid" ColumnName="transportid" />
+                <ScalarProperty Name="mappingRFID" ColumnName="mappingRFID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_truckMaster">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_truckMaster">
+              <MappingFragment StoreEntitySet="tbl_truckMaster">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="RFIDnumber" ColumnName="RFIDnumber" />
+                <ScalarProperty Name="truckno" ColumnName="truckno" />
+                <ScalarProperty Name="tairweight" ColumnName="tairweight" />
+                <ScalarProperty Name="capcity" ColumnName="capcity" />
+                <ScalarProperty Name="trucktype" ColumnName="trucktype" />
+                <ScalarProperty Name="salespurchase" ColumnName="salespurchase" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_UserDetails">
+            <EntityTypeMapping TypeName="KisanWeighningModel.tbl_UserDetails">
+              <MappingFragment StoreEntitySet="tbl_UserDetails">
+                <ScalarProperty Name="pkid" ColumnName="pkid" />
+                <ScalarProperty Name="User_fkid" ColumnName="User_fkid" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="middlename" ColumnName="middlename" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="mobileno" ColumnName="mobileno" />
+                <ScalarProperty Name="emailid" ColumnName="emailid" />
+                <ScalarProperty Name="stateid" ColumnName="stateid" />
+                <ScalarProperty Name="cityid" ColumnName="cityid" />
+                <ScalarProperty Name="department" ColumnName="department" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,139 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_DealerMasterss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Create New Dealer</h2>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Create Dealer
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        @using (Html.BeginForm("Dealer", "SystemMaster", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                        {
+
+                            <div class="col-sm-5">
+                                @Html.ValidationSummary("", new { @class = "text-danger" })
+                                @Html.HiddenFor(x => x.pkid)
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Dealer Name<span style="color: red">*</span></label>
+                                        @Html.TextBoxFor(x => x.fullname, new { @class = "form-control", placeholder = "Enter Dealer Name", @required = "required" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Address 1</label>
+                                        @Html.TextAreaFor(x => x.address1, new { @class = "form-control", placeholder = "Enter Address 1" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Address 2</label>
+                                        @Html.TextAreaFor(x => x.address2, new { @class = "form-control", placeholder = "Enter Address 2" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Mobile No</label>
+                                        @Html.TextBoxFor(x => x.mobileno, new { @class = "form-control mobileno", placeholder = "Enter mobile no" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label>Email Id</label>
+                                        @Html.TextBoxFor(x => x.emailid, new { @class = "form-control", placeholder = "Enter Email" })
+                                    </div>
+                                </div>
+                                <input type="submit" value="Create" id="but" class="btn-primary" />
+                            </div>
+
+                        }
+                        <div class="col-sm-7">
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>Broker Name</th>
+                                        <th>Address1</th>
+                                        <th>Address2</th>
+                                        <th>Mobile No</th>
+                                        <th>Email Id</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $('.mobileno').keydown(function (event) {
+            return isIntNumber(event, this)
+        });
+       
+            if ($("#pkid").val() != "")
+            { $("#but").val("Update") }
+       
+    })
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/SystemMaster/DealerList",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                { "data": "fullname", "name": "fullname", "autoWidth": true },
+                  { "data": "address1", "name": "address1", "autoWidth": true },
+                    { "data": "address2", "name": "address2", "autoWidth": true },
+                      { "data": "mobileno", "name": "mobileno", "autoWidth": true },
+                      { "data": "emailid", "name": "emailid", "autoWidth": true },
+                {
+                    "data": "pkid", "orderable": false, "render": function (data, type, full, meta) {
+                        return '<a href=/SystemMaster/Dealer?_id=' + data + '>Edit</a>';
+                    }
+                }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+
+    function DeleteProduct(cname) {
+        jAlert("Dealer not allow to delete...", "Alert")
+    }
+
+</script>

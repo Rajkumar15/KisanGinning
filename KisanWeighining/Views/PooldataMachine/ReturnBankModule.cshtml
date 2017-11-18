@@ -1,0 +1,203 @@
+﻿@model KisanWeighining.Models.KisanModel.tbl_PurchaseEntry_Master_Paymentss
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Content/Rajfile/jquery.dataTables.js"></script>
+<link href="~/Content/Rajfile/responsive.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Rajfile/jquery.dataTables.css" rel="stylesheet" />
+
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-linesed {
+        position: relative;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .form-control {
+        display: inline !important;
+        width: 50% !important;
+    }
+
+    .labelmod {
+        width: 28%;
+    }
+
+    .checkboxsd {
+        margin: -1% 0% 1% 4% !important;
+    }
+
+    .check {
+        width: 30%;
+        height: 22px !important;
+        margin-top: -64% !important;
+        margin-left: 37% !important;
+    }
+</style>
+<section class="content">
+    <div class="row clearfix">
+        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Bank List
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-12" style="text-align:right;">
+                            <select id="mode" style="width: 141px; height: 34px;">
+                                <option value="">Select</option>
+                                <option value="RTGS">RTGS</option>
+                                <option value="Cheque">Cheque</option>
+                                <option value="all">ALL</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>Farmer Name</th>                                        
+                                        <th>Paid To</th>
+                                        <th>Payment Mode</th>
+                                        <th>Details</th>
+                                        <th>Payment Date</th>
+                                        <th>Clearing Date</th>
+                                        <th>Amount Paid</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="pop">
+    <div class="col-sm-12">
+        @Html.Hidden("payid", null, new { })
+        <label class="labelmod"> Clearing Date </label>: @Html.TextBox("ClearingDate", null, new { @class = "form-control vs", placeholder = "Enter ClearingDate", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Details </label>: @Html.TextBox("DetailsTransaction", null, new { @class = "form-control vs", placeholder = "Enter UTRN No", @style = "width:90% !important;margin-bottom:1%;" })
+        <label class="labelmod"> Status </label>: <select id="status" class="vs" style="width:391% !important;margin-bottom:1% !important;height:34px;"> <option value="">Select</option><option value="1">Completed</option><option value="0">Pending</option></select>
+        <input type="button" onclick="savertgs()" value="Save" class="btn-primary" style="margin-left:28%;" />
+    </div>
+</div>
+<script type="text/javascript">
+    var sendarray = [];
+    $(document).ready(function () {
+        $("#pop").hide();
+        $("#mode").val('@ViewBag.sel');
+        $('#ClearingDate').datepicker();
+        $("#mode").change(function () {
+            debugger;
+            var d = $("#mode").val();
+            window.location.href = "/PooldataMachine/ReturnBankModule?va=" + d;
+        })
+    })
+    $('.js-basic-example').DataTable({
+        "processing": true, // for show progress bar
+        "serverSide": true, // for process server side
+        "filter": true, // this is for disable filter (search box)
+        "orderMulti": false, // for disable multiple column at once
+
+        "ajax": {
+            "url": "/PooldataMachine/returnbankmoduleList?m=" + $("#mode").val() + "",
+            "type": "POST",
+            "datatype": "json"
+        },
+        "columns": [
+                { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },
+                   { "data": "farmername", "name": "farmername", "autoWidth": true },
+                    
+                     { "data": "paidto", "name": "paidto", "autoWidth": true },
+                    { "data": "paymenttype", "name": "paymenttype", "autoWidth": true },
+                      { "data": "details", "name": "details", "autoWidth": true },
+                       {
+                           "data": "paymentdate", "render": function (data, type, full, meta) {
+                               return '' + formatJsonDate(data) + '';
+                           }
+                       },
+                        {
+                            "data": "clearingdate", "render": function (data, type, full, meta) {
+                                return '' + formatJsonDate(data) + '';
+                            }
+                        },
+                        { "data": "amountpaid", "name": "amountpaid", "autoWidth": true },
+                           {
+                               "data": "pkid", "name": "pkid", "orderable": false, "render": function (data, type, full, meta, name) {
+                                   return '<a href="#" name=' + name + ' onclick="showdialog(' + data + ')">Edit</a>';
+                               }
+                           }
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html(iDisplayIndex + 1);
+            return nRow;
+        }
+    })
+    function formatJsonDate(jsonDate) {
+        if (jsonDate == null) {
+            return "";
+        }
+        else {
+            var dateString = jsonDate.substr(6);
+            var currentTime = new Date(parseInt(dateString));
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+    };
+    function showdialog(cname) {
+        $("#payid").val(cname);
+        $('.vs').each(function () {
+            $(this).val('');
+        });
+        $("#pop").dialog({
+            height: 230,
+            width: 500,
+            modal: true,
+            title: "Call Details"
+        })
+    }
+    function savertgs() {
+        debugger;
+        if ($("#DetailsTransaction").val() == "") {
+            jAlert("Enter UTRN No...", "SystemAlert")
+        }
+        else {
+            var lines = new Array();
+            lines.push($("#payid").val());
+            lines.push($("#ClearingDate").val());
+            lines.push($("#DetailsTransaction").val());
+            lines.push($("#status").val());
+            $.ajax(
+        {
+            url: '/PooldataMachine/Updatestatus/',
+            type: 'POST',
+            data: { 'poopupdatasave': lines },
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if (data == "success") {
+                    jAlert("Data Save Successfully", "SystemAlert")
+                    location.reload();
+                } else {
+                    jAlert("Data Save Failed enter all fields", "SystemAlert")
+                }
+            }
+        });
+        }
+    }
+</script>
