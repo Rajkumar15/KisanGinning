@@ -90,7 +90,7 @@
                             <div class="col-sm-12" style="margin-bottom:0px;">
                                 <div class="col-sm-6" style="margin-bottom:0px !important;">
                                     <label class="labelmod"> Party Name </label> : @Html.DropDownListFor(x => x.partyid, (IEnumerable<SelectListItem>)@ViewBag.farmer, "Select Party", new { @style = "width: 280px !important;height: 35px;margin-bottom:2%;" })<label style="margin-left: 17%;color: chocolate;font-size: 18px;">OR</label><br />
-                                    <label class="labelmod"> OutStanding Amount </label> : @Html.TextBoxFor(x => x.outAmt, new { @class = "form-control calcultesttext numbers", @style = "width:50% !important;", @readonly = "readonly", @required = "required" })<br />
+                                    <label class="labelmod"> Outstanding Amount </label> : @Html.TextBoxFor(x => x.outAmt, new { @class = "form-control calcultesttext numbers", @style = "width:50% !important;", @readonly = "readonly", @required = "required" })<br />
                                     <button type="button" onclick="FindOutstanding()" style="display:none;" class="btn-primary">Get Amount</button><br />
                                 </div>
                                 <div class="col-sm-6" style="margin-bottom:0px !important;">
