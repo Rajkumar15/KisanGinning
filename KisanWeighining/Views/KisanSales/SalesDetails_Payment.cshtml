@@ -321,7 +321,7 @@
                 {
                     "data": "purchasid", "name": "invoiceid", "orderable": false, "render": function (data, type, full, meta, name) {
                         if (full.pkid == "") { return ""; } else {
-                            return '<a onclick="DeleteENtry(this)" name=/KisanSales/Delepaymentsales?id=' + full.purchasid + '&Bill_fkid=' + full.invoiceid + '&pkid=' + full.pkid + '>DELETE</a> | <a href="/KisanSales/GetPaymentSlip?pkid=' + full.pkid + '" Alt="Get Slip">SLIP</a>';
+                            return '<a onclick="DeleteENtry(this)" style="cursor:pointer;" name=/KisanSales/Delepaymentsales?id=' + full.purchasid + '&Bill_fkid=' + full.invoiceid + '&pkid=' + full.pkid + '>DELETE</a> | <a href="/KisanSales/GetPaymentSlip?pkid=' + full.pkid + '" Alt="Get Slip">SLIP</a>';
                         }
                     }
                 }

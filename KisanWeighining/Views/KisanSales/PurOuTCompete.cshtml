@@ -60,8 +60,7 @@
                                         <th>Broker Name</th>
                                         <th>OutSatnding Amount</th>
                                         <th>Credited Amount</th>
-                                        <th>Payment Date</th>
-                                        
+                                        <th>Payment Date</th>                                    
                                     </tr>
                                 </thead>
                             </table>
@@ -93,14 +92,14 @@
                 { "data": "pkid", "name": "pkid", "orderable": false, "autoWidth": true },                 
                     { "data": "farmername", "name": "farmername", "autoWidth": true },
                      { "data": "dealername", "name": "dealername", "autoWidth": true },
-
                         { "data": "outamt", "name": "outamt", "autoWidth": true },
-                           { "data": "amt", "name": "amt", "autoWidth": true },
+                         { "data": "amt", "name": "amt", "autoWidth": true },
                        {
                            "data": "paydate", "render": function (data, type, full, meta) {
                                return '' + formatJsonDate(data) + '';
                            }
-                       }
+                       },
+
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
             $("td:first", nRow).html(iDisplayIndex + 1);

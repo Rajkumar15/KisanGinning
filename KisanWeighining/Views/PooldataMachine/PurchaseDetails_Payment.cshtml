@@ -79,6 +79,7 @@
 
                             @Html.ValidationSummary("", new { @class = "text-danger" })
                             @Html.HiddenFor(x => x.pkid)
+                            @Html.Hidden("Avaliableamt", "", new { @Value = ViewBag.AvailAmt })
                             @Html.HiddenFor(x => x.Purchase_fkid, new { @Value = ViewBag.purchasid })
                             @Html.HiddenFor(x => x.invoice_fkid, new { @Value = ViewBag.invoiseid })
                             <div class="col-sm-12">
@@ -113,7 +114,7 @@
                                     </div>
                                     <div id="cash">
                                         <label class="labelmod"> Cash Paid to </label> : @Html.TextBoxFor(x => x.CashPaidTO, new { @class = "form-control calcultesttext", @placeholder = "Enter Paid Person Name", @style = "width:38% !important;" })<br />
-                                        <label class="labelmod"> Amount </label> : @Html.TextBoxFor(x => x.CashAmt, new { @class = "form-control calcultesttext groupOfTexbox", @placeholder = "Enter Cash Amount", @style = "width:38% !important;" })<br />
+                                        <label class="labelmod"> Amount </label> : @Html.TextBoxFor(x => x.CashAmt, new { @class = "form-control calcultesttext groupOfTexbox", @placeholder = "Enter Cash Amount", @style = "width:38% !important;" }) @ViewBag.AvailAmt<br />
                                     </div>
                                     <input type="submit" value="Save" style="margin-left:21% !important;" class="btn-primary" />
                                 </div>
@@ -237,8 +238,7 @@
         $('.groupOfTexbox').keypress(function (event) {
             return isNumber(event, this)
         });
-        $('.groupOfTexbox').keyup(function (event) {
-            debugger;
+        $('.groupOfTexbox').keyup(function (event) {           
             var balanceamt = 0;
             var pendi = 0;
             if ($("#pkid").val() == 0) {
@@ -291,7 +291,15 @@
         if ($("#Currentopeningbalance").val() == "0.00") {
             $("#al").show();
         }
-
+        $("#CashAmt").keyup(function (e) {            
+            var valuecas = $("#CashAmt").val();
+            var valueavail = $("#Avaliableamt").val();
+            if (parseFloat(valuecas) > parseFloat(valueavail))
+            {
+                jAlert("Cash Not Available Please Enter Valid Cash", "SystemAlert")
+                $("#CashAmt").val('');
+            }
+        })
     })
     $('.js-basic-example').DataTable({
         "processing": true, // for show progress bar
@@ -408,8 +416,7 @@
         })
     }
     function savertgs() {
-        debugger;
-      
+            
             var lines = new Array();
             lines.push($("#Bank_name").val());
             lines.push($("#Branchname").val());;
@@ -444,7 +451,7 @@
     }
     function DeleteENtry(cname)
     {
-        debugger;
+      
         var str = cname.name;
         jConfirm("Do you want to delete", "SystemAlert", function (r) {
             if (r) {

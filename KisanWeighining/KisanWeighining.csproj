@@ -46,9 +46,18 @@
     <Reference Include="ClosedXML">
       <HintPath>..\packages\ClosedXML.0.87.1\lib\net40\ClosedXML.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalDecisions.CrystalReports.Engine.1.0.0\lib\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalDecisions.ReportSource.1.0.0\lib\CrystalDecisions.ReportSource.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>..\packages\CrystalDecisions.Shared.1.0.0\lib\CrystalDecisions.Shared.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DataLayer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DataLayer\bin\Debug\DataLayer.dll</HintPath>
@@ -4596,41 +4605,41 @@
     <Content Include="Views\PooldataMachine\CompletedPayment.cshtml" />
     <Content Include="Views\PooldataMachine\ReconciliationList.cshtml" />
     <Content Include="Views\PooldataMachine\reconsiliationForm.cshtml" />
-    <Content Include="Views\KisanSales\Salestrips.cshtml" />
-    <Content Include="Views\KisanSales\SalesDetails.cshtml" />
     <Content Include="Views\PooldataMachine\GetHoleDetails.cshtml" />
     <Content Include="Views\PooldataMachine\ReturnBankModule.cshtml" />
-    <Content Include="Views\KisanSales\PendingPaymentSales.cshtml" />
-    <Content Include="Views\KisanSales\SalesDetails_Payment.cshtml" />
     <Content Include="Views\SystemMaster\taxmaster.cshtml" />
     <Content Include="Views\SystemMaster\Prodtaxmaster.cshtml" />
-    <Content Include="Views\KisanSales\CompletedPayment.cshtml" />
-    <Content Include="Views\KisanSales\GetHoleDetails.cshtml" />
     <Content Include="Views\PooldataMachine\PurchaseLedger.cshtml" />
     <Content Include="Views\PooldataMachine\ledger.cshtml" />
-    <Content Include="Views\KisanSales\salesLedger.cshtml" />
-    <Content Include="Views\KisanSales\ledger.cshtml" />
-    <Content Include="Views\KisanSales\StockEntry.cshtml" />
-    <Content Include="Views\KisanSales\StockProccess.cshtml" />
-    <Content Include="Views\KisanSales\Currentsummary.cshtml" />
-    <Content Include="Views\KisanSales\totalsummary.cshtml" />
     <Content Include="Views\SystemMaster\ExpensesPurpose.cshtml" />
-    <Content Include="Views\KisanSales\Expenses.cshtml" />
-    <Content Include="Views\KisanSales\Expenseslist.cshtml" />
     <Content Include="Views\PooldataMachine\PurchaseOutstanding.cshtml" />
     <Content Include="Views\PooldataMachine\PurchaseOutstandingPayment.cshtml" />
     <Content Include="Views\PooldataMachine\PurOuTCompete.cshtml" />
-    <Content Include="Views\KisanSales\SalesOutstanding.cshtml" />
-    <Content Include="Views\KisanSales\PurchaseOutstandingPayment.cshtml" />
-    <Content Include="Views\KisanSales\PurOuTCompete.cshtml" />
-    <Content Include="Views\KisanSales\CashMaster.cshtml" />
-    <Content Include="Views\KisanSales\GetCashreceiptList.cshtml" />
     <Content Include="Views\PooldataMachine\CompletedListR.cshtml" />
     <Content Include="Views\PooldataMachine\Summary.cshtml" />
-    <Content Include="Views\KisanSales\CompletedPaymentR.cshtml" />
-    <Content Include="Views\KisanSales\GetHoleDetailsR.cshtml" />
     <Content Include="Views\PooldataMachine\OutStandingPaymentList.cshtml" />
+    <Content Include="Views\KisanSales\CashMaster.cshtml" />
+    <Content Include="Views\KisanSales\CompletedPayment.cshtml" />
+    <Content Include="Views\KisanSales\CompletedPaymentR.cshtml" />
+    <Content Include="Views\KisanSales\Currentsummary.cshtml" />
+    <Content Include="Views\KisanSales\Expenses.cshtml" />
+    <Content Include="Views\KisanSales\Expenseslist.cshtml" />
+    <Content Include="Views\KisanSales\GetCashreceiptList.cshtml" />
+    <Content Include="Views\KisanSales\GetHoleDetails.cshtml" />
+    <Content Include="Views\KisanSales\GetHoleDetailsR.cshtml" />
+    <Content Include="Views\KisanSales\ledger.cshtml" />
     <Content Include="Views\KisanSales\Ou8ststandingpaymentList.cshtml" />
+    <Content Include="Views\KisanSales\PendingPaymentSales.cshtml" />
+    <Content Include="Views\KisanSales\PurchaseOutstandingPayment.cshtml" />
+    <Content Include="Views\KisanSales\PurOuTCompete.cshtml" />
+    <Content Include="Views\KisanSales\SalesDetails.cshtml" />
+    <Content Include="Views\KisanSales\SalesDetails_Payment.cshtml" />
+    <Content Include="Views\KisanSales\salesLedger.cshtml" />
+    <Content Include="Views\KisanSales\SalesOutstanding.cshtml" />
+    <Content Include="Views\KisanSales\Salestrips.cshtml" />
+    <Content Include="Views\KisanSales\StockEntry.cshtml" />
+    <Content Include="Views\KisanSales\StockProccess.cshtml" />
+    <Content Include="Views\KisanSales\totalsummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

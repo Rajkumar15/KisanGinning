@@ -96,6 +96,7 @@
                                 <div class="col-sm-6" style="margin-bottom:0px !important;">                               
                                     <label class="labelmod"> Source </label> : @Html.TextBoxFor(x => x.sourcename, new { @class = "form-control", placeholder = "Enter Source", @required = "required" })<br />
                                     <label class="labelmod"> Amount </label> : @Html.TextBoxFor(x => x.cashAmt, new { @class = "form-control groupOfTexbox", placeholder = "Enter Amount", @required = "required" })<br />
+                                    <label class="labelmod"> Available Cash </label> : @Html.TextBox("Avaliableamt", "", new { @class = "form-control", @Value = ViewBag.AvailAmt,@readonly="readonly" })
                                    
                                 </div>
                             </div>

@@ -40,12 +40,14 @@
     .checkboxsd {
         margin: -1% 0% 1% 4% !important;
     }
-        .glophy {
+
+    .glophy {
         font-size: 17px;
         margin-left: 10px;
         color: darkgreen;
         cursor: pointer;
     }
+
     .divpay {
         color: brown;
         font-size: 17px;
@@ -72,19 +74,20 @@
                 <div class="body">
                     <div class="row clearfix">
 
-                        @using (Html.BeginForm("reconsiliationForm", "PooldataMachine", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data"}))
+                        @using (Html.BeginForm("reconsiliationForm", "PooldataMachine", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
                         {
 
                             @Html.ValidationSummary("", new { @class = "text-danger" })
+                            @Html.Hidden("Avaliableamt", "", new { @Value = ViewBag.AvailAmt })
                             @Html.HiddenFor(x => x.pkid)
                             @Html.HiddenFor(x => x.Purchase_fkid, new { @Value = ViewBag.purchasid })
                             @Html.HiddenFor(x => x.invoice_fkid, new { @Value = ViewBag.invoiseid })
                             <div class="col-sm-12">
                                 <div class="col-sm-6">
-                                    <label class="labelmod"> Invoice No </label> : @Html.TextBox("Invoiceno", null, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:50% !important;", @Value = "0000" + ViewBag.purchasid })<br />                                   
+                                    <label class="labelmod"> Invoice No </label> : @Html.TextBox("Invoiceno", null, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:50% !important;", @Value = "0000" + ViewBag.purchasid })<br />
                                 </div>
                                 <div class="col-sm-6" style="margin-bottom:0px !important;">
-                                    <label class="labelmod"> Name of farmer </label> : @Html.TextBox("Farmer", null, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:38% !important;", @Value = ViewBag.farmername })<br />                                 
+                                    <label class="labelmod"> Name of farmer </label> : @Html.TextBox("Farmer", null, new { @class = "form-control calcultesttext", @readonly = "readonly", @style = "width:38% !important;", @Value = ViewBag.farmername })<br />
                                 </div>
                             </div>
                             <div class="col-sm-12" id="al"><span class="all">You already paid complete amount....</span></div>
@@ -103,7 +106,7 @@
                                         <label class="labelmod"> Cheque Amount </label> : @Html.TextBoxFor(x => x.ChequeAmtpaying, new { @class = "form-control calcultesttext groupOfTexbox", @placeholder = "Enter Cheque Amount", @style = "width:38% !important;" })<br />
                                     </div>
                                     <div id="cash">
-                                        <label class="labelmod"> Cash Amount </label> : @Html.TextBoxFor(x => x.CashAmt, new { @class = "form-control calcultesttext groupOfTexbox", @placeholder = "Enter Cash Amount", @style = "width:38% !important;" })<br />
+                                        <label class="labelmod"> Cash Amount </label> : @Html.TextBoxFor(x => x.CashAmt, new { @class = "form-control calcultesttext groupOfTexbox", @placeholder = "Enter Cash Amount", @style = "width:38% !important;" }) @ViewBag.AvailAmt<br />
                                         <label class="labelmod"> Cash Paid to </label> : @Html.TextBoxFor(x => x.CashPaidTO, new { @class = "form-control calcultesttext", @placeholder = "Enter Paid Person Name", @style = "width:38% !important;" })<br />
                                     </div>
                                     <input type="submit" value="Save" style="margin-left:21% !important;" class="btn-primary" />
@@ -202,9 +205,8 @@
                 pendi = '@ViewBag.pendinamt';
             }
 
-            if ($("#RTGSAmtPaying").val() != "")
-            {
-                if ($("#RTGSAmtPaying").val() > pendi) {
+            if ($("#RTGSAmtPaying").val() != "") {
+                if (parseFloat($("#RTGSAmtPaying").val()) > parseFloat(pendi)) {
                     jAlert("Enter amount grater than gross amount...", "System Alert")
                     $("#RTGSAmtPaying").val('');
                     $("#pendingAmt,#payableamt").val(pendi);
@@ -214,7 +216,7 @@
                 }
             }
             if ($("#ChequeAmtpaying").val() != "") {
-                if ($("#ChequeAmtpaying").val() > pendi) {
+                if (parseFloat($("#ChequeAmtpaying").val()) > parseFloat(pendi)) {
                     jAlert("Enter amount grater than gross amount...", "System Alert")
                     $("#ChequeAmtpaying").val('');
                     $("#pendingAmt,#payableamt").val(pendi);
@@ -224,7 +226,7 @@
                 }
             }
             if ($("#CashAmt").val() != "") {
-                if ($("#CashAmt").val() > pendi) {
+                if (parseFloat($("#CashAmt").val()) > parseFloat(pendi)) {
                     jAlert("Enter amount grater than gross amount...", "System Alert")
                     $("#CashAmt").val('');
                     $("#pendingAmt,#payableamt").val(pendi);
@@ -234,13 +236,21 @@
                 }
             }
         });
-        if ($("#Currentopeningbalance").val() == "0.00")
-        {
+        if ($("#Currentopeningbalance").val() == "0.00") {
             $("#al").show();
         }
         if ('@ViewBag.er' == 'true') {
             jAlert("Enter Gross Amount", "System Alert");
         }
+        $("#CashAmt").keyup(function (e) {
+            debugger;
+            var valuecas = $("#CashAmt").val();
+            var valueavail = $("#Avaliableamt").val();
+            if (parseFloat(valuecas) > parseFloat(valueavail)) {
+                jAlert("Cash Not Available Please Enter Valid Cash", "SystemAlert")
+                $("#CashAmt").val('');
+            }
+        })
     })
     function GetRtgs() {
         $("#c").hide();
@@ -270,7 +280,7 @@
     }
     function savertgs() {
         debugger;
-     
+
         var lines = new Array();
         lines.push($("#Bank_name").val());
         lines.push($("#Branchname").val());;
@@ -301,7 +311,7 @@
             }
         }
     });
-      
+
     }
 
 </script>

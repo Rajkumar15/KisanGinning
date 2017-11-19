@@ -85,6 +85,7 @@
 
                             @Html.ValidationSummary("", new { @class = "text-danger" })
                             @Html.HiddenFor(x => x.pkid)
+                            @Html.Hidden("Avaliableamt", "", new { @Value = ViewBag.AvailAmt })
                             <div class="col-sm-12">
                                 <div class="col-sm-6">
                                     <label class="labelmod"> Person Name<span style="color: red">*</span> </label> : @Html.TextBoxFor(x => x.personname, new { @class = "form-control", placeholder = "Enter Person Name", @required = "required" })<br />
@@ -99,7 +100,7 @@
                                     <div id="rtgs"><button type="button" style="margin-left: 21%;color: white;background-color: brown;margin-bottom:5px;" onclick="GetRtgs()" title="Add Detail">Add RTGS Detail</button> </div>
                                     <div id="cheq"><button type="button" style="margin-left: 21%;color: white;background-color: brown;margin-bottom:5px;" onclick="GetCheque()" title="Add Cheque partyName">Add Cheque Detail</button></div>
 
-                                    <label class="labelmod"> Amount </label> : @Html.TextBoxFor(x => x.amt, new { @class = "form-control groupOfTexbox", placeholder = "Enter Amount", @required = "required" })<br />
+                                    <label class="labelmod"> Amount </label> : @Html.TextBoxFor(x => x.amt, new { @class = "form-control groupOfTexbox", placeholder = "Enter Amount", @required = "required" }) @ViewBag.AvailAmt<br />
                                     <label class="labelmod"> Remark </label> : @Html.TextAreaFor(x => x.remark, new { @class = "form-control", placeholder = "Enter remark", @required = "required" })<br />
                                 </div>
                             </div>
@@ -136,7 +137,7 @@
                                         <th>Holder Name</th>
                                         <th>Amount</th>
                                         <th>Remark</th>
-                                      
+
                                     </tr>
                                 </thead>
                                 <tbody id="uxcustomerinfolist"></tbody>
@@ -192,6 +193,19 @@
         } else {
             $("#cheq").hide();
         }
+
+        $("#amt").keyup(function (e) {
+            if ($("#Payment_type").val() == 3) {
+                var valuecas = $("#amt").val();
+                var valueavail = $("#Avaliableamt").val();
+                if (parseFloat(valuecas) > parseFloat(valueavail)) {
+                    jAlert("Cash Not Available Please Enter Valid Cash", "SystemAlert")
+                    $("#amt").val('');
+                }
+            }
+        })
+
+
         $("#Payment_type").change(function () {
             var ptype = $("#Payment_type").val();
             if (ptype == 1) {
@@ -227,7 +241,7 @@
                         var str = '';
                         var srno = 1;
                         $("#uxcustomerinfolist").html('');
-                        for (var i = 0; i < val.length; i++) {                          
+                        for (var i = 0; i < val.length; i++) {
                             str = str + '<tr>' +
                                 '<td> ' + (srno++) + '</td>' +
                                 '<td> ' + val[i].personname + '</td>' +
@@ -248,7 +262,7 @@
                     }
 
                 })
-            
+
             }
         })
     })
@@ -292,39 +306,39 @@
     }
     function savertgs() {
         debugger;
-     
-            var lines = new Array();
-            lines.push($("#Bank_name").val());
-            lines.push($("#Branchname").val());;
-            lines.push($("#Accountno").val());
-            lines.push($("#AccountHolder").val());
-            lines.push($("#Ifsccode").val());
-            lines.push("0");
-            lines.push($("#Cheq_Partyname").val());
 
-            $.ajax(
-        {
-            url: '/PooldataMachine/SaveRTGSPayExpenses/',
-            type: 'POST',
-            data: { 'poopupdatasave': lines },
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-                if (data != "") {
-                    jAlert("Data Save Successfully", "SystemAlert")
-                    if ($("#Cheq_Partyname").val() == "") {
-                        $("#Pay_Infofkid").append(data);
-                    }
-                    else {
-                        $("#Pay_Infofkid").append(data);
-                    }
-                    $("#pop").dialog("close");
-                } else {
-                    jAlert("Data Save Failed enter required field", "SystemAlert")
+        var lines = new Array();
+        lines.push($("#Bank_name").val());
+        lines.push($("#Branchname").val());;
+        lines.push($("#Accountno").val());
+        lines.push($("#AccountHolder").val());
+        lines.push($("#Ifsccode").val());
+        lines.push("0");
+        lines.push($("#Cheq_Partyname").val());
+
+        $.ajax(
+    {
+        url: '/PooldataMachine/SaveRTGSPayExpenses/',
+        type: 'POST',
+        data: { 'poopupdatasave': lines },
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            if (data != "") {
+                jAlert("Data Save Successfully", "SystemAlert")
+                if ($("#Cheq_Partyname").val() == "") {
+                    $("#Pay_Infofkid").append(data);
                 }
+                else {
+                    $("#Pay_Infofkid").append(data);
+                }
+                $("#pop").dialog("close");
+            } else {
+                jAlert("Data Save Failed enter required field", "SystemAlert")
             }
-        });
-        
+        }
+    });
+
     }
     function formatJsonDate(jsonDate) {
         if (jsonDate == null) {

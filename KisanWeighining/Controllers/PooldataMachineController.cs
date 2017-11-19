@@ -38,6 +38,7 @@ namespace KisanWeighining.Controllers
         public readonly Irepository<tbl_PurchaseEntry_Master_Payment> _purchaseActualPay;
         public readonly Irepository<tbl_salesPartyRegistartion> _salesparty;
         public readonly Irepository<tbl_PurchaseOutStanding> _PurchaseOutStanding;
+        public readonly Irepository<tbl_CashMastered> _cashmastereredd;
 
         public readonly Irepository<tbl_productMaster> _productmaster;
         public readonly Irepository<tbl_BankDetailsPerPurchase> _RTGSMASTER;
@@ -45,7 +46,7 @@ namespace KisanWeighining.Controllers
             Irepository<tbl_FarmerMaster> farmer, Irepository<tbl_truckMaster> truck, Irepository<tbl_MenuMaster> menuuu, Irepository<tbl_MasterMenuName> Mastermenu,
             Irepository<tbl_PaymentType> paymenttype, Irepository<tbl_PurchaseEntry_Master> purchasepayement, Irepository<tbl_PurchaseEntry_Master_Payment> purchaseActualPay,
            Irepository<tbl_productMaster> productmaster, Irepository<tbl_BankDetailsPerPurchase> RTGSMASTER, Irepository<tbl_DealerMaster> dealer,
-            Irepository<tbl_salesPartyRegistartion> salesparty, Irepository<tbl_PurchaseOutStanding> purchaseoutstanding)
+            Irepository<tbl_salesPartyRegistartion> salesparty, Irepository<tbl_PurchaseOutStanding> purchaseoutstanding, Irepository<tbl_CashMastered> cashmastereredd)
         {
             _remote = remote;
             _machinedata = machinedata;
@@ -61,6 +62,7 @@ namespace KisanWeighining.Controllers
             _RTGSMASTER = RTGSMASTER;
             _dealer = dealer;
             _salesparty = salesparty;
+            _cashmastereredd = cashmastereredd;
         }
         // GET: PooldataMachine
         public ActionResult Index()
@@ -716,6 +718,7 @@ namespace KisanWeighining.Controllers
             ViewBag.farmername = _farmer.Get(farmerid).fullname;
             ViewBag.payable = (data.netpayable_amt) + (data.advance ?? 0);
             var entry = _purchaseActualPay.GetAll().Where(x => x.invoice_fkid == Bill_fkid).OrderByDescending(x => x.pkid).FirstOrDefault();
+            ViewBag.AvailAmt = _cashmastereredd.GetAll().FirstOrDefault().CurrentCash??0;
             if (entry != null && pkid == null)
             {
                 ViewBag.pendinamt = entry.pendingAmt;
@@ -751,6 +754,7 @@ namespace KisanWeighining.Controllers
         [HttpPost]
         public ActionResult PurchaseDetails_Payment(tbl_PurchaseEntry_Master_Paymentss model)
         {
+            ViewBag.AvailAmt = _cashmastereredd.GetAll().FirstOrDefault().CurrentCash ?? 0;
             try
             {
                 var previous = _purchaseActualPay.GetAll().Where(x => x.Purchase_fkid == model.Purchase_fkid).OrderByDescending(x => x.pkid).FirstOrDefault();
@@ -783,6 +787,13 @@ namespace KisanWeighining.Controllers
                     }
                     _purchaseActualPay.Add(abc);
                     var alldata = _purchasePayment.GetAll().Max(x => x.pkid);
+                    if (model.PaymentMethod == 3)
+                    {
+                        tbl_CashMastered beta = _cashmastereredd.GetAll().FirstOrDefault();
+                        beta.CurrentCash = (beta.CurrentCash - model.CashAmt);
+                        beta.LastModified = DateTime.Now;
+                        _cashmastereredd.Update(beta);
+                    }
                     return RedirectToAction("PurchaseDetails_Payment", "PooldataMachine", new { id = model.Purchase_fkid, Bill_fkid = model.invoice_fkid });
                 }
                 else
@@ -813,7 +824,7 @@ namespace KisanWeighining.Controllers
                     {
                         abc.pendingAmt = model.pendingAmt;
                     }
-                    _purchaseActualPay.Update(abc);
+                    _purchaseActualPay.Update(abc);                   
                     return RedirectToAction("PurchaseDetails_Payment", "PooldataMachine", new { id = model.Purchase_fkid, Bill_fkid = model.invoice_fkid });
                 }
             }
@@ -895,11 +906,27 @@ namespace KisanWeighining.Controllers
                             _purchaseActualPay.Update(data);
                         }
                     }
+                    if (ddata.PaymentMethod == 3)
+                    {
+                        // SyncCashList();                      
+                        tbl_CashMastered _cambo = _cashmastereredd.GetAll().FirstOrDefault();
+                        _cambo.CurrentCash = (_cambo.CurrentCash + ddata.CashAmt);
+                        _cambo.LastModified = DateTime.Now;
+                        _cashmastereredd.Update(_cambo);
+                    }
                 }
                 else
                 {
                     int _id = dataasd.FirstOrDefault().pkid;
                     _purchaseActualPay.Remove(_id, true);
+                    if (ddata.PaymentMethod == 3)
+                    {
+                        // SyncCashList();                      
+                        tbl_CashMastered _cambo = _cashmastereredd.GetAll().FirstOrDefault();
+                        _cambo.CurrentCash = (_cambo.CurrentCash + ddata.CashAmt);
+                        _cambo.LastModified = DateTime.Now;
+                        _cashmastereredd.Update(_cambo);
+                    }
                 }
             }
             catch (Exception e)
@@ -1440,6 +1467,7 @@ namespace KisanWeighining.Controllers
                 ViewBag.paytype = new SelectList(_payementtype.GetAll(), "pkid", "paymenttypename");
                 ViewBag.holdername = new SelectList(_RTGSMASTER.GetAll().Where(x => x.purchase_fkid == data.Purchase_fkid && x.AccountHolder != "").ToList(), "pkid", "AccountHolder");
                 ViewBag.cheholdername = new SelectList(_RTGSMASTER.GetAll().Where(x => x.purchase_fkid == data.Purchase_fkid && x.Cheq_Partyname != null).ToList(), "pkid", "Cheq_Partyname");
+                ViewBag.AvailAmt = _cashmastereredd.GetAll().FirstOrDefault().CurrentCash ?? 0;
                 int farmerid = Convert.ToInt32(_machinedata.Get(data.Purchase_fkid).farmerid);
                 ViewBag.farmername = _farmer.Get(farmerid).fullname;
                 ViewBag.pendinamt = data.RTGSAmtPaying ?? data.ChequeAmtpaying;
@@ -1469,6 +1497,7 @@ namespace KisanWeighining.Controllers
                 ViewBag.pendinamt = data.RTGSAmtPaying ?? data.ChequeAmtpaying;
                 ViewBag.pkid = pkid;
                 var beta = _purchaseActualPay.Get(model.pkid);
+                ViewBag.AvailAmt = _cashmastereredd.GetAll().FirstOrDefault().CurrentCash ?? 0;
                 if ((beta.RTGSAmtPaying ?? beta.ChequeAmtpaying ?? beta.CashAmt) == (model.RTGSAmtPaying ?? model.ChequeAmtpaying ?? model.CashAmt))
                 {
                     beta.datetime = DateTime.Now;
@@ -1482,6 +1511,13 @@ namespace KisanWeighining.Controllers
                         beta.Status = 1;
                     }
                     _purchaseActualPay.Update(beta);
+                    if (model.PaymentMethod == 3)
+                    {
+                        tbl_CashMastered qeta = _cashmastereredd.GetAll().FirstOrDefault();
+                        qeta.CurrentCash = (qeta.CurrentCash - model.CashAmt);
+                        qeta.LastModified = DateTime.Now;
+                        _cashmastereredd.Update(qeta);
+                    }
                     return RedirectToAction("ReconciliationList", "PooldataMachine");
                 }
                 else
@@ -2417,7 +2453,7 @@ namespace KisanWeighining.Controllers
                              partyname = (a.FirstOrDefault().PaymentMethod == 2 ? _RTGSMASTER.GetAll().Where(x => x.pkid == a.FirstOrDefault().cheqDetail_fkid).FirstOrDefault().Cheq_Partyname ?? "" : ""),
                              paymenttype = _payementtype.Get(a.FirstOrDefault().PaymentMethod).paymenttypename,
                              farmername = _farmer.Get(_machinedata.Get(a.FirstOrDefault().Purchase_fkid).farmerid).fullname,
-                             paymentdate = (_purchasePayment.Get(a.FirstOrDefault().invoice_fkid).currentdatetime),
+                             paymentdate = a.FirstOrDefault().ClearingDate,
 
                              totalamt = (_purchasePayment.Get(a.FirstOrDefault().invoice_fkid).netpayable_amt ?? 0),
                              pending = a.FirstOrDefault().pendingAmt ?? 0

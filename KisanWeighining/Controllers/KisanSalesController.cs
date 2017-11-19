@@ -117,6 +117,7 @@ namespace KisanWeighining.Controllers
                              pkid = a.pkid,
                              sleepno = a.TicketNo,
                              farmer = _salesparty.Get(a.farmerid).partyname,
+                             product = _productmaster.Get(a.producttypeid).productname,
                              truckno = dat.Where(x => x.RFIDnumber == a.truckRFID).FirstOrDefault().truckno,
                              inttime = a.Intime,
                              outtime = a.outtime,
@@ -482,6 +483,42 @@ namespace KisanWeighining.Controllers
                         _salesPayment.Update(alllist);
                     }
                     _salesActualPay.Add(abc);
+                    int _mamaxid = _salesActualPay.GetAll().Max(x => x.pkid);
+                    if (model.PaymentMethod == 3)
+                    {
+                        tbl_CashReceipt CashBudlet = new tbl_CashReceipt();
+                        CashBudlet.payment_fkid = _mamaxid;
+                        CashBudlet.personname = model.CashPaidTO;
+                        CashBudlet.sourcename = "Invoice";
+                        CashBudlet.mid = model.invoice_fkid;
+                        CashBudlet.cashAmt = model.CashAmt ?? model.RTGSAmtPaying ?? model.ChequeAmtpaying ?? 0;
+                        CashBudlet.date = DateTime.Now;
+                        _cashreceipt.Add(CashBudlet);
+                        if (_cashmastereredd.GetAll().Count() > 0)
+                        {
+                            if (_cashmastereredd.GetAll().FirstOrDefault().CurrentCash >= 0)
+                            {
+                                tbl_CashMastered beta = _cashmastereredd.GetAll().FirstOrDefault();
+                                beta.CurrentCash = (beta.CurrentCash + model.CashAmt);
+                                beta.LastModified = DateTime.Now;
+                                _cashmastereredd.Update(beta);
+                            }
+                            else
+                            {
+                                tbl_CashMastered beta = new tbl_CashMastered();
+                                beta.CurrentCash = model.CashAmt;
+                                beta.LastModified = DateTime.Now;
+                                _cashmastereredd.Add(beta);
+                            }
+                        }
+                        else
+                        {
+                            tbl_CashMastered beta = new tbl_CashMastered();
+                            beta.CurrentCash = model.CashAmt;
+                            beta.LastModified = DateTime.Now;
+                            _cashmastereredd.Add(beta);
+                        }
+                    }
                     var alldata = _salesPayment.GetAll().Max(x => x.pkid);
                     return RedirectToAction("SalesDetails_Payment", "KisanSales", new { id = model.Purchase_fkid, Bill_fkid = model.invoice_fkid });
                 }
@@ -559,11 +596,33 @@ namespace KisanWeighining.Controllers
                             _salesActualPay.Update(data);
                         }
                     }
+                    if (ddata.PaymentMethod == 3)
+                    {
+                        // SyncCashList();
+                        int _ccashid = _cashreceipt.GetAll().Where(x => x.payment_fkid == ddata.pkid).FirstOrDefault().pkid;
+                        decimal _cashAmt = (decimal)_cashreceipt.GetAll().Where(x => x.payment_fkid == ddata.pkid).FirstOrDefault().cashAmt;
+                        _cashreceipt.Remove(_ccashid, true);
+                        tbl_CashMastered _cambo = _cashmastereredd.GetAll().FirstOrDefault();
+                        _cambo.CurrentCash = (_cambo.CurrentCash - _cashAmt);
+                        _cambo.LastModified = DateTime.Now;
+                        _cashmastereredd.Update(_cambo);
+                    }
                 }
                 else
                 {
                     int _id = dataasd.FirstOrDefault().pkid;
                     _salesActualPay.Remove(_id, true);
+                    if (ddata.PaymentMethod == 3)
+                    {
+                        // SyncCashList();
+                        int _ccashid = _cashreceipt.GetAll().Where(x => x.payment_fkid == _id).FirstOrDefault().pkid;
+                        decimal _cashAmt = (decimal)_cashreceipt.GetAll().Where(x => x.payment_fkid == ddata.pkid).FirstOrDefault().cashAmt;
+                        _cashreceipt.Remove(_ccashid, true);
+                        tbl_CashMastered _cambo = _cashmastereredd.GetAll().FirstOrDefault();
+                        _cambo.CurrentCash = (_cambo.CurrentCash - _cashAmt);
+                        _cambo.LastModified = DateTime.Now;
+                        _cashmastereredd.Update(_cambo);
+                    }
                 }
             }
             catch (Exception e)
@@ -572,6 +631,48 @@ namespace KisanWeighining.Controllers
             }
             return RedirectToAction("SalesDetails_Payment", "KisanSales", new { id = id, Bill_fkid = Bill_fkid });
         }
+        //public void SyncCashList()
+        //{
+        //    var data = _cashreceipt.GetAll().Where(x => x.sourcename == "Invoice").OrderByDescending(x => x.pkid).FirstOrDefault();
+        //    if (data == null)
+        //    {
+        //        var ceta = _salesActualPay.GetAll().Where(x => x.PaymentMethod == 3).ToList();
+        //        if (ceta != null)
+        //        {
+        //            foreach (var item in ceta)
+        //            {
+        //                tbl_CashReceipt abc = new tbl_CashReceipt();
+        //                abc.payment_fkid = item.pkid;
+        //                abc.personname = item.CashPaidTO;
+        //                abc.sourcename = "Invoice";
+        //                abc.mid = item.invoice_fkid;
+        //                abc.cashAmt = item.CashAmt ?? item.RTGSAmtPaying ?? item.ChequeAmtpaying ?? 0;
+        //                abc.date = item.datetime;
+        //                _cashreceipt.Add(abc);
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+
+        //        var ceta = _salesActualPay.GetAll().Where(x => x.pkid > data.payment_fkid && x.PaymentMethod == 3).ToList();
+        //        if (ceta != null)
+        //        {
+        //            foreach (var item in ceta)
+        //            {
+        //                tbl_CashReceipt abc = new tbl_CashReceipt();
+        //                abc.personname = item.CashPaidTO;
+        //                abc.payment_fkid = item.pkid;
+        //                abc.sourcename = "Invoice";
+        //                abc.mid = item.invoice_fkid;
+        //                abc.cashAmt = item.CashAmt ?? item.RTGSAmtPaying ?? item.ChequeAmtpaying ?? 0;
+        //                abc.date = item.datetime;
+        //                _cashreceipt.Add(abc);
+        //            }
+        //        }
+        //    }
+        //}
+
         public ActionResult PaymentBillList(int id)
         {
             var search = Request.Form.GetValues("search[value]")[0];
@@ -1571,7 +1672,7 @@ namespace KisanWeighining.Controllers
         {
             ViewBag.pr = new SelectList(_expensesPurpose.GetAll(), "pkid", "purposename");
             ViewBag.pay = new SelectList(_payementtype.GetAll(), "pkid", "paymenttypename");
-
+            ViewBag.AvailAmt = _cashmastereredd.GetAll().FirstOrDefault().CurrentCash ?? 0;
             if (_id > 0)
             {
 
@@ -1607,6 +1708,7 @@ namespace KisanWeighining.Controllers
         [HttpPost]
         public ActionResult Expenses(tbl_ExpensesMasterss model)
         {
+            ViewBag.AvailAmt = _cashmastereredd.GetAll().FirstOrDefault().CurrentCash ?? 0;
             try
             {
                 if (model.pkid == 0)
@@ -1620,10 +1722,27 @@ namespace KisanWeighining.Controllers
                     abc.amt = model.amt;
                     abc.remark = model.remark;
                     _expenses.Add(abc);
+                    if (model.Payment_type == 3)
+                    {
+                        tbl_CashMastered qeta = _cashmastereredd.GetAll().FirstOrDefault();
+                        qeta.CurrentCash = (qeta.CurrentCash - model.amt);
+                        qeta.LastModified = DateTime.Now;
+                        _cashmastereredd.Update(qeta);
+                    }
                 }
                 else
                 {
                     tbl_ExpensesMaster abc = _expenses.Get(model.pkid);
+                    if (abc.Payment_type == 3)
+                    {
+                        decimal amt = (decimal)abc.amt;
+
+                        tbl_CashMastered qeta = _cashmastereredd.GetAll().FirstOrDefault();
+                        qeta.CurrentCash = (qeta.CurrentCash + amt);
+                        qeta.CurrentCash = (qeta.CurrentCash - model.amt);
+                        qeta.LastModified = DateTime.Now;
+                        _cashmastereredd.Update(qeta);
+                    }
                     abc.personname = model.personname;
                     abc.purposeid = model.purposeid;
                     abc.date = model.date;
@@ -1632,6 +1751,7 @@ namespace KisanWeighining.Controllers
                     abc.amt = model.amt;
                     abc.remark = model.remark;
                     _expenses.Update(abc);
+
 
                 }
                 return RedirectToAction("Expenses", "KisanSales");
@@ -1671,7 +1791,7 @@ namespace KisanWeighining.Controllers
                              date = a.date ?? DateTime.Now,
                              pur = _expensesPurpose.Get(a.purposeid).purposename ?? "",
                              pay = _payementtype.Get(a.Payment_type).paymenttypename ?? "",
-                             recivername = (a.Payment_type == 1 ? _RTGSMASTER.Get(a.Pay_Infofkid).AccountHolder : _RTGSMASTER.Get(a.Pay_Infofkid).Cheq_Partyname),
+                             recivername = (a.Payment_type == 3 ? a.personname : (a.Payment_type == 1 ? _RTGSMASTER.Get(a.Pay_Infofkid).AccountHolder : _RTGSMASTER.Get(a.Pay_Infofkid).Cheq_Partyname)),
                              amt = a.amt ?? 0,
                              remark = a.remark ?? "",
                          });
@@ -1683,7 +1803,7 @@ namespace KisanWeighining.Controllers
                 {
                     v = v.OrderBy(sortColumn, sortColumnDir);
                 }
-                recordsTotal = v.Count();
+                //  recordsTotal = v.Count();
                 var data = v.Skip(skip).Take(pageSize).ToList();
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
             }
@@ -1723,6 +1843,33 @@ namespace KisanWeighining.Controllers
         {
             try
             {
+                List<OutStandingPaymentList> abcf = new List<OutStandingPaymentList>();
+                var v = (from a in _salesPayment.GetAll().Where(x => x.PaymentStatus == null || x.PaymentStatus == 0).ToList()
+                         join b in _machinedata.GetAll() on a.Purchase_fkid equals b.pkid
+                         select new OutStandingPaymentList
+                         {
+                             pkid = a.pkid,
+                             invoiceno = "0000" + a.pkid,
+                             fid = b.farmerid ?? 0,
+                             did = a.brokerid ?? 0,
+                             farmername = (b.farmerid != 0 ? _salesparty.GetAll().Where(x => x.pkid == b.farmerid).FirstOrDefault().partyname : ""),
+                             dealername = (a.brokerid != null ? _broker.GetAll().Where(x => x.pkid == a.brokerid).FirstOrDefault().Brokername : ""),
+                             paymentdate = a.Date ?? default(DateTime),
+
+                             creditedamount = (_salesActualPay.GetAll().Where(x => x.invoice_fkid == a.pkid).ToList() != null ? _salesActualPay.GetAll().Where(x => x.invoice_fkid == a.pkid).Sum(x => x.RTGSAmtPaying ?? 0 + x.ChequeAmtpaying ?? 0 + x.CashAmt ?? 0) : 0),
+
+                             totalamount = a.NetPayableAmount ?? 0,
+                             BalalnceAmount = (_salesActualPay.GetAll().Where(x => x.invoice_fkid == a.pkid).Count() > 0 ? _salesActualPay.GetAll().Where(x => x.invoice_fkid == a.pkid).OrderByDescending(x => x.pkid).FirstOrDefault().pendingAmt : a.NetPayableAmount),
+                         }).ToList();
+                if (model.partyid != null && model.partyid != 0)
+                {
+                    v = v.Where(x => x.fid == model.partyid).ToList();
+                }
+                if (model.brokerid != 0 && model.brokerid != null)
+                {
+                    v = v.Where(x => x.did == model.brokerid).ToList();
+                }
+                abcf = v;
                 if (model.pkid == 0)
                 {
                     if (model.outAmt == null || model.outAmt == 0)
@@ -1741,6 +1888,7 @@ namespace KisanWeighining.Controllers
                     abc.payingamt = model.payingamt;
                     abc.SystDate = DateTime.Now;
                     _PurchaseOutStanding.Add(abc);
+
                 }
                 else
                 {
@@ -1752,6 +1900,36 @@ namespace KisanWeighining.Controllers
                     abc.payingamt = model.payingamt;
                     abc.SystDate = DateTime.Now;
                     _PurchaseOutStanding.Update(abc);
+                }
+                foreach (var item in abcf)
+                {
+                    tbl_SalesEntry_Master _sala = _salesPayment.Get(item.pkid);
+                    _sala.PaymentStatus = 1;
+                    _salesPayment.Update(_sala);
+                }
+                if (_cashmastereredd.GetAll().Count() > 0)
+                {
+                    if (_cashmastereredd.GetAll().FirstOrDefault().CurrentCash >= 0)
+                    {
+                        tbl_CashMastered beta = _cashmastereredd.GetAll().FirstOrDefault();
+                        beta.CurrentCash = (beta.CurrentCash + model.payingamt);
+                        beta.LastModified = DateTime.Now;
+                        _cashmastereredd.Update(beta);
+                    }
+                    else
+                    {
+                        tbl_CashMastered beta = new tbl_CashMastered();
+                        beta.CurrentCash = model.payingamt;
+                        beta.LastModified = DateTime.Now;
+                        _cashmastereredd.Add(beta);
+                    }
+                }
+                else
+                {
+                    tbl_CashMastered beta = new tbl_CashMastered();
+                    beta.CurrentCash = model.payingamt;
+                    beta.LastModified = DateTime.Now;
+                    _cashmastereredd.Add(beta);
                 }
             }
             catch (Exception e)
@@ -2287,12 +2465,14 @@ namespace KisanWeighining.Controllers
         [HttpGet]
         public ActionResult CashMaster()
         {
+            ViewBag.AvailAmt = _cashmastereredd.GetAll().FirstOrDefault().CurrentCash ?? 0;
             return View();
         }
         [HttpPost]
         public ActionResult CashMaster(tbl_CashReceiptss model)
         {
-          decimal Totalcash = 0;
+            decimal Totalcash = 0;
+            ViewBag.AvailAmt = _cashmastereredd.GetAll().FirstOrDefault().CurrentCash ?? 0;
             if (model.pkid == 0)
             {
                 tbl_CashReceipt abc = new tbl_CashReceipt();
@@ -2304,23 +2484,27 @@ namespace KisanWeighining.Controllers
                 _cashreceipt.Add(abc);
                 if (_cashmastereredd.GetAll().Count() > 0)
                 {
-                    if (_cashmastereredd.GetAll().FirstOrDefault().CurrentCash > 0)
+                    if (_cashmastereredd.GetAll().FirstOrDefault().CurrentCash >= 0)
                     {
                         tbl_CashMastered beta = _cashmastereredd.GetAll().FirstOrDefault();
                         beta.CurrentCash = (beta.CurrentCash + model.cashAmt);
+                        beta.LastModified = DateTime.Now;
                         _cashmastereredd.Update(beta);
                     }
-                    else{
+                    else
+                    {
                         tbl_CashMastered beta = new tbl_CashMastered();
                         beta.CurrentCash = model.cashAmt;
-                        //_cashmastereredd.Save(beta);
+                        beta.LastModified = DateTime.Now;
+                        _cashmastereredd.Add(beta);
                     }
                 }
                 else
                 {
-                    //tbl_CashMastered beta = new tbl_Cash
-                    // _cashmastereredd.Update(beta);Mastered();
-                    //beta.CurrentCash = model.cashAmt;
+                    tbl_CashMastered beta = new tbl_CashMastered();
+                    beta.CurrentCash = model.cashAmt;
+                    beta.LastModified = DateTime.Now;
+                    _cashmastereredd.Add(beta);
                 }
             }
             else
@@ -2332,10 +2516,34 @@ namespace KisanWeighining.Controllers
                 abc.sourcename = model.sourcename;
                 abc.currentdate = DateTime.Now;
                 _cashreceipt.Update(abc);
+                if (_cashmastereredd.GetAll().Count() > 0)
+                {
+                    if (_cashmastereredd.GetAll().FirstOrDefault().CurrentCash >= 0)
+                    {
+                        tbl_CashMastered beta = _cashmastereredd.GetAll().FirstOrDefault();
+                        beta.CurrentCash = (beta.CurrentCash + model.cashAmt);
+                        beta.LastModified = DateTime.Now;
+                        _cashmastereredd.Update(beta);
+                    }
+                    else
+                    {
+                        tbl_CashMastered beta = new tbl_CashMastered();
+                        beta.CurrentCash = model.cashAmt;
+                        beta.LastModified = DateTime.Now;
+                        _cashmastereredd.Add(beta);
+                    }
+                }
+                else
+                {
+                    tbl_CashMastered beta = new tbl_CashMastered();
+                    beta.CurrentCash = model.cashAmt;
+                    beta.LastModified = DateTime.Now;
+                    _cashmastereredd.Add(beta);
+                }
             }
             return RedirectToAction("CashMaster", "KisanSales");
         }
-        public ActionResult GetCashsourceList(string dt)
+        public ActionResult GetCashsourceList(DateTime dt)
         {
             DateTime _p = Convert.ToDateTime(dt);
             var data = _cashreceipt.GetAll().Where(x => x.date == _p).OrderBy(x => x.pkid).ToList();
@@ -2345,43 +2553,46 @@ namespace KisanWeighining.Controllers
         [HttpGet]
         public ActionResult GetCashreceiptList()
         {
-            var data = _cashreceipt.GetAll().Where(x => x.sourcename == "Invoice").OrderByDescending(x => x.pkid).FirstOrDefault();
-            if (data == null)
-            {
-                var ceta = _salesActualPay.GetAll().Where(x => x.PaymentMethod == 3).ToList();
-                if (ceta != null)
-                {
-                    foreach (var item in ceta)
-                    {
-                        tbl_CashReceipt abc = new tbl_CashReceipt();
-                        abc.payment_fkid = item.pkid;
-                        abc.personname = item.CashPaidTO;
-                        abc.sourcename = "Invoice";
-                        abc.mid = item.invoice_fkid;
-                        abc.cashAmt = item.CashAmt ?? item.RTGSAmtPaying ?? item.ChequeAmtpaying ?? 0;
-                        abc.date = item.datetime;
-                        _cashreceipt.Add(abc);
-                    }
-                }
-            }
-            else
-            {
+            //#region
+            //var data = _cashreceipt.GetAll().Where(x => x.sourcename == "Invoice").OrderByDescending(x => x.pkid).FirstOrDefault();
+            //if (data == null)
+            //{
+            //    var ceta = _salesActualPay.GetAll().Where(x => x.PaymentMethod == 3).ToList();
+            //    if (ceta != null)
+            //    {
+            //        foreach (var item in ceta)
+            //        {
+            //            tbl_CashReceipt abc = new tbl_CashReceipt();
+            //            abc.payment_fkid = item.pkid;
+            //            abc.personname = item.CashPaidTO;
+            //            abc.sourcename = "Invoice";
+            //            abc.mid = item.invoice_fkid;
+            //            abc.cashAmt = item.CashAmt ?? item.RTGSAmtPaying ?? item.ChequeAmtpaying ?? 0;
+            //            abc.date = item.datetime;
+            //            _cashreceipt.Add(abc);
+            //        }
+            //    }
+            //}
+            //else
+            //{
 
-                var ceta = _salesActualPay.GetAll().Where(x => x.pkid > data.payment_fkid && x.PaymentMethod == 3).ToList();
-                if (ceta != null)
-                {
-                    foreach (var item in ceta)
-                    {
-                        tbl_CashReceipt abc = new tbl_CashReceipt();
-                        abc.personname = item.CashPaidTO;
-                        abc.sourcename = "Invoice";
-                        abc.mid = item.invoice_fkid;
-                        abc.cashAmt = item.CashAmt ?? item.RTGSAmtPaying ?? item.ChequeAmtpaying ?? 0;
-                        abc.date = item.datetime;
-                        _cashreceipt.Add(abc);
-                    }
-                }
-            }
+            //    var ceta = _salesActualPay.GetAll().Where(x => x.pkid > data.payment_fkid && x.PaymentMethod == 3).ToList();
+            //    if (ceta != null)
+            //    {
+            //        foreach (var item in ceta)
+            //        {
+            //            tbl_CashReceipt abc = new tbl_CashReceipt();
+            //            abc.personname = item.CashPaidTO;
+            //            abc.payment_fkid = item.pkid;
+            //            abc.sourcename = "Invoice";
+            //            abc.mid = item.invoice_fkid;
+            //            abc.cashAmt = item.CashAmt ?? item.RTGSAmtPaying ?? item.ChequeAmtpaying ?? 0;
+            //            abc.date = item.datetime;
+            //            _cashreceipt.Add(abc);
+            //        }
+            //    }
+            //}
+            //#endregion
             return View();
         }
         public ActionResult CashreceiptList()
@@ -2524,7 +2735,7 @@ namespace KisanWeighining.Controllers
             int fid = (frid != "" ? Convert.ToInt32(frid) : 0);
             int tid = (drid != "" ? Convert.ToInt32(drid) : 0);
             List<OutStandingPaymentList> abc = new List<OutStandingPaymentList>();
-            var v = (from a in _salesPayment.GetAll()
+            var v = (from a in _salesPayment.GetAll().Where(x => x.PaymentStatus == null || x.PaymentStatus == 0).ToList()
                      join b in _machinedata.GetAll() on a.Purchase_fkid equals b.pkid
                      select new OutStandingPaymentList
                      {
