@@ -111,7 +111,7 @@ namespace KisanWeighining.Controllers
             try
             {
                 var dat = _truck.GetAll();
-                var v = (from a in _machinedata.GetAll().Where(x => x.invoicestatus == null && (x.producttypeid == 2 || x.producttypeid == 3)).Take(20)
+                var v = (from a in _machinedata.GetAll().Where(x => x.invoicestatus == null && (x.producttypeid == 2 || x.producttypeid == 3))
                          select new
                          {
                              pkid = a.pkid,
@@ -1843,6 +1843,7 @@ namespace KisanWeighining.Controllers
         {
             try
             {
+                int _mainId = 0;
                 List<OutStandingPaymentList> abcf = new List<OutStandingPaymentList>();
                 var v = (from a in _salesPayment.GetAll().Where(x => x.PaymentStatus == null || x.PaymentStatus == 0).ToList()
                          join b in _machinedata.GetAll() on a.Purchase_fkid equals b.pkid
@@ -1870,6 +1871,7 @@ namespace KisanWeighining.Controllers
                     v = v.Where(x => x.did == model.brokerid).ToList();
                 }
                 abcf = v;
+                decimal TotalOutstatndingAmt = v.Sum(x => x.BalalnceAmount).Value;
                 if (model.pkid == 0)
                 {
                     if (model.outAmt == null || model.outAmt == 0)
@@ -1888,7 +1890,7 @@ namespace KisanWeighining.Controllers
                     abc.payingamt = model.payingamt;
                     abc.SystDate = DateTime.Now;
                     _PurchaseOutStanding.Add(abc);
-
+                    _mainId = _PurchaseOutStanding.GetAll().Max(x => x.pkid);
                 }
                 else
                 {
@@ -1900,21 +1902,87 @@ namespace KisanWeighining.Controllers
                     abc.payingamt = model.payingamt;
                     abc.SystDate = DateTime.Now;
                     _PurchaseOutStanding.Update(abc);
+                    _mainId = model.pkid;
                 }
-                foreach (var item in abcf)
+                if (TotalOutstatndingAmt == model.payingamt)
                 {
-                    tbl_SalesEntry_Master _sala = _salesPayment.Get(item.pkid);
-                    _sala.PaymentStatus = 1;
-                    _salesPayment.Update(_sala);
-                }
-                if (_cashmastereredd.GetAll().Count() > 0)
-                {
-                    if (_cashmastereredd.GetAll().FirstOrDefault().CurrentCash >= 0)
+                    foreach (var item in abcf)
                     {
-                        tbl_CashMastered beta = _cashmastereredd.GetAll().FirstOrDefault();
-                        beta.CurrentCash = (beta.CurrentCash + model.payingamt);
-                        beta.LastModified = DateTime.Now;
-                        _cashmastereredd.Update(beta);
+                        tbl_SalesEntry_Master _sala = _salesPayment.Get(item.pkid);
+                        _sala.PaymentStatus = 1;
+                        _salesPayment.Update(_sala);
+                    }
+                }
+                else
+                {
+                    foreach (var item in abcf)
+                    {
+                            if (model.payingamt > 0)
+                            {
+                                if (_salesActualPay.GetAll().Where(x => x.invoice_fkid == item.pkid).Count() > 0)
+                                {
+                                    tbl_SalesEntry_Master peta = _salesPayment.Get(item.pkid);
+                                    tbl_SalesEntry_Master_Payment questa = _salesActualPay.GetAll().Where(x => x.invoice_fkid == item.pkid).OrderByDescending(x => x.pkid).FirstOrDefault();
+                                    if (questa.pendingAmt >= model.payingamt)
+                                    {
+                                        questa.pendingAmt = ((questa.pendingAmt) - Convert.ToDecimal(model.payingamt));
+                                        model.payingamt = 0;
+                                    }
+                                    else
+                                    {
+                                        decimal wax = Convert.ToDecimal(model.payingamt);
+                                        model.payingamt = ((model.payingamt) - Convert.ToDecimal(questa.pendingAmt));
+                                        questa.pendingAmt = ((wax) - Convert.ToDecimal(questa.pendingAmt));                                      
+                                    }
+                                    if (questa.pendingAmt == 0)
+                                    {
+                                        peta.PaymentStatus = 1;
+                                        _salesPayment.Update(peta);
+                                    }
+                                    _salesActualPay.Update(questa);
+                                                              
+                                }
+                                else {
+                                    tbl_SalesEntry_Master peta = _salesPayment.Get(item.pkid);
+                                    if (peta.NetPayableAmount >= model.payingamt)
+                                    {
+                                        peta.NetPayableAmount = ((peta.NetPayableAmount) - Convert.ToDecimal(model.payingamt));
+                                        model.payingamt = 0;
+                                    }
+                                    else
+                                    {
+                                        decimal wax = Convert.ToDecimal(model.payingamt);
+                                        model.payingamt = ((model.payingamt) - Convert.ToDecimal(peta.NetPayableAmount));
+                                        peta.NetPayableAmount = ((wax) - Convert.ToDecimal(peta.NetPayableAmount));
+                                      
+                                    }
+                                    if (peta.NetPayableAmount == 0)
+                                    {
+                                        peta.PaymentStatus = 1;
+                                    }
+                                    _salesPayment.Update(peta);
+                                }
+                            }
+                    }
+                }
+                if (model.Payment_Method == 3)
+                {
+                    if (_cashmastereredd.GetAll().Count() > 0)
+                    {
+                        if (_cashmastereredd.GetAll().FirstOrDefault().CurrentCash >= 0)
+                        {
+                            tbl_CashMastered beta = _cashmastereredd.GetAll().FirstOrDefault();
+                            beta.CurrentCash = (beta.CurrentCash + model.payingamt);
+                            beta.LastModified = DateTime.Now;
+                            _cashmastereredd.Update(beta);
+                        }
+                        else
+                        {
+                            tbl_CashMastered beta = new tbl_CashMastered();
+                            beta.CurrentCash = model.payingamt;
+                            beta.LastModified = DateTime.Now;
+                            _cashmastereredd.Add(beta);
+                        }
                     }
                     else
                     {
@@ -1923,13 +1991,6 @@ namespace KisanWeighining.Controllers
                         beta.LastModified = DateTime.Now;
                         _cashmastereredd.Add(beta);
                     }
-                }
-                else
-                {
-                    tbl_CashMastered beta = new tbl_CashMastered();
-                    beta.CurrentCash = model.payingamt;
-                    beta.LastModified = DateTime.Now;
-                    _cashmastereredd.Add(beta);
                 }
             }
             catch (Exception e)

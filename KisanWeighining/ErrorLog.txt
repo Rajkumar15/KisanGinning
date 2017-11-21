@@ -1278,3 +1278,14 @@ Source: KisanWeighining
 TargetSite: System.Web.Mvc.ActionResult SalesDetails(Int32)
 --------------------------------------------------------------------------------------------------------------
 
+Time: 20/11/2017 02:25:54 PM
+
+-------------------------------------------------------------------------------------------------------------
+Message: String was not recognized as a valid DateTime.
+StackTrace:    at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.Convert.ToDateTime(String value)
+   at KisanWeighining.Controllers.PooldataMachineController.Index() in d:\raj\Kisan_Weighining master\Kisan_Weighining\KisanWeighining\Controllers\PooldataMachineController.cs:line 297
+Source: mscorlib
+TargetSite: System.DateTime Parse(System.String, System.Globalization.DateTimeFormatInfo, System.Globalization.DateTimeStyles)
+--------------------------------------------------------------------------------------------------------------
+

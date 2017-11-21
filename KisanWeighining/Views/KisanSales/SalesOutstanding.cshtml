@@ -103,7 +103,8 @@
                             <div class="col-sm-12">
                                 <div class="col-sm-2"></div>
                                 <div class="col-sm-8">
-                                    <label class="labelmod"> Receipt Amt </label> : @Html.TextBoxFor(x => x.payingamt, new { @class = "form-control calcultesttext numbers", @style = "width:50% !important;", @readonly = "readonly", @required = "required" })<br />
+                                    <label class="labelmod"> Payment Method </label> : @Html.DropDownListFor(x => x.Payment_Method, (IEnumerable<SelectListItem>)@ViewBag.paytype, "Select Payment", new { @style = "width: 280px !important;height: 35px;margin-bottom:2%;", @required = "required" })<br />
+                                    <label class="labelmod"> Receipt Amt </label> : @Html.TextBoxFor(x => x.payingamt, new { @class = "form-control calcultesttext numbers", @style = "width:50% !important;", @required = "required" })<br />
                                     <label class="labelmod"> Date </label> : @Html.TextBoxFor(x => x.SystDate, new { @class = "form-control calcultesttext", @style = "width:50% !important;", @required = "required" })<br />
                                     <input type="submit" value="Save" style="margin-left:21% !important;" class="btn-primary">
                                 </div>
@@ -154,7 +155,15 @@
         $("#brokerid").change(function () {
             FindOutstanding();
         })
-       
+        $("#payingamt").keyup(function () {
+            debugger;
+            var Finalamt = $("#outAmt").val();
+            if (parseFloat($("#outAmt").val()) < parseFloat($("#payingamt").val()))
+            {
+                jAlert("Enter Only Required Amt", "SystemAlert");
+                $("#payingamt").val('');
+            }
+        })
     });
     $('.groupOfTexbox').keypress(function (event) {
         return isNumber(event, this)
